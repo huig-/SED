@@ -4,6 +4,7 @@
 #include "def.h"
 /*--- variables globales ---*/
 int symbol = 0;
+int fila = 1;
 /*--- funciones externas ---*/
 //extern void D8Led_Symbol(int value);
 /*--- declaracion de funciones ---*/
@@ -56,11 +57,14 @@ DESCOMENTAR PARA LA PRIMERA PARTE CON INTERRUPCIONES
 
 void Eint4567_ISR(void)
 {
-	while (esta_pulsado());
-	DelayMs(100);
+	//Detectamos que boton se ha pulsado
+	if ((rPDATG & (0x1<<6)) == 0)
+	    fila = 1;
+	else
+	    file = 0;
 
-	//Conmutamos LEDs
-	leds_switch();
+	while (esta_pulsado());
+
 	//Delay para eliminar rebotes
 	DelayMs(100);
 	
