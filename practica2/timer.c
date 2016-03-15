@@ -16,7 +16,7 @@ void timer0_init(void);
 void timer2_ISR(void) __attribute__ ((interrupt ("IRQ")));
 void timer2_init(void);
 void timer4_ISR(void) __attribute__ ((interrupt ("IRQ")));
-void timer4_ISR(void);
+void timer4_init(void);
 void shuffle(int *array, int n);
 void generar_numeros_aleatorios(void);
 /*--- codigo de las funciones ---*/
@@ -85,7 +85,7 @@ void timer0_ISR(void){
 	//	rTCON=rTCON|(0x00<<3);//activar modo one-shot
 	if (cont == 0) {
 		rINTMSK = rINTMSK | BIT_TIMER0; //desactivamos la interrupcion
-		timer5_init(); 
+		timer4_init();
 	}
 	rI_ISPC = BIT_TIMER0;
 }
@@ -145,7 +145,7 @@ void timer4_init(void) //se encarga del tiempo que tiene el usuario para pulsar 
 }
 
 void timer4_ISR(void){
-	WaitMs(100);
+	DelayMs(100);
 	rTCON =rTCON | (0x00<<12);// parar timer
 	rTCON =rTCON | (0x01<<13);// establecer manual_update
 	rTCON =rTCON & ~(0x01<<13);// DESACTIVA manual_update
