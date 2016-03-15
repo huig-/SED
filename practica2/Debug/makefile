@@ -44,7 +44,7 @@ all: practica2.elf secondary-outputs
 practica2.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Sourcery Windows GCC C Linker'
-	arm-none-eabi-gcc -T"C:\Users\usuario_local\Downloads\SED\practica2\commonEclipse\ram_ice.ld" -nostartfiles -Wl,-Map,practica2.map -mcpu=arm7tdmi -g3 -gdwarf-2 -o "practica2.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -T"C:\hlocal\EclipseARMwspace\practica2\commonEclipse\ram_ice.ld" -nostartfiles -Wl,-Map,practica2.map -mcpu=arm7tdmi -g3 -gdwarf-2 -o "practica2.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

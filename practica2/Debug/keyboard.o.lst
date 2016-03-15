@@ -1,0 +1,538 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 18, 4
+  11              		.file	"keyboard.c"
+  21              	.Ltext0:
+  22              		.file 1 "C:/Users/usuario_local/Downloads/SED/practica2/keyboard.c"
+ 1955              		.align	2
+ 1958              	keyboard_base:
+ 1959 0000 00000006 		.word	100663296
+ 1960              		.comm	key,4,4
+ 1961              		.text
+ 1962              		.align	2
+ 1963              		.global	keyboard_init
+ 1965              	keyboard_init:
+ 1966              	.LFB0:
+   1:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** /*--- Ficheros de cabecera ---*/
+   2:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** #include "44b.h"
+   3:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** #include "44blib.h"
+   4:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** #include "def.h"
+   5:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** /*--- Definición de macros ---*/
+   6:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** #define KEY_VALUE_MASK 0xF
+   7:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** /*--- Variables globales ---*/
+   8:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** volatile UCHAR *keyboard_base = (UCHAR *)0x06000000;
+   9:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** int key;
+  10:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** /*--- Funciones externas ---*/
+  11:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** extern int numeros[4];
+  12:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** void D8Led_symbol(int value);
+  13:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** void D8Led_symbol_acierto(int value);
+  14:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** /*--- Declaracion de funciones ---*/
+  15:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** void keyboard_init();
+  16:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** void KeyboardInt(void) __attribute__ ((interrupt ("IRQ")));
+  17:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** int key_read();
+  18:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** /*--- Codigo de las funciones ---*/
+  19:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** void keyboard_init()
+  20:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** {
+ 1967              		.loc 1 20 0
+ 1968              		.cfi_startproc
+ 1969              		@ Function supports interworking.
+ 1970              		@ args = 0, pretend = 0, frame = 0
+ 1971              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1972 0000 0DC0A0E1 		mov	ip, sp
+ 1973              	.LCFI0:
+ 1974              		.cfi_def_cfa_register 12
+ 1975 0004 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 1976 0008 04B04CE2 		sub	fp, ip, #4
+ 1977              		.cfi_offset 14, -8
+ 1978              		.cfi_offset 13, -12
+ 1979              		.cfi_offset 11, -16
+ 1980              	.LCFI1:
+ 1981              		.cfi_def_cfa 11, 4
+  21:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/* Configurar el puerto G (si no lo estuviese ya) */	
+  22:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		// Establece la funcion de los pines (EINT0-7)
+  23:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	rPCONG = rPCONG | 0xC;
+ 1982              		.loc 1 23 0
+ 1983 000c 80309FE5 		ldr	r3, .L2
+ 1984 0010 7C209FE5 		ldr	r2, .L2
+ 1985 0014 002092E5 		ldr	r2, [r2, #0]
+ 1986 0018 0C2082E3 		orr	r2, r2, #12
+ 1987 001c 002083E5 		str	r2, [r3, #0]
+  24:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		// Habilita el "pull up" del puerto
+  25:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	rPUPG = 0x0;
+ 1988              		.loc 1 25 0
+ 1989 0020 70309FE5 		ldr	r3, .L2+4
+ 1990 0024 0020A0E3 		mov	r2, #0
+ 1991 0028 002083E5 		str	r2, [r3, #0]
+  26:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		// Configura las lineas de int. como de flanco de bajada mediante EXTINT
+  27:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	rEXTINT = 0x22222222;
+ 1992              		.loc 1 27 0
+ 1993 002c 68309FE5 		ldr	r3, .L2+8
+ 1994 0030 68209FE5 		ldr	r2, .L2+12
+ 1995 0034 002083E5 		str	r2, [r3, #0]
+  28:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/* Establece la rutina de servicio para EINT1 */
+  29:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	pISR_EINT1 = (unsigned)KeyboardInt;
+ 1996              		.loc 1 29 0
+ 1997 0038 64309FE5 		ldr	r3, .L2+16
+ 1998 003c 64209FE5 		ldr	r2, .L2+20
+ 1999 0040 002083E5 		str	r2, [r3, #0]
+  30:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/* Configurar controlador de interrupciones */
+  31:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		// Borra INTPND escribiendo 1s en I_ISPC
+  32:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	rI_ISPC = 0x3ffffff;
+ 2000              		.loc 1 32 0
+ 2001 0044 60309FE5 		ldr	r3, .L2+24
+ 2002 0048 3F23E0E3 		mvn	r2, #-67108864
+ 2003 004c 002083E5 		str	r2, [r3, #0]
+  33:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		// Configura las lineas como de tipo IRQ mediante INTMOD
+  34:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	rINTMOD = 0x0;
+ 2004              		.loc 1 34 0
+ 2005 0050 58309FE5 		ldr	r3, .L2+28
+ 2006 0054 0020A0E3 		mov	r2, #0
+ 2007 0058 002083E5 		str	r2, [r3, #0]
+  35:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		// Habilita int. vectorizadas y la linea IRQ (FIQ no) mediante INTCON
+  36:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	rINTCON = 0x1;
+ 2008              		.loc 1 36 0
+ 2009 005c 1E36A0E3 		mov	r3, #31457280
+ 2010 0060 0120A0E3 		mov	r2, #1
+ 2011 0064 002083E5 		str	r2, [r3, #0]
+  37:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/* Habilitar linea EINT1 */
+  38:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	rINTMSK = rINTMSK & ~(BIT_EINT1 | BIT_GLOBAL);
+ 2012              		.loc 1 38 0
+ 2013 0068 44309FE5 		ldr	r3, .L2+32
+ 2014 006c 40209FE5 		ldr	r2, .L2+32
+ 2015 0070 002092E5 		ldr	r2, [r2, #0]
+ 2016 0074 0524C2E3 		bic	r2, r2, #83886080
+ 2017 0078 002083E5 		str	r2, [r3, #0]
+  39:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/* Por precaucion, se vuelven a borrar los bits de INTPND correspondientes*/
+  40:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	rI_ISPC = 0x3ffffff;
+ 2018              		.loc 1 40 0
+ 2019 007c 28309FE5 		ldr	r3, .L2+24
+ 2020 0080 3F23E0E3 		mvn	r2, #-67108864
+ 2021 0084 002083E5 		str	r2, [r3, #0]
+  41:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** }
+ 2022              		.loc 1 41 0
+ 2023 0088 0CD04BE2 		sub	sp, fp, #12
+ 2024 008c 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 2025 0090 1EFF2FE1 		bx	lr
+ 2026              	.L3:
+ 2027              		.align	2
+ 2028              	.L2:
+ 2029 0094 4000D201 		.word	30539840
+ 2030 0098 4800D201 		.word	30539848
+ 2031 009c 5000D201 		.word	30539856
+ 2032 00a0 22222222 		.word	572662306
+ 2033 00a4 80FF7F0C 		.word	209715072
+ 2034 00a8 00000000 		.word	KeyboardInt
+ 2035 00ac 2400E001 		.word	31457316
+ 2036 00b0 0800E001 		.word	31457288
+ 2037 00b4 0C00E001 		.word	31457292
+ 2038              		.cfi_endproc
+ 2039              	.LFE0:
+ 2041              		.align	2
+ 2042              		.global	KeyboardInt
+ 2044              	KeyboardInt:
+ 2045              	.LFB1:
+  42:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** void KeyboardInt(void)
+  43:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** {
+ 2046              		.loc 1 43 0
+ 2047              		.cfi_startproc
+ 2048              		@ Interrupt Service Routine.
+ 2049              		@ args = 0, pretend = 0, frame = 0
+ 2050              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2051 00b8 04C02DE5 		str	ip, [sp, #-4]!
+ 2052 00bc 0DC0A0E1 		mov	ip, sp
+ 2053              	.LCFI2:
+ 2054              		.cfi_def_cfa_register 12
+ 2055 00c0 0FD82DE9 		stmfd	sp!, {r0, r1, r2, r3, fp, ip, lr, pc}
+ 2056 00c4 04B04CE2 		sub	fp, ip, #4
+ 2057              		.cfi_offset 14, -8
+ 2058              		.cfi_offset 13, -12
+ 2059              		.cfi_offset 11, -16
+ 2060              		.cfi_offset 3, -20
+ 2061              		.cfi_offset 2, -24
+ 2062              		.cfi_offset 1, -28
+ 2063              		.cfi_offset 0, -32
+ 2064              	.LCFI3:
+ 2065              		.cfi_def_cfa 11, 4
+  44:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/* Esperar trp mediante la funcion DelayMs()*/
+  45:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	DelayMs(20);
+ 2066              		.loc 1 45 0
+ 2067 00c8 1400A0E3 		mov	r0, #20
+ 2068 00cc FEFFFFEB 		bl	DelayMs
+  46:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/* Identificar la tecla */
+  47:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	key = key_read();
+ 2069              		.loc 1 47 0
+ 2070 00d0 FEFFFFEB 		bl	key_read
+ 2071 00d4 0020A0E1 		mov	r2, r0
+ 2072 00d8 8C309FE5 		ldr	r3, .L9
+ 2073 00dc 002083E5 		str	r2, [r3, #0]
+  48:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/* Si la tecla se ha identificado, visualizarla en el 8SEG*/
+  49:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	if(key > -1)
+ 2074              		.loc 1 49 0
+ 2075 00e0 84309FE5 		ldr	r3, .L9
+ 2076 00e4 003093E5 		ldr	r3, [r3, #0]
+ 2077 00e8 000053E3 		cmp	r3, #0
+ 2078 00ec 0F0000BA 		blt	.L8
+  50:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	{
+  51:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		if (key == numeros[3])
+ 2079              		.loc 1 51 0
+ 2080 00f0 78309FE5 		ldr	r3, .L9+4
+ 2081 00f4 0C2093E5 		ldr	r2, [r3, #12]
+ 2082 00f8 6C309FE5 		ldr	r3, .L9
+ 2083 00fc 003093E5 		ldr	r3, [r3, #0]
+ 2084 0100 030052E1 		cmp	r2, r3
+ 2085 0104 0400001A 		bne	.L6
+  52:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 			D8Led_symbol_acierto(key);
+ 2086              		.loc 1 52 0
+ 2087 0108 5C309FE5 		ldr	r3, .L9
+ 2088 010c 003093E5 		ldr	r3, [r3, #0]
+ 2089 0110 0300A0E1 		mov	r0, r3
+ 2090 0114 FEFFFFEB 		bl	D8Led_symbol_acierto
+  53:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		else
+  54:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 			D8Led_symbol(key);
+  55:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	}
+  56:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/* Esperar a se libere la tecla: consultar bit 1 del registro de datos del puerto G */
+  57:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	while ((rPDATG & 0x1) == 0);
+ 2091              		.loc 1 57 0
+ 2092 0118 050000EA 		b	.L7
+ 2093              	.L6:
+  54:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 			D8Led_symbol(key);
+ 2094              		.loc 1 54 0
+ 2095 011c 48309FE5 		ldr	r3, .L9
+ 2096 0120 003093E5 		ldr	r3, [r3, #0]
+ 2097 0124 0300A0E1 		mov	r0, r3
+ 2098 0128 FEFFFFEB 		bl	D8Led_symbol
+ 2099              		.loc 1 57 0
+ 2100 012c 000000EA 		b	.L7
+ 2101              	.L8:
+ 2102 0130 0000A0E1 		mov	r0, r0	@ nop
+ 2103              	.L7:
+ 2104              		.loc 1 57 0 is_stmt 0 discriminator 1
+ 2105 0134 38309FE5 		ldr	r3, .L9+8
+ 2106 0138 003093E5 		ldr	r3, [r3, #0]
+ 2107 013c 013003E2 		and	r3, r3, #1
+ 2108 0140 000053E3 		cmp	r3, #0
+ 2109 0144 FAFFFF0A 		beq	.L7
+  58:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/* Esperar trd mediante la funcion Delay() */
+  59:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	DelayMs(100);
+ 2110              		.loc 1 59 0 is_stmt 1
+ 2111 0148 6400A0E3 		mov	r0, #100
+ 2112 014c FEFFFFEB 		bl	DelayMs
+  60:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/* Borrar interrupción de teclado */
+  61:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	rI_ISPC = BIT_EINT1;
+ 2113              		.loc 1 61 0
+ 2114 0150 20309FE5 		ldr	r3, .L9+12
+ 2115 0154 0124A0E3 		mov	r2, #16777216
+ 2116 0158 002083E5 		str	r2, [r3, #0]
+  62:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** }
+ 2117              		.loc 1 62 0
+ 2118 015c 1CD04BE2 		sub	sp, fp, #28
+ 2119 0160 0F689DE8 		ldmfd	sp, {r0, r1, r2, r3, fp, sp, lr}
+ 2120 0164 04C09DE4 		ldmfd	sp!, {ip}
+ 2121 0168 04F05EE2 		subs	pc, lr, #4
+ 2122              	.L10:
+ 2123              		.align	2
+ 2124              	.L9:
+ 2125 016c 00000000 		.word	key
+ 2126 0170 00000000 		.word	numeros
+ 2127 0174 4400D201 		.word	30539844
+ 2128 0178 2400E001 		.word	31457316
+ 2129              		.cfi_endproc
+ 2130              	.LFE1:
+ 2132              		.align	2
+ 2133              		.global	key_read
+ 2135              	key_read:
+ 2136              	.LFB2:
+  63:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 
+  64:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** int key_read()
+  65:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** {
+ 2137              		.loc 1 65 0
+ 2138              		.cfi_startproc
+ 2139              		@ Function supports interworking.
+ 2140              		@ args = 0, pretend = 0, frame = 8
+ 2141              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2142 017c 0DC0A0E1 		mov	ip, sp
+ 2143              	.LCFI4:
+ 2144              		.cfi_def_cfa_register 12
+ 2145 0180 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 2146 0184 04B04CE2 		sub	fp, ip, #4
+ 2147              		.cfi_offset 14, -8
+ 2148              		.cfi_offset 13, -12
+ 2149              		.cfi_offset 11, -16
+ 2150              	.LCFI5:
+ 2151              		.cfi_def_cfa 11, 4
+ 2152 0188 08D04DE2 		sub	sp, sp, #8
+  66:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	int value = -1;
+ 2153              		.loc 1 66 0
+ 2154 018c 0030E0E3 		mvn	r3, #0
+ 2155 0190 10300BE5 		str	r3, [fp, #-16]
+  67:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	char temp;
+  68:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	// Identificar la tecla mediante ''scanning''
+  69:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	// Si la identificación falla la función debe devolver -1
+  70:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	temp = *(keyboard_base + 0xfd) & KEY_VALUE_MASK; //Usamos KEY_VALUE_MASK para quedarnos con los 4 
+ 2156              		.loc 1 70 0
+ 2157 0194 0C329FE5 		ldr	r3, .L36
+ 2158 0198 003093E5 		ldr	r3, [r3, #0]
+ 2159 019c FD3083E2 		add	r3, r3, #253
+ 2160 01a0 0030D3E5 		ldrb	r3, [r3, #0]
+ 2161 01a4 FF3003E2 		and	r3, r3, #255
+ 2162 01a8 0F3003E2 		and	r3, r3, #15
+ 2163 01ac 11304BE5 		strb	r3, [fp, #-17]
+  71:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 
+  72:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	switch (temp) {
+ 2164              		.loc 1 72 0
+ 2165 01b0 11305BE5 		ldrb	r3, [fp, #-17]	@ zero_extendqisi2
+ 2166 01b4 073043E2 		sub	r3, r3, #7
+ 2167 01b8 070053E3 		cmp	r3, #7
+ 2168 01bc 03F19F97 		ldrls	pc, [pc, r3, asl #2]
+ 2169 01c0 130000EA 		b	.L12
+ 2170              	.L17:
+ 2171 01c4 E4010000 		.word	.L13
+ 2172 01c8 14020000 		.word	.L12
+ 2173 01cc 14020000 		.word	.L12
+ 2174 01d0 14020000 		.word	.L12
+ 2175 01d4 F0010000 		.word	.L14
+ 2176 01d8 14020000 		.word	.L12
+ 2177 01dc FC010000 		.word	.L15
+ 2178 01e0 08020000 		.word	.L16
+ 2179              	.L13:
+  73:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0x7:  value = 0; break;
+ 2180              		.loc 1 73 0
+ 2181 01e4 0030A0E3 		mov	r3, #0
+ 2182 01e8 10300BE5 		str	r3, [fp, #-16]
+ 2183 01ec 080000EA 		b	.L12
+ 2184              	.L14:
+  74:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xB:  value = 1; break;
+ 2185              		.loc 1 74 0
+ 2186 01f0 0130A0E3 		mov	r3, #1
+ 2187 01f4 10300BE5 		str	r3, [fp, #-16]
+ 2188 01f8 050000EA 		b	.L12
+ 2189              	.L15:
+  75:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xD:  value = 2; break;
+ 2190              		.loc 1 75 0
+ 2191 01fc 0230A0E3 		mov	r3, #2
+ 2192 0200 10300BE5 		str	r3, [fp, #-16]
+ 2193 0204 020000EA 		b	.L12
+ 2194              	.L16:
+  76:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xE:  value = 3; break;
+ 2195              		.loc 1 76 0
+ 2196 0208 0330A0E3 		mov	r3, #3
+ 2197 020c 10300BE5 		str	r3, [fp, #-16]
+ 2198 0210 0000A0E1 		mov	r0, r0	@ nop
+ 2199              	.L12:
+  77:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	}
+  78:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	
+  79:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	/*
+  80:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	* ESCRIBIR EL CÓDIGO CORRESPONDIENTE A LAS OTRAS FILAS Y COLUMNAS
+  81:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	*/
+  82:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	temp = *(keyboard_base + 0xfb) & KEY_VALUE_MASK; //Usamos KEY_VALUE_MASK para quedarnos con los 4 
+ 2200              		.loc 1 82 0
+ 2201 0214 8C319FE5 		ldr	r3, .L36
+ 2202 0218 003093E5 		ldr	r3, [r3, #0]
+ 2203 021c FB3083E2 		add	r3, r3, #251
+ 2204 0220 0030D3E5 		ldrb	r3, [r3, #0]
+ 2205 0224 FF3003E2 		and	r3, r3, #255
+ 2206 0228 0F3003E2 		and	r3, r3, #15
+ 2207 022c 11304BE5 		strb	r3, [fp, #-17]
+  83:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 
+  84:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	switch (temp) {
+ 2208              		.loc 1 84 0
+ 2209 0230 11305BE5 		ldrb	r3, [fp, #-17]	@ zero_extendqisi2
+ 2210 0234 073043E2 		sub	r3, r3, #7
+ 2211 0238 070053E3 		cmp	r3, #7
+ 2212 023c 03F19F97 		ldrls	pc, [pc, r3, asl #2]
+ 2213 0240 130000EA 		b	.L18
+ 2214              	.L23:
+ 2215 0244 64020000 		.word	.L19
+ 2216 0248 94020000 		.word	.L18
+ 2217 024c 94020000 		.word	.L18
+ 2218 0250 94020000 		.word	.L18
+ 2219 0254 70020000 		.word	.L20
+ 2220 0258 94020000 		.word	.L18
+ 2221 025c 7C020000 		.word	.L21
+ 2222 0260 88020000 		.word	.L22
+ 2223              	.L19:
+  85:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0x7:  value = 4; break;
+ 2224              		.loc 1 85 0
+ 2225 0264 0430A0E3 		mov	r3, #4
+ 2226 0268 10300BE5 		str	r3, [fp, #-16]
+ 2227 026c 080000EA 		b	.L18
+ 2228              	.L20:
+  86:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xB:  value = 5; break;
+ 2229              		.loc 1 86 0
+ 2230 0270 0530A0E3 		mov	r3, #5
+ 2231 0274 10300BE5 		str	r3, [fp, #-16]
+ 2232 0278 050000EA 		b	.L18
+ 2233              	.L21:
+  87:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xD:  value = 6; break;
+ 2234              		.loc 1 87 0
+ 2235 027c 0630A0E3 		mov	r3, #6
+ 2236 0280 10300BE5 		str	r3, [fp, #-16]
+ 2237 0284 020000EA 		b	.L18
+ 2238              	.L22:
+  88:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xE:  value = 7; break;
+ 2239              		.loc 1 88 0
+ 2240 0288 0730A0E3 		mov	r3, #7
+ 2241 028c 10300BE5 		str	r3, [fp, #-16]
+ 2242 0290 0000A0E1 		mov	r0, r0	@ nop
+ 2243              	.L18:
+  89:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	}
+  90:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 
+  91:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	temp = *(keyboard_base + 0xf7) & KEY_VALUE_MASK; //Usamos KEY_VALUE_MASK para quedarnos con los 4 
+ 2244              		.loc 1 91 0
+ 2245 0294 0C319FE5 		ldr	r3, .L36
+ 2246 0298 003093E5 		ldr	r3, [r3, #0]
+ 2247 029c F73083E2 		add	r3, r3, #247
+ 2248 02a0 0030D3E5 		ldrb	r3, [r3, #0]
+ 2249 02a4 FF3003E2 		and	r3, r3, #255
+ 2250 02a8 0F3003E2 		and	r3, r3, #15
+ 2251 02ac 11304BE5 		strb	r3, [fp, #-17]
+  92:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 
+  93:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	switch (temp) {
+ 2252              		.loc 1 93 0
+ 2253 02b0 11305BE5 		ldrb	r3, [fp, #-17]	@ zero_extendqisi2
+ 2254 02b4 073043E2 		sub	r3, r3, #7
+ 2255 02b8 070053E3 		cmp	r3, #7
+ 2256 02bc 03F19F97 		ldrls	pc, [pc, r3, asl #2]
+ 2257 02c0 130000EA 		b	.L24
+ 2258              	.L29:
+ 2259 02c4 E4020000 		.word	.L25
+ 2260 02c8 14030000 		.word	.L24
+ 2261 02cc 14030000 		.word	.L24
+ 2262 02d0 14030000 		.word	.L24
+ 2263 02d4 F0020000 		.word	.L26
+ 2264 02d8 14030000 		.word	.L24
+ 2265 02dc FC020000 		.word	.L27
+ 2266 02e0 08030000 		.word	.L28
+ 2267              	.L25:
+  94:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0x7:  value = 8; break;
+ 2268              		.loc 1 94 0
+ 2269 02e4 0830A0E3 		mov	r3, #8
+ 2270 02e8 10300BE5 		str	r3, [fp, #-16]
+ 2271 02ec 080000EA 		b	.L24
+ 2272              	.L26:
+  95:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xB:  value = 9; break;
+ 2273              		.loc 1 95 0
+ 2274 02f0 0930A0E3 		mov	r3, #9
+ 2275 02f4 10300BE5 		str	r3, [fp, #-16]
+ 2276 02f8 050000EA 		b	.L24
+ 2277              	.L27:
+  96:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xD:  value = 10; break;
+ 2278              		.loc 1 96 0
+ 2279 02fc 0A30A0E3 		mov	r3, #10
+ 2280 0300 10300BE5 		str	r3, [fp, #-16]
+ 2281 0304 020000EA 		b	.L24
+ 2282              	.L28:
+  97:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xE:  value = 11; break;
+ 2283              		.loc 1 97 0
+ 2284 0308 0B30A0E3 		mov	r3, #11
+ 2285 030c 10300BE5 		str	r3, [fp, #-16]
+ 2286 0310 0000A0E1 		mov	r0, r0	@ nop
+ 2287              	.L24:
+  98:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	}
+  99:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 
+ 100:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	temp = *(keyboard_base + 0xef) & KEY_VALUE_MASK; //Usamos KEY_VALUE_MASK para quedarnos con los 4 
+ 2288              		.loc 1 100 0
+ 2289 0314 8C309FE5 		ldr	r3, .L36
+ 2290 0318 003093E5 		ldr	r3, [r3, #0]
+ 2291 031c EF3083E2 		add	r3, r3, #239
+ 2292 0320 0030D3E5 		ldrb	r3, [r3, #0]
+ 2293 0324 FF3003E2 		and	r3, r3, #255
+ 2294 0328 0F3003E2 		and	r3, r3, #15
+ 2295 032c 11304BE5 		strb	r3, [fp, #-17]
+ 101:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 
+ 102:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	switch (temp) {
+ 2296              		.loc 1 102 0
+ 2297 0330 11305BE5 		ldrb	r3, [fp, #-17]	@ zero_extendqisi2
+ 2298 0334 073043E2 		sub	r3, r3, #7
+ 2299 0338 070053E3 		cmp	r3, #7
+ 2300 033c 03F19F97 		ldrls	pc, [pc, r3, asl #2]
+ 2301 0340 130000EA 		b	.L30
+ 2302              	.L35:
+ 2303 0344 64030000 		.word	.L31
+ 2304 0348 94030000 		.word	.L30
+ 2305 034c 94030000 		.word	.L30
+ 2306 0350 94030000 		.word	.L30
+ 2307 0354 70030000 		.word	.L32
+ 2308 0358 94030000 		.word	.L30
+ 2309 035c 7C030000 		.word	.L33
+ 2310 0360 88030000 		.word	.L34
+ 2311              	.L31:
+ 103:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0x7:  value = 12; break;
+ 2312              		.loc 1 103 0
+ 2313 0364 0C30A0E3 		mov	r3, #12
+ 2314 0368 10300BE5 		str	r3, [fp, #-16]
+ 2315 036c 080000EA 		b	.L30
+ 2316              	.L32:
+ 104:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xB:  value = 13; break;
+ 2317              		.loc 1 104 0
+ 2318 0370 0D30A0E3 		mov	r3, #13
+ 2319 0374 10300BE5 		str	r3, [fp, #-16]
+ 2320 0378 050000EA 		b	.L30
+ 2321              	.L33:
+ 105:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xD:  value = 14; break;
+ 2322              		.loc 1 105 0
+ 2323 037c 0E30A0E3 		mov	r3, #14
+ 2324 0380 10300BE5 		str	r3, [fp, #-16]
+ 2325 0384 020000EA 		b	.L30
+ 2326              	.L34:
+ 106:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 		case 0xE:  value = 15; break;
+ 2327              		.loc 1 106 0
+ 2328 0388 0F30A0E3 		mov	r3, #15
+ 2329 038c 10300BE5 		str	r3, [fp, #-16]
+ 2330 0390 0000A0E1 		mov	r0, r0	@ nop
+ 2331              	.L30:
+ 107:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	}
+ 108:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 
+ 109:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 	return value;
+ 2332              		.loc 1 109 0
+ 2333 0394 10301BE5 		ldr	r3, [fp, #-16]
+ 110:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** 
+ 111:C:/Users/usuario_local/Downloads/SED/practica2\keyboard.c **** }
+ 2334              		.loc 1 111 0
+ 2335 0398 0300A0E1 		mov	r0, r3
+ 2336 039c 0CD04BE2 		sub	sp, fp, #12
+ 2337 03a0 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 2338 03a4 1EFF2FE1 		bx	lr
+ 2339              	.L37:
+ 2340              		.align	2
+ 2341              	.L36:
+ 2342 03a8 00000000 		.word	keyboard_base
+ 2343              		.cfi_endproc
+ 2344              	.LFE2:
+ 2346              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 keyboard.c
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:1958   .data:00000000 keyboard_base
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:1955   .data:00000000 $d
+                            *COM*:00000004 key
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:1962   .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:1965   .text:00000000 keyboard_init
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2029   .text:00000094 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2044   .text:000000b8 KeyboardInt
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2041   .text:000000b8 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2135   .text:0000017c key_read
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2125   .text:0000016c $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2132   .text:0000017c $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2171   .text:000001c4 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2181   .text:000001e4 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2215   .text:00000244 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2225   .text:00000264 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2259   .text:000002c4 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2269   .text:000002e4 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2303   .text:00000344 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2313   .text:00000364 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccjydIol.s:2342   .text:000003a8 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+DelayMs
+D8Led_symbol_acierto
+D8Led_symbol
+numeros

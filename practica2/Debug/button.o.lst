@@ -1,0 +1,324 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 18, 4
+  11              		.file	"button.c"
+  21              	.Ltext0:
+  22              		.file 1 "C:/Users/usuario_local/Downloads/SED/practica2/button.c"
+ 1952              		.align	2
+ 1955              	symbol:
+ 1956 0000 00000000 		.space	4
+ 1957              		.global	fila
+ 1958              		.data
+ 1959              		.align	2
+ 1962              	fila:
+ 1963 0000 01000000 		.word	1
+ 1964              		.text
+ 1965              		.align	2
+ 1966              		.global	esta_pulsado
+ 1968              	esta_pulsado:
+ 1969              	.LFB0:
+   1:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** /*--- ficheros de cabecera ---*/
+   2:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** #include "44blib.h"
+   3:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** #include "44b.h"
+   4:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** #include "def.h"
+   5:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** /*--- variables globales ---*/
+   6:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** int symbol = 0;
+   7:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** int fila = 1;
+   8:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** /*--- funciones externas ---*/
+   9:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** //extern void D8Led_Symbol(int value);
+  10:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** /*--- declaracion de funciones ---*/
+  11:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** void Eint4567_ISR(void) __attribute__ ((interrupt ("IRQ")));
+  12:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** void Eint4567_init(void);
+  13:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 
+  14:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** /*--- codigo de funciones ---*/
+  15:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 
+  16:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** int esta_pulsado(void)
+  17:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** {
+ 1970              		.loc 1 17 0
+ 1971              		.cfi_startproc
+ 1972              		@ Function supports interworking.
+ 1973              		@ args = 0, pretend = 0, frame = 8
+ 1974              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1975 0000 0DC0A0E1 		mov	ip, sp
+ 1976              	.LCFI0:
+ 1977              		.cfi_def_cfa_register 12
+ 1978 0004 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 1979 0008 04B04CE2 		sub	fp, ip, #4
+ 1980              		.cfi_offset 14, -8
+ 1981              		.cfi_offset 13, -12
+ 1982              		.cfi_offset 11, -16
+ 1983              	.LCFI1:
+ 1984              		.cfi_def_cfa 11, 4
+ 1985 000c 08D04DE2 		sub	sp, sp, #8
+  18:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	int aux = rPDATG & (0x3<<6);
+ 1986              		.loc 1 18 0
+ 1987 0010 30309FE5 		ldr	r3, .L4
+ 1988 0014 003093E5 		ldr	r3, [r3, #0]
+ 1989 0018 C03003E2 		and	r3, r3, #192
+ 1990 001c 10300BE5 		str	r3, [fp, #-16]
+  19:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	if (aux != 0xC0)
+ 1991              		.loc 1 19 0
+ 1992 0020 10301BE5 		ldr	r3, [fp, #-16]
+ 1993 0024 C00053E3 		cmp	r3, #192
+ 1994 0028 0100000A 		beq	.L2
+  20:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 		return 1;
+ 1995              		.loc 1 20 0
+ 1996 002c 0130A0E3 		mov	r3, #1
+ 1997 0030 000000EA 		b	.L3
+ 1998              	.L2:
+  21:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	else return 0;
+ 1999              		.loc 1 21 0
+ 2000 0034 0030A0E3 		mov	r3, #0
+ 2001              	.L3:
+  22:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** }
+ 2002              		.loc 1 22 0
+ 2003 0038 0300A0E1 		mov	r0, r3
+ 2004 003c 0CD04BE2 		sub	sp, fp, #12
+ 2005 0040 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 2006 0044 1EFF2FE1 		bx	lr
+ 2007              	.L5:
+ 2008              		.align	2
+ 2009              	.L4:
+ 2010 0048 4400D201 		.word	30539844
+ 2011              		.cfi_endproc
+ 2012              	.LFE0:
+ 2014              		.align	2
+ 2015              		.global	Eint4567_init
+ 2017              	Eint4567_init:
+ 2018              	.LFB1:
+  23:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 
+  24:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** void Eint4567_init(void)
+  25:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** {
+ 2019              		.loc 1 25 0
+ 2020              		.cfi_startproc
+ 2021              		@ Function supports interworking.
+ 2022              		@ args = 0, pretend = 0, frame = 0
+ 2023              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2024 004c 0DC0A0E1 		mov	ip, sp
+ 2025              	.LCFI2:
+ 2026              		.cfi_def_cfa_register 12
+ 2027 0050 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 2028 0054 04B04CE2 		sub	fp, ip, #4
+ 2029              		.cfi_offset 14, -8
+ 2030              		.cfi_offset 13, -12
+ 2031              		.cfi_offset 11, -16
+ 2032              	.LCFI3:
+ 2033              		.cfi_def_cfa 11, 4
+  26:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** /* Configuracion del controlador de interrupciones */
+  27:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	// Borra EXTINTPND escribiendo 1s en el propio registro
+  28:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rEXTINTPND = 0xf;
+ 2034              		.loc 1 28 0
+ 2035 0058 9C309FE5 		ldr	r3, .L7
+ 2036 005c 0F20A0E3 		mov	r2, #15
+ 2037 0060 002083E5 		str	r2, [r3, #0]
+  29:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	// Borra INTPND escribiendo 1s en I_ISPC
+  30:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rI_ISPC = 0x3ffffff;
+ 2038              		.loc 1 30 0
+ 2039 0064 94309FE5 		ldr	r3, .L7+4
+ 2040 0068 3F23E0E3 		mvn	r2, #-67108864
+ 2041 006c 002083E5 		str	r2, [r3, #0]
+  31:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	// Configura las lineas como de tipo IRQ mediante INTMOD
+  32:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rINTMOD = 0x0; 
+ 2042              		.loc 1 32 0
+ 2043 0070 8C309FE5 		ldr	r3, .L7+8
+ 2044 0074 0020A0E3 		mov	r2, #0
+ 2045 0078 002083E5 		str	r2, [r3, #0]
+  33:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	// Habilita int. vectorizadas y la linea IRQ (FIQ no) mediante INTCON
+  34:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rINTCON = 0x1;
+ 2046              		.loc 1 34 0
+ 2047 007c 1E36A0E3 		mov	r3, #31457280
+ 2048 0080 0120A0E3 		mov	r2, #1
+ 2049 0084 002083E5 		str	r2, [r3, #0]
+  35:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	// Enmascara todas las lineas excepto Eint4567 y el bit global (INTMSK)
+  36:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rINTMSK = rINTMSK & ~(BIT_EINT4567 | BIT_GLOBAL);
+ 2050              		.loc 1 36 0
+ 2051 0088 78309FE5 		ldr	r3, .L7+12
+ 2052 008c 74209FE5 		ldr	r2, .L7+12
+ 2053 0090 002092E5 		ldr	r2, [r2, #0]
+ 2054 0094 4226C2E3 		bic	r2, r2, #69206016
+ 2055 0098 002083E5 		str	r2, [r3, #0]
+  37:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	// Establecer la rutina de servicio para Eint4567
+  38:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	pISR_EINT4567 = (unsigned)Eint4567_ISR;
+ 2056              		.loc 1 38 0
+ 2057 009c 68309FE5 		ldr	r3, .L7+16
+ 2058 00a0 68209FE5 		ldr	r2, .L7+20
+ 2059 00a4 002083E5 		str	r2, [r3, #0]
+  39:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** /* Configuracion del puerto G */
+  40:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	// Establece la funcion de los pines (EINT7-EINT0)
+  41:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rPCONG = 0xf000;
+ 2060              		.loc 1 41 0
+ 2061 00a8 64309FE5 		ldr	r3, .L7+24
+ 2062 00ac 0F2AA0E3 		mov	r2, #61440
+ 2063 00b0 002083E5 		str	r2, [r3, #0]
+  42:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 
+  43:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	//Habilita las resistencias de pull-up
+  44:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rPUPG = 0x0;
+ 2064              		.loc 1 44 0
+ 2065 00b4 5C309FE5 		ldr	r3, .L7+28
+ 2066 00b8 0020A0E3 		mov	r2, #0
+ 2067 00bc 002083E5 		str	r2, [r3, #0]
+  45:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	// Configura las lineas de int. como de flanco de bajada mediante EXTINT
+  46:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rEXTINT = 0x22222222;
+ 2068              		.loc 1 46 0
+ 2069 00c0 54309FE5 		ldr	r3, .L7+32
+ 2070 00c4 54209FE5 		ldr	r2, .L7+36
+ 2071 00c8 002083E5 		str	r2, [r3, #0]
+  47:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	/* Por precaucion, se vuelven a borrar los bits de INTPND y EXTINTPND */
+  48:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rEXTINTPND = 0xf;
+ 2072              		.loc 1 48 0
+ 2073 00cc 28309FE5 		ldr	r3, .L7
+ 2074 00d0 0F20A0E3 		mov	r2, #15
+ 2075 00d4 002083E5 		str	r2, [r3, #0]
+  49:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rI_ISPC = 0x3ffffff;
+ 2076              		.loc 1 49 0
+ 2077 00d8 20309FE5 		ldr	r3, .L7+4
+ 2078 00dc 3F23E0E3 		mvn	r2, #-67108864
+ 2079 00e0 002083E5 		str	r2, [r3, #0]
+  50:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	fila=1;
+ 2080              		.loc 1 50 0
+ 2081 00e4 38309FE5 		ldr	r3, .L7+40
+ 2082 00e8 0120A0E3 		mov	r2, #1
+ 2083 00ec 002083E5 		str	r2, [r3, #0]
+  51:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** }
+ 2084              		.loc 1 51 0
+ 2085 00f0 0CD04BE2 		sub	sp, fp, #12
+ 2086 00f4 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 2087 00f8 1EFF2FE1 		bx	lr
+ 2088              	.L8:
+ 2089              		.align	2
+ 2090              	.L7:
+ 2091 00fc 5400D201 		.word	30539860
+ 2092 0100 2400E001 		.word	31457316
+ 2093 0104 0800E001 		.word	31457288
+ 2094 0108 0C00E001 		.word	31457292
+ 2095 010c 74FF7F0C 		.word	209715060
+ 2096 0110 00000000 		.word	Eint4567_ISR
+ 2097 0114 4000D201 		.word	30539840
+ 2098 0118 4800D201 		.word	30539848
+ 2099 011c 5000D201 		.word	30539856
+ 2100 0120 22222222 		.word	572662306
+ 2101 0124 00000000 		.word	fila
+ 2102              		.cfi_endproc
+ 2103              	.LFE1:
+ 2105              		.align	2
+ 2106              		.global	Eint4567_ISR
+ 2108              	Eint4567_ISR:
+ 2109              	.LFB2:
+  52:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 
+  53:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** void Eint4567_ISR(void)
+  54:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** {
+ 2110              		.loc 1 54 0
+ 2111              		.cfi_startproc
+ 2112              		@ Interrupt Service Routine.
+ 2113              		@ args = 0, pretend = 0, frame = 0
+ 2114              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2115 0128 04C02DE5 		str	ip, [sp, #-4]!
+ 2116 012c 0DC0A0E1 		mov	ip, sp
+ 2117              	.LCFI4:
+ 2118              		.cfi_def_cfa_register 12
+ 2119 0130 0FD82DE9 		stmfd	sp!, {r0, r1, r2, r3, fp, ip, lr, pc}
+ 2120 0134 04B04CE2 		sub	fp, ip, #4
+ 2121              		.cfi_offset 14, -8
+ 2122              		.cfi_offset 13, -12
+ 2123              		.cfi_offset 11, -16
+ 2124              		.cfi_offset 3, -20
+ 2125              		.cfi_offset 2, -24
+ 2126              		.cfi_offset 1, -28
+ 2127              		.cfi_offset 0, -32
+ 2128              	.LCFI5:
+ 2129              		.cfi_def_cfa 11, 4
+  55:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	//Detectamos que boton se ha pulsado
+  56:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	if ((rPDATG & (0x1<<6)) == 0)
+ 2130              		.loc 1 56 0
+ 2131 0138 6C309FE5 		ldr	r3, .L13
+ 2132 013c 003093E5 		ldr	r3, [r3, #0]
+ 2133 0140 403003E2 		and	r3, r3, #64
+ 2134 0144 000053E3 		cmp	r3, #0
+ 2135 0148 0300001A 		bne	.L10
+  57:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	    fila = 1;
+ 2136              		.loc 1 57 0
+ 2137 014c 5C309FE5 		ldr	r3, .L13+4
+ 2138 0150 0120A0E3 		mov	r2, #1
+ 2139 0154 002083E5 		str	r2, [r3, #0]
+  58:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	else
+  59:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	    fila = 0;
+  60:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 
+  61:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	while (esta_pulsado());
+ 2140              		.loc 1 61 0
+ 2141 0158 030000EA 		b	.L12
+ 2142              	.L10:
+  59:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	    fila = 0;
+ 2143              		.loc 1 59 0
+ 2144 015c 4C309FE5 		ldr	r3, .L13+4
+ 2145 0160 0020A0E3 		mov	r2, #0
+ 2146 0164 002083E5 		str	r2, [r3, #0]
+ 2147              		.loc 1 61 0
+ 2148 0168 0000A0E1 		mov	r0, r0	@ nop
+ 2149              	.L12:
+ 2150              		.loc 1 61 0 is_stmt 0 discriminator 1
+ 2151 016c FEFFFFEB 		bl	esta_pulsado
+ 2152 0170 0030A0E1 		mov	r3, r0
+ 2153 0174 000053E3 		cmp	r3, #0
+ 2154 0178 FBFFFF1A 		bne	.L12
+  62:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 
+  63:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	//Delay para eliminar rebotes
+  64:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	DelayMs(100);
+ 2155              		.loc 1 64 0 is_stmt 1
+ 2156 017c 6400A0E3 		mov	r0, #100
+ 2157 0180 FEFFFFEB 		bl	DelayMs
+  65:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	
+  66:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	//Atendemos interrupciones
+  67:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	//Borramos EXTINTPND ambas líneas EINT7 y EINT6
+  68:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rEXTINTPND = 0xC;
+ 2158              		.loc 1 68 0
+ 2159 0184 28309FE5 		ldr	r3, .L13+8
+ 2160 0188 0C20A0E3 		mov	r2, #12
+ 2161 018c 002083E5 		str	r2, [r3, #0]
+  69:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	//Borramos INTPND usando ISPC
+  70:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** 	rI_ISPC = BIT_EINT4567;
+ 2162              		.loc 1 70 0
+ 2163 0190 20309FE5 		ldr	r3, .L13+12
+ 2164 0194 0226A0E3 		mov	r2, #2097152
+ 2165 0198 002083E5 		str	r2, [r3, #0]
+  71:C:/Users/usuario_local/Downloads/SED/practica2\button.c **** }
+ 2166              		.loc 1 71 0
+ 2167 019c 1CD04BE2 		sub	sp, fp, #28
+ 2168 01a0 0F689DE8 		ldmfd	sp, {r0, r1, r2, r3, fp, sp, lr}
+ 2169 01a4 04C09DE4 		ldmfd	sp!, {ip}
+ 2170 01a8 04F05EE2 		subs	pc, lr, #4
+ 2171              	.L14:
+ 2172              		.align	2
+ 2173              	.L13:
+ 2174 01ac 4400D201 		.word	30539844
+ 2175 01b0 00000000 		.word	fila
+ 2176 01b4 5400D201 		.word	30539860
+ 2177 01b8 2400E001 		.word	31457316
+ 2178              		.cfi_endproc
+ 2179              	.LFE2:
+ 2181              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 button.c
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:1955   .bss:00000000 symbol
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:1952   .bss:00000000 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:1962   .data:00000000 fila
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:1959   .data:00000000 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:1965   .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:1968   .text:00000000 esta_pulsado
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:2010   .text:00000048 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:2014   .text:0000004c $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:2017   .text:0000004c Eint4567_init
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:2091   .text:000000fc $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:2108   .text:00000128 Eint4567_ISR
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:2105   .text:00000128 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccz6xbRc.s:2174   .text:000001ac $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+DelayMs
