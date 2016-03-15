@@ -146,7 +146,11 @@ void timer4_init(void) //se encarga del tiempo que tiene el usuario para pulsar 
 
 void timer4_ISR(void){
 	WaitMs(100);
-	//timer0_init();
+	rTCON =rTCON | (0x00<<12);// parar timer
+	rTCON =rTCON | (0x01<<13);// establecer manual_update
+	rTCON =rTCON & ~(0x01<<13);// DESACTIVA manual_update
+	rTCON =rTCON | (0x01<<15);//activar modo auto-reload
+	rTCON =rTCON | (0x01<<12);// iniciar timer
 	rINTMSK = rINTMSK & (~BIT_TIMER0); 
 	rI_ISPC = BIT_TIMER4;
 }
