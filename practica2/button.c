@@ -51,17 +51,13 @@ void Eint4567_init(void)
 	rI_ISPC = 0x3ffffff;
 }
 
-/*COMENTAR PARA LA PARTE DEL 8-SEGMENTOS
-DESCOMENTAR PARA LA PRIMERA PARTE CON INTERRUPCIONES
-*/
-
 void Eint4567_ISR(void)
 {
 	//Detectamos que boton se ha pulsado
 	if ((rPDATG & (0x1<<6)) == 0)
 	    fila = 1;
 	else
-	    file = 0;
+	    fila = 0;
 
 	while (esta_pulsado());
 

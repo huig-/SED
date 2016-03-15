@@ -52,7 +52,7 @@ void generar_numeros_aleatorios(void)
 	shuffle(numeros, 4);
 }
 
-void timer0_init(void)
+void timer0_init(void) //se encarga del timer entre cada uno de los numeros que se muestran en el display
 {
 	/* Configuracion del controlador de interrupciones */	
 	rINTMOD=0x0;// Configurar las lineas como de tipo IRQ	
@@ -90,7 +90,7 @@ void timer0_ISR(void){
 	rI_ISPC = BIT_TIMER0;
 }
 
-void timer2_init(void)
+void timer2_init(void) //se encarga del timer del led
 {
 	/* Configuracion del controlador de interrupciones */	
 	rINTMOD=0x0;// Configurar las lineas como de tipo IRQ	
@@ -112,11 +112,18 @@ void timer2_init(void)
 }
 
 void timer2_ISR(void){
-	leds_switch();
+	if (fila == 1) {
+	    led1_on();
+	    led1_off();
+	}
+	else {
+	    led2_on();
+	    led2_off();
+	}
 	rI_ISPC = BIT_TIMER2;
 }
 
-void timer4_init(void)
+void timer4_init(void) //se encarga del tiempo que tiene el usuario para pulsar la tecla
 {
 	/* Configuracion del controlador de interrupciones */	
 	rINTMOD=0x0;// Configurar las lineas como de tipo IRQ	
@@ -139,7 +146,8 @@ void timer4_init(void)
 
 void timer4_ISR(void){
 	WaitMs(100);
-	timer0_init();
+	//timer0_init();
+	rINTMSK = rINTMSK & (~BIT_TIMER0); 
 	rI_ISPC = BIT_TIMER4;
 }
 
