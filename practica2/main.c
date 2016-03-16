@@ -19,9 +19,7 @@ void Main(void)
 	D8Led_init();
 	// Inicialización del teclado matricial
 	keyboard_init();
-	timer0_init();
-	timer2_init();
-	timer4_init();
+	timers_init();
 	/* Establecer valor inicial de los LEDs */
 	leds_off();
 	led1_on();

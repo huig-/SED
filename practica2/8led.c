@@ -38,6 +38,7 @@ int Symbol[] = {DIGIT_0, DIGIT_1, DIGIT_2, DIGIT_3, DIGIT_4, DIGIT_5,
 /*--- declaracion de funciones ---*/
 void D8Led_init(void);
 void D8Led_symbol(int value);
+void D8Led_symbol_correct(int value);
 /*--- codigo de las funciones ---*/
 void D8Led_init(void)
 {
@@ -51,7 +52,7 @@ void D8Led_symbol(int value)
 	LED8ADDR=Symbol[value];
 }
 
-void D8Led_symbol_acierto(int value)
+void D8Led_symbol_correct(int value)
 {
 // muestra Symbol[value] en el display junto con el punto
 	LED8ADDR=Symbol[value] | SEGMENT_P;

@@ -5,20 +5,20 @@
 
 /* Variables globales */
 int cont;
-int numeros[4];
+int numbers[4];
 /*--- funciones externas ---*/
 extern void D8Led_symbol(int value);
-extern int fila;
+extern void D8Led_symbol_correct(int value);
+extern int row;
+extern int key;
 extern void leds_switch(void);
 /*--- declaracion de funciones ---*/
+void timers_init(void);
 void timer0_ISR(void) __attribute__ ((interrupt ("IRQ")));
-void timer0_init(void);
 void timer2_ISR(void) __attribute__ ((interrupt ("IRQ")));
-void timer2_init(void);
 void timer4_ISR(void) __attribute__ ((interrupt ("IRQ")));
-void timer4_init(void);
 void shuffle(int *array, int n);
-void generar_numeros_aleatorios(void);
+void random_number_generator(void);
 /*--- codigo de las funciones ---*/
 
 void shuffle(int *array, int n)
@@ -36,83 +36,87 @@ void shuffle(int *array, int n)
     }
 }
 
-void generar_numeros_aleatorios(void)
+void random_number_generator(void)
 {
 	int i;
 	if (fila) {
-		int num_fila = rand() % 4;
+		int num_row = rand() % 4;
 		for (i = 0; i < 4; i++)
-			numeros[i] = i + 4 * num_fila;
+			numbers[i] = i + 4 * num_row;
 	}
 	else {
-		int num_columna = rand() % 4;
+		int num_col = rand() % 4;
 		for (i = 0; i < 4; i++)
-					numeros[i] = 4 * i + num_columna;
+			numbers[i] = 4 * i + num_col;
 	}
-	shuffle(numeros, 4);
+	shuffle(numbers, 4);
 }
 
-void timer0_init(void) //se encarga del timer entre cada uno de los numeros que se muestran en el display
+void timers_init(void)
 {
-	/* Configuracion del controlador de interrupciones */	
-	rINTMOD=0x0;// Configurar las lineas como de tipo IRQ	
-	rINTCON=0x1;// Habilitar int. vectorizadas y la linea IRQ (FIQ no)	
-	rINTMSK = rINTMSK & ~(BIT_TIMER0 | BIT_GLOBAL);// Enmascarar todas las lineas excepto Timer0 y el bit global
-	/* Establece la rutina de servicio para TIMER0 */
-	pISR_TIMER0=(unsigned)timer0_ISR;
-	/* Configurar el Timer0 (el resto de los timers se dejan a la
-	configuración por defecto) */
-	//rTCFG0=0xFF;// pre-escalado = 255
-	rTCFG0 = rTCFG0 | 0xF;
-	rTCFG1 &= 0xFFFFF4;// divisor = 1/32
-	rTCNTB0=65535;
-	rTCMPB0=12800;
-	
-	/* Generar numeros aleatorios */
-	generar_numeros_aleatorios();
-
-	rTCON=rTCON| (0x01<<1);// establecer manual_update
-	rTCON=rTCON & ~(0x01<<1);// DESACTIVA manual_update
-	rTCON=rTCON|(0x01<<3);//activar modo auto-reload
-	rTCON=rTCON|(0x01<<0);// iniciar timer
+	random_number_generator();
 	cont = 3;
+	rINTMOD = 0x0; //enable IRQ
+	rINTCON = 0x1; //enable IRQ pin and vect.
+	pISR_TIMER0=(unsigned)timer0_ISR;
+	pISR_TIMER2=(unsigned)timer2_ISR;
+	pISR_TIMER4=(unsigned)timer4_ISR;
+	rTCFG0 = rTCFG0 | 0xFFFFFF; //prescaler value 255
+	rTCFG1 = rTCFG1 & 0xFF3F0F4; //divisor value, 1/16 timer4, 1/2 timer2, 1/32 timer0
+	//Timer count buffer registers
+	rTCNTB0 = 65535; //timer0
+	rTCNTB2 = 65535; //timer2
+	rTCNTB4 = 65535; //timer4
+	//Timer compare buffer registers
+	rTCMPB0 = 12800; //timer0
+	rTCMPB2 = 12800; //timer2
+	rTCMPB4 = 12800; //timer4
+	//Enable timer0, timer2 interrupts
+	rINTMSK = rINTMSK & ~(BIT_TIMER0 | BIT_TIMER2 | BIT_GLOBAL);
+	/*Timer0 conf*/
+	rTCON = rTCON | (0x01<<1);    // timer0 manual_update
+	rTCON = rTCON & ~(0x01<<1);   // timer0 disable manual_update
+	rTCON = rTCON | (0x01<<3);    // timer0 auto-reload
+	rTCON = rTCON | (0x01<<0);    // timer0 start
+	/*Timer2 conf*/
+	rTCON = rTCON | (0x01<<13);   // timer2 manual_update
+	rTCON = rTCON & ~(0x01<<13);  // timer2 disable manual_update
+	rTCON = rTCON | (0x01<<15);   // timer2 auto-reload
+	rTCON = rTCON | (0x01<<12);   // timer2 start 
+	/*Timer4 conf*/
+	rTCON = rTCON | (0x01<<21);   // timer4 manual_update
+	rTCON = rTCON & ~(0x01<<21);  // timer4 disable manual_update
+	rTCON = rTCON | (0x0<<23);    // timer4 one-shot
+	rTCON = rTCON | (0x00<<20);   // timer4 stop
+	
+	/*All together
+	rTCON = rTCON | (0x01<<1);    // timer0 manual_update
+	rTCON = rTCON & ~(0x01<<1);   // timer0 disable manual_update
+	rTCON = rTCON | (0x01<<13);   // timer2 manual_update
+	rTCON = rTCON & ~(0x01<<13);  // timer2 disable manual_update
+	rTCON = rTCON | (0x01<<21);   // timer4 manual_update
+	rTCON = rTCON & ~(0x01<<21);  // timer4 disable manual_update
+	rTCON = rTCON | 0x808008;     //timer0 timer2 timer4 autoreload
+	rTCON = rTCON | 0x1001;     //timer0 timer2 start
+	*/
+
 }
 
-void timer0_ISR(void){
+void timer0_ISR(void)
+{
 	cont--;
-	D8Led_symbol(numeros[cont]);
-	//if (cont == 1)
-	//	rTCON=rTCON|(0x00<<3);//activar modo one-shot
+	D8Led_symbol(numbers[cont]);
 	if (cont == 0) {
-		rINTMSK = rINTMSK | BIT_TIMER0; //desactivamos la interrupcion
-		timer4_init();
+		rINTMSK = rINTMSK | BIT_TIMER0; //disable timer0 
+		rINTMSK = rINTMSK & ~(BIT_TIMER4); //enable timer4
+		rTCON = rTCON | (0x01<<20);   // timer4 start
 	}
 	rI_ISPC = BIT_TIMER0;
 }
 
-void timer2_init(void) //se encarga del timer del led
+void timer2_ISR(void)
 {
-	/* Configuracion del controlador de interrupciones */	
-	rINTMOD=0x0;// Configurar las lineas como de tipo IRQ	
-	rINTCON=0x1;// Habilitar int. vectorizadas y la linea IRQ (FIQ no)	
-	rINTMSK = rINTMSK & ~(BIT_TIMER2 | BIT_GLOBAL);// Enmascarar todas las lineas excepto Timer0 y el bit global
-	/* Establece la rutina de servicio para TIMER0 */
-	pISR_TIMER0=(unsigned)timer2_ISR;
-	/* Configurar el Timer0 (el resto de los timers se dejan a la
-	configuración por defecto) */
-	rTCFG0 = rTCFG0 | 0xF0;// pre-escalado = 255
-	rTCFG1 &= 0xFFF0FF;// divisor = 1/2
-	rTCNTB2=65535;
-	rTCMPB2=12800;
-	
-	rTCON =rTCON | (0x01<<13);// establecer manual_update
-	rTCON =rTCON & ~(0x01<<13);// DESACTIVA manual_update
-	rTCON =rTCON | (0x01<<15);//activar modo auto-reload
-	rTCON =rTCON | (0x01<<12);// iniciar timer
-}
-
-void timer2_ISR(void){
-	if (fila == 1) {
+	if (row) {
 	    led1_on();
 	    led1_off();
 	}
@@ -123,35 +127,19 @@ void timer2_ISR(void){
 	rI_ISPC = BIT_TIMER2;
 }
 
-void timer4_init(void) //se encarga del tiempo que tiene el usuario para pulsar la tecla
+void timer4_ISR(void)
 {
-	/* Configuracion del controlador de interrupciones */	
-	rINTMOD=0x0;// Configurar las lineas como de tipo IRQ	
-	rINTCON=0x1;// Habilitar int. vectorizadas y la linea IRQ (FIQ no)	
-	rINTMSK = rINTMSK & ~(BIT_TIMER4 | BIT_GLOBAL);// Enmascarar todas las lineas excepto Timer0 y el bit global
-	/* Establece la rutina de servicio para TIMER0 */
-	pISR_TIMER0=(unsigned)timer4_ISR;
-	/* Configurar el Timer0 (el resto de los timers se dejan a la
-	configuración por defecto) */
-	rTCFG0 = rTCFG0 | 0xF00;// pre-escalado = 255
-	rTCFG1 &= 0xF3FFFF;// divisor = 1/16
-	rTCNTB4=65535;
-	rTCMPB4=12800;
-	
-	rTCON =rTCON | (0x01<<21);// establecer manual_update
-	rTCON =rTCON & ~(0x01<<21);// DESACTIVA manual_update
-	rTCON =rTCON | (0x0<<23);//activar modo one-shot
-	rTCON =rTCON | (0x01<<20);// iniciar timer
-}
-
-void timer4_ISR(void){
 	DelayMs(100);
-	rTCON =rTCON | (0x00<<12);// parar timer
-	rTCON =rTCON | (0x01<<13);// establecer manual_update
-	rTCON =rTCON & ~(0x01<<13);// DESACTIVA manual_update
-	rTCON =rTCON | (0x01<<15);//activar modo auto-reload
-	rTCON =rTCON | (0x01<<12);// iniciar timer
-	rINTMSK = rINTMSK & (~BIT_TIMER0); 
+	/*Check if keyboard was pressed*/
+	if (key == -1 || key != numbers[3]) //mistake
+	    D8Led_symbol(numbers[3]);
+	else
+	    D8Led_symbol_correct(numbers[3]);
+	DelayMs(100);
+	random_number_generator();
+	cont = 3;
+	rINTMSK = rINTMSK & (~BIT_TIMER0); //enable timer0
+	rINTMSK = rINTMSK | BIT_TIMER4; //disable timer4
 	rI_ISPC = BIT_TIMER4;
 }
 

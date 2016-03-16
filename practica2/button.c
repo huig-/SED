@@ -4,7 +4,7 @@
 #include "def.h"
 /*--- variables globales ---*/
 int symbol = 0;
-int fila = 1;
+int row = 1;
 /*--- funciones externas ---*/
 //extern void D8Led_Symbol(int value);
 /*--- declaracion de funciones ---*/
@@ -55,9 +55,9 @@ void Eint4567_ISR(void)
 {
 	//Detectamos que boton se ha pulsado
 	if ((rPDATG & (0x1<<6)) == 0)
-	    fila = 1;
+	    row = 1;
 	else
-	    fila = 0;
+	    row = 0;
 
 	while (esta_pulsado());
 

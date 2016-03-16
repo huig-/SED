@@ -8,7 +8,7 @@
 volatile UCHAR *keyboard_base = (UCHAR *)0x06000000;
 int key;
 /*--- Funciones externas ---*/
-extern int numeros[4];
+extern int numbers[4];
 void D8Led_symbol(int value);
 void D8Led_symbol_acierto(int value);
 /*--- Declaracion de funciones ---*/
@@ -44,15 +44,8 @@ void KeyboardInt(void)
 	/* Esperar trp mediante la funcion DelayMs()*/
 	DelayMs(20);
 	/* Identificar la tecla */
+	key = -1;
 	key = key_read();
-	/* Si la tecla se ha identificado, visualizarla en el 8SEG*/
-	if(key > -1)
-	{
-		if (key == numeros[3])
-			D8Led_symbol_acierto(key);
-		else
-			D8Led_symbol(key);
-	}
 	/* Esperar a se libere la tecla: consultar bit 1 del registro de datos del puerto G */
 	while ((rPDATG & 0x1) == 0);
 	/* Esperar trd mediante la funcion Delay() */
