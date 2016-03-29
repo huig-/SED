@@ -47,7 +47,7 @@ void KeyboardInt(void)
 	key = -1;
 	key = key_read();
 	/* Esperar a se libere la tecla: consultar bit 1 del registro de datos del puerto G */
-	while ((rPDATG & 0x1) == 0);
+	while ((rPDATG & (0x1<<1)) == 0);
 	/* Esperar trd mediante la funcion Delay() */
 	DelayMs(100);
 	/* Borrar interrupción de teclado */
