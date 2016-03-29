@@ -86,8 +86,7 @@ void timers_init(void)
 	/*Timer4 conf*/
 	rTCON = rTCON | (0x01<<21);   // timer4 manual_update
 	rTCON = rTCON & ~(0x01<<21);  // timer4 disable manual_update
-	rTCON = rTCON | (0x1<<23);    // timer4 one-shot
-	//rTCON = rTCON | (0x00<<20);   // timer4 stop
+	rTCON = rTCON | (0x1<<23);    // timer4 auto-reload
 	rTCON = rTCON | (0x01<<20);   // timer4 start
 	
 	/*All together
