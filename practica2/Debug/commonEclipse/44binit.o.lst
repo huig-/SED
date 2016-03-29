@@ -1,4 +1,4 @@
-   1              	# 1 "C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm"
+   1              	# 1 "../commonEclipse/44binit.asm"
    1              	# *******************************************************
    0              	
    0              	
@@ -828,65 +828,65 @@ C:\hlocal\EclipseARMwspace\practica2\commonEclipse/memcfg.a:111    *ABS*:0000000
 C:\hlocal\EclipseARMwspace\practica2\commonEclipse/memcfg.a:112    *ABS*:00000001 Trc
 C:\hlocal\EclipseARMwspace\practica2\commonEclipse/memcfg.a:113    *ABS*:00000002 Tchr
 C:\hlocal\EclipseARMwspace\practica2\commonEclipse/memcfg.a:114    *ABS*:00000459 REFCNT
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:21     *ABS*:01e00004 INTPND
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:22     *ABS*:01e00008 INTMOD
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:23     *ABS*:01e0000c INTMSK
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:24     *ABS*:01e00020 I_ISPR
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:25     *ABS*:01e0001c I_CMST
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:28     *ABS*:01d30000 WTCON
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:31     *ABS*:01d80000 PLLCON
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:32     *ABS*:01d80004 CLKCON
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:33     *ABS*:01d8000c LOCKTIME
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:36     *ABS*:01c80024 REFRESH
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:39     *ABS*:01f80008 BDIDES0
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:40     *ABS*:01f80028 BDIDES1
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:43     *ABS*:00000010 USERMODE
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:44     *ABS*:00000011 FIQMODE
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:45     *ABS*:00000012 IRQMODE
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:46     *ABS*:00000013 SVCMODE
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:47     *ABS*:00000017 ABORTMODE
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:48     *ABS*:0000001b UNDEFMODE
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:49     *ABS*:0000001f MODEMASK
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:50     *ABS*:000000c0 NOINT
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:51     *ABS*:00000040 IRQ_MODE
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:52     *ABS*:00000080 FIQ_MODE
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:72     .text:00000000 ENTRY
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:217    .text:00000430 ResetHandler
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:73     .text:00000000 $a
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:148    .text:00000114 HandlerUndef
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:149    .text:0000012c HandlerSWI
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:151    .text:0000015c HandlerPabort
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:150    .text:00000144 HandlerDabort
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:147    .text:000000fc HandlerIRQ
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:146    .text:000000e4 HandlerFIQ
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:87     .text:00000020 VECTOR_BRANCH
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:177    .text:000003cc HandlerEINT0
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:176    .text:000003b4 HandlerEINT1
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:175    .text:0000039c HandlerEINT2
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:174    .text:00000384 HandlerEINT3
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:173    .text:0000036c HandlerEINT4567
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:172    .text:00000354 HandlerTICK
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:171    .text:0000033c HandlerZDMA0
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:170    .text:00000324 HandlerZDMA1
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:169    .text:0000030c HandlerBDMA0
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:168    .text:000002f4 HandlerBDMA1
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:167    .text:000002dc HandlerWDT
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:166    .text:000002c4 HandlerUERR01
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:165    .text:000002ac HandlerTIMER0
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:164    .text:00000294 HandlerTIMER1
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:163    .text:0000027c HandlerTIMER2
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:162    .text:00000264 HandlerTIMER3
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:161    .text:0000024c HandlerTIMER4
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:160    .text:00000234 HandlerTIMER5
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:159    .text:0000021c HandlerURXD0
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:158    .text:00000204 HandlerURXD1
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:157    .text:000001ec HandlerIIC
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:156    .text:000001d4 HandlerSIO
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:155    .text:000001bc HandlerUTXD0
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:154    .text:000001a4 HandlerUTXD1
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:153    .text:0000018c HandlerRTC
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:152    .text:00000174 HandlerADC
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:343    .text:00000540 EnterPWDN
+../commonEclipse/44binit.asm:21     *ABS*:01e00004 INTPND
+../commonEclipse/44binit.asm:22     *ABS*:01e00008 INTMOD
+../commonEclipse/44binit.asm:23     *ABS*:01e0000c INTMSK
+../commonEclipse/44binit.asm:24     *ABS*:01e00020 I_ISPR
+../commonEclipse/44binit.asm:25     *ABS*:01e0001c I_CMST
+../commonEclipse/44binit.asm:28     *ABS*:01d30000 WTCON
+../commonEclipse/44binit.asm:31     *ABS*:01d80000 PLLCON
+../commonEclipse/44binit.asm:32     *ABS*:01d80004 CLKCON
+../commonEclipse/44binit.asm:33     *ABS*:01d8000c LOCKTIME
+../commonEclipse/44binit.asm:36     *ABS*:01c80024 REFRESH
+../commonEclipse/44binit.asm:39     *ABS*:01f80008 BDIDES0
+../commonEclipse/44binit.asm:40     *ABS*:01f80028 BDIDES1
+../commonEclipse/44binit.asm:43     *ABS*:00000010 USERMODE
+../commonEclipse/44binit.asm:44     *ABS*:00000011 FIQMODE
+../commonEclipse/44binit.asm:45     *ABS*:00000012 IRQMODE
+../commonEclipse/44binit.asm:46     *ABS*:00000013 SVCMODE
+../commonEclipse/44binit.asm:47     *ABS*:00000017 ABORTMODE
+../commonEclipse/44binit.asm:48     *ABS*:0000001b UNDEFMODE
+../commonEclipse/44binit.asm:49     *ABS*:0000001f MODEMASK
+../commonEclipse/44binit.asm:50     *ABS*:000000c0 NOINT
+../commonEclipse/44binit.asm:51     *ABS*:00000040 IRQ_MODE
+../commonEclipse/44binit.asm:52     *ABS*:00000080 FIQ_MODE
+../commonEclipse/44binit.asm:72     .text:00000000 ENTRY
+../commonEclipse/44binit.asm:217    .text:00000430 ResetHandler
+../commonEclipse/44binit.asm:73     .text:00000000 $a
+../commonEclipse/44binit.asm:148    .text:00000114 HandlerUndef
+../commonEclipse/44binit.asm:149    .text:0000012c HandlerSWI
+../commonEclipse/44binit.asm:151    .text:0000015c HandlerPabort
+../commonEclipse/44binit.asm:150    .text:00000144 HandlerDabort
+../commonEclipse/44binit.asm:147    .text:000000fc HandlerIRQ
+../commonEclipse/44binit.asm:146    .text:000000e4 HandlerFIQ
+../commonEclipse/44binit.asm:87     .text:00000020 VECTOR_BRANCH
+../commonEclipse/44binit.asm:177    .text:000003cc HandlerEINT0
+../commonEclipse/44binit.asm:176    .text:000003b4 HandlerEINT1
+../commonEclipse/44binit.asm:175    .text:0000039c HandlerEINT2
+../commonEclipse/44binit.asm:174    .text:00000384 HandlerEINT3
+../commonEclipse/44binit.asm:173    .text:0000036c HandlerEINT4567
+../commonEclipse/44binit.asm:172    .text:00000354 HandlerTICK
+../commonEclipse/44binit.asm:171    .text:0000033c HandlerZDMA0
+../commonEclipse/44binit.asm:170    .text:00000324 HandlerZDMA1
+../commonEclipse/44binit.asm:169    .text:0000030c HandlerBDMA0
+../commonEclipse/44binit.asm:168    .text:000002f4 HandlerBDMA1
+../commonEclipse/44binit.asm:167    .text:000002dc HandlerWDT
+../commonEclipse/44binit.asm:166    .text:000002c4 HandlerUERR01
+../commonEclipse/44binit.asm:165    .text:000002ac HandlerTIMER0
+../commonEclipse/44binit.asm:164    .text:00000294 HandlerTIMER1
+../commonEclipse/44binit.asm:163    .text:0000027c HandlerTIMER2
+../commonEclipse/44binit.asm:162    .text:00000264 HandlerTIMER3
+../commonEclipse/44binit.asm:161    .text:0000024c HandlerTIMER4
+../commonEclipse/44binit.asm:160    .text:00000234 HandlerTIMER5
+../commonEclipse/44binit.asm:159    .text:0000021c HandlerURXD0
+../commonEclipse/44binit.asm:158    .text:00000204 HandlerURXD1
+../commonEclipse/44binit.asm:157    .text:000001ec HandlerIIC
+../commonEclipse/44binit.asm:156    .text:000001d4 HandlerSIO
+../commonEclipse/44binit.asm:155    .text:000001bc HandlerUTXD0
+../commonEclipse/44binit.asm:154    .text:000001a4 HandlerUTXD1
+../commonEclipse/44binit.asm:153    .text:0000018c HandlerRTC
+../commonEclipse/44binit.asm:152    .text:00000174 HandlerADC
+../commonEclipse/44binit.asm:343    .text:00000540 EnterPWDN
                             *ABS*:0c7fff1c HandleFIQ
                             *ABS*:0c7fff18 HandleIRQ
                             *ABS*:0c7fff04 HandleUndef
@@ -919,25 +919,25 @@ C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:343    
                             *ABS*:0c7fff7c HandleEINT2
                             *ABS*:0c7fff80 HandleEINT1
                             *ABS*:0c7fff84 HandleEINT0
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:181    .text:000003e4 IsrIRQ
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:209    .text:00000424 l2
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:196    .text:00000400 l0
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:202    .text:00000410 l1
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:375    .text:000006d8 SMRDATA
+../commonEclipse/44binit.asm:181    .text:000003e4 IsrIRQ
+../commonEclipse/44binit.asm:209    .text:00000424 l2
+../commonEclipse/44binit.asm:196    .text:00000400 l0
+../commonEclipse/44binit.asm:202    .text:00000410 l1
+../commonEclipse/44binit.asm:375    .text:000006d8 SMRDATA
                             *ABS*:0c7ff100 SVCStack
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:308    .text:000004f4 InitStacks
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:290    .text:000004cc F1
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:285    .text:000004bc F0
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:293    .text:000004d4 F2
+../commonEclipse/44binit.asm:308    .text:000004f4 InitStacks
+../commonEclipse/44binit.asm:290    .text:000004cc F1
+../commonEclipse/44binit.asm:285    .text:000004bc F0
+../commonEclipse/44binit.asm:293    .text:000004d4 F2
                             *ABS*:0c7ff200 UndefStack
                             *ABS*:0c7ff300 AbortStack
                             *ABS*:0c7ff400 IRQStack
                             *ABS*:0c7ff500 FIQStack
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:365    .text:00000580 U0
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:373    .text:00000594 $d
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:420    *ABS*:0c7ff000 UserStack
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:427    *ABS*:0c7fff00 HandleReset
-C:/Users/usuario_local/Downloads/SED/practica2/commonEclipse/44binit.asm:432    *ABS*:0c7fff14 HandleReserved
+../commonEclipse/44binit.asm:365    .text:00000580 U0
+../commonEclipse/44binit.asm:373    .text:00000594 $d
+../commonEclipse/44binit.asm:420    *ABS*:0c7ff000 UserStack
+../commonEclipse/44binit.asm:427    *ABS*:0c7fff00 HandleReset
+../commonEclipse/44binit.asm:432    *ABS*:0c7fff14 HandleReserved
                    .debug_aranges:0000000c $d
 
 UNDEFINED SYMBOLS

@@ -55,5 +55,5 @@ void D8Led_symbol(int value)
 void D8Led_symbol_correct(int value)
 {
 // muestra Symbol[value] en el display junto con el punto
-	LED8ADDR=Symbol[value] | SEGMENT_P;
+	LED8ADDR=Symbol[value] & SEGMENT_P;
 }

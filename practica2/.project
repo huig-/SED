@@ -23,41 +23,4 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>8led.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Users/usuario_local/Downloads/SED/practica2/8led.c</locationURI>
-		</link>
-		<link>
-			<name>button.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Users/usuario_local/Downloads/SED/practica2/button.c</locationURI>
-		</link>
-		<link>
-			<name>commonEclipse</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Users/usuario_local/Downloads/SED/practica2/commonEclipse</locationURI>
-		</link>
-		<link>
-			<name>keyboard.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Users/usuario_local/Downloads/SED/practica2/keyboard.c</locationURI>
-		</link>
-		<link>
-			<name>led.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Users/usuario_local/Downloads/SED/practica2/led.c</locationURI>
-		</link>
-		<link>
-			<name>main.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Users/usuario_local/Downloads/SED/practica2/main.c</locationURI>
-		</link>
-		<link>
-			<name>timer.c</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Users/usuario_local/Downloads/SED/practica2/timer.c</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

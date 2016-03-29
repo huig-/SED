@@ -17,8 +17,10 @@ void Main(void)
 	sys_init(); // Inicializacion de la placa, interrupciones y puertos
 	// Inicializacion del temporizador
 	D8Led_init();
+	Eint4567_init();
 	// Inicialización del teclado matricial
 	keyboard_init();
+
 	timers_init();
 	/* Establecer valor inicial de los LEDs */
 	leds_off();

@@ -39,7 +39,7 @@ void shuffle(int *array, int n)
 void random_number_generator(void)
 {
 	int i;
-	if (fila) {
+	if (row) {
 		int num_row = rand() % 4;
 		for (i = 0; i < 4; i++)
 			numbers[i] = i + 4 * num_row;
@@ -86,8 +86,9 @@ void timers_init(void)
 	/*Timer4 conf*/
 	rTCON = rTCON | (0x01<<21);   // timer4 manual_update
 	rTCON = rTCON & ~(0x01<<21);  // timer4 disable manual_update
-	rTCON = rTCON | (0x0<<23);    // timer4 one-shot
-	rTCON = rTCON | (0x00<<20);   // timer4 stop
+	rTCON = rTCON | (0x1<<23);    // timer4 one-shot
+	//rTCON = rTCON | (0x00<<20);   // timer4 stop
+	rTCON = rTCON | (0x01<<20);   // timer4 start
 	
 	/*All together
 	rTCON = rTCON | (0x01<<1);    // timer0 manual_update
@@ -104,12 +105,15 @@ void timers_init(void)
 
 void timer0_ISR(void)
 {
+	DelayMs(100);
 	cont--;
 	D8Led_symbol(numbers[cont]);
 	if (cont == 0) {
 		rINTMSK = rINTMSK | BIT_TIMER0; //disable timer0 
+		rI_ISPC = BIT_TIMER0;
+		key = -1;
+		DelayMs(800);
 		rINTMSK = rINTMSK & ~(BIT_TIMER4); //enable timer4
-		rTCON = rTCON | (0x01<<20);   // timer4 start
 	}
 	rI_ISPC = BIT_TIMER0;
 }
@@ -118,10 +122,12 @@ void timer2_ISR(void)
 {
 	if (row) {
 	    led1_on();
+	    DelayMs(30);
 	    led1_off();
 	}
 	else {
 	    led2_on();
+	    DelayMs(30);
 	    led2_off();
 	}
 	rI_ISPC = BIT_TIMER2;
@@ -129,17 +135,16 @@ void timer2_ISR(void)
 
 void timer4_ISR(void)
 {
-	DelayMs(100);
 	/*Check if keyboard was pressed*/
 	if (key == -1 || key != numbers[3]) //mistake
 	    D8Led_symbol(numbers[3]);
 	else
 	    D8Led_symbol_correct(numbers[3]);
-	DelayMs(100);
-	random_number_generator();
-	cont = 3;
-	rINTMSK = rINTMSK & (~BIT_TIMER0); //enable timer0
 	rINTMSK = rINTMSK | BIT_TIMER4; //disable timer4
 	rI_ISPC = BIT_TIMER4;
+	DelayMs(1200);
+	random_number_generator();
+	cont = 3;
+	rINTMSK = rINTMSK & ~(BIT_TIMER0); //enable timer0
 }
 
