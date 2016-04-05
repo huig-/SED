@@ -27,13 +27,13 @@ void Main( void )
     }
 
     for( i=0; i<AT24C04_DEPTH; i++ ){
-      at24c04_byteread( i, &buffer[i] );
+    	golden_at24c04_byteread( i, &buffer[i] );
     }
 
     DelayMs(100);
 
     for( i=0; i<AT24C04_DEPTH; i++ ){
-      at24c04_byteread( i, &buffer[i] );
+    	golden_at24c04_byteread( i, &buffer[i] );
       val = buffer[i] & 0xF;
       D8Led_symbol(val);
       DelayMs(100);
