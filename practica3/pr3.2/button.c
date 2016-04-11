@@ -6,6 +6,9 @@
 int symbol = 0;
 int row = 1;
 int state = 0;
+int old_addr;
+extern int addr;
+extern int byte;
 /*--- funciones externas ---*/
 //extern void D8Led_Symbol(int value);
 /*--- declaracion de funciones ---*/
@@ -13,6 +16,10 @@ void Eint4567_ISR(void) __attribute__ ((interrupt ("IRQ")));
 void Eint4567_init(void);
 extern void leds_switch ();
 extern void D8Led_symbol(int value);
+extern void at24c04_bytewrite( uint16 addr, uint8 data );
+extern void at24c04_byteread( uint16 addr, uint8 *data );
+
+
 
 /*--- codigo de funciones ---*/
 
@@ -57,9 +64,18 @@ void Eint4567_ISR(void)
 	//Detectamos que boton se ha pulsado
 	if ((rPDATG & (0x1<<6)) == 0) {
 	    state = (state + 1) % 6;
+	    if (state == 5) {
+		at24c04_bytewrite( addr, byte );
+		old_addr = addr;
+	    }
 	}
 	else {
-	//TODO: load EEPROM and show in 8-segments
+	    uint8 data;
+	    at24c04_byteread(old_addr, &data);
+	    D8Led_symbol(data >> 4);
+	    DelayMs(200);
+	    D8Led_symbol(data & 0xF);
+	    DelayMs(200);
 	}
 	while (esta_pulsado());
 
