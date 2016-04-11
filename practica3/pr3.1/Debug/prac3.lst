@@ -1,0 +1,1387 @@
+
+prac3.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000f1c  0c100000  0c100000  00008000  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .init         00000018  0c100f1c  0c100f1c  00008f1c  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .fini         00000018  0c100f34  0c100f34  00008f34  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  3 .data         00000050  0c100f4c  0c100f4c  00008f4c  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  4 .init_array   00000004  0c100f9c  0c100f9c  00008f9c  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  5 .fini_array   00000004  0c100fa0  0c100fa0  00008fa0  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .jcr          00000004  0c100fa4  0c100fa4  00008fa4  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  7 .bss          00000008  0c100fa8  0c100fa8  00008fa8  2**2
+                  ALLOC
+  8 .ARM.attributes 00000030  00000000  00000000  00008fa8  2**0
+                  CONTENTS, READONLY
+  9 .comment      0000002a  00000000  00000000  00008fd8  2**0
+                  CONTENTS, READONLY
+ 10 .debug_abbrev 000004d9  00000000  00000000  00009002  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_info   00000889  00000000  00000000  000094db  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_line   00000597  00000000  00000000  00009d64  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_macinfo 0001ccfa  00000000  00000000  0000a2fb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 14 .debug_loc    00000420  00000000  00000000  00026ff5  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 15 .debug_pubnames 00000285  00000000  00000000  00027415  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 16 .debug_pubtypes 000000f2  00000000  00000000  0002769a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 17 .debug_aranges 00000100  00000000  00000000  00027790  2**3
+                  CONTENTS, READONLY, DEBUGGING
+ 18 .debug_str    00000248  00000000  00000000  00027890  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 19 .debug_frame  0000035c  00000000  00000000  00027ad8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+0c100000 <__do_global_dtors_aux>:
+ c100000:	e59f3010 	ldr	r3, [pc, #16]	; c100018 <_code_start+0x18>
+ c100004:	e5d32000 	ldrb	r2, [r3]
+ c100008:	e3520000 	cmp	r2, #0
+ c10000c:	03a02001 	moveq	r2, #1
+ c100010:	05c32000 	strbeq	r2, [r3]
+ c100014:	e12fff1e 	bx	lr
+ c100018:	0c100fa8 	.word	0x0c100fa8
+
+0c10001c <frame_dummy>:
+ c10001c:	e59f0024 	ldr	r0, [pc, #36]	; c100048 <frame_dummy+0x2c>
+ c100020:	e92d4008 	push	{r3, lr}
+ c100024:	e5903000 	ldr	r3, [r0]
+ c100028:	e3530000 	cmp	r3, #0
+ c10002c:	0a000003 	beq	c100040 <frame_dummy+0x24>
+ c100030:	e59f3014 	ldr	r3, [pc, #20]	; c10004c <frame_dummy+0x30>
+ c100034:	e3530000 	cmp	r3, #0
+ c100038:	11a0e00f 	movne	lr, pc
+ c10003c:	112fff13 	bxne	r3
+ c100040:	e8bd4008 	pop	{r3, lr}
+ c100044:	e12fff1e 	bx	lr
+ c100048:	0c100fa4 	.word	0x0c100fa4
+ c10004c:	00000000 	.word	0x00000000
+
+0c100050 <DelayMs>:
+static uint32 clk_normal = CLKIN;  // Frecuencia en modo normal (Hz)
+static uint32 clk_slow = CLKIN;	   // Frecuencia en modo slow (Hz)
+uint32 mclk = CLKIN;			   // Frecuencia actual del reloj (Hz)
+
+void DelayMs(int ms_time)
+{
+ c100050:	e1a0c00d 	mov	ip, sp
+ c100054:	e92dd800 	push	{fp, ip, lr, pc}
+ c100058:	e24cb004 	sub	fp, ip, #4
+ c10005c:	e24dd010 	sub	sp, sp, #16
+ c100060:	e50b0018 	str	r0, [fp, #-24]	; 0xffffffe8
+	int i;
+
+	for( i = 0 ; i < 1000*ms_time ; i++ )
+ c100064:	e3a03000 	mov	r3, #0
+ c100068:	e50b3010 	str	r3, [fp, #-16]
+ c10006c:	ea000002 	b	c10007c <DelayMs+0x2c>
+ c100070:	e51b3010 	ldr	r3, [fp, #-16]
+ c100074:	e2833001 	add	r3, r3, #1
+ c100078:	e50b3010 	str	r3, [fp, #-16]
+ c10007c:	e51b2018 	ldr	r2, [fp, #-24]	; 0xffffffe8
+ c100080:	e1a03002 	mov	r3, r2
+ c100084:	e1a03283 	lsl	r3, r3, #5
+ c100088:	e0623003 	rsb	r3, r2, r3
+ c10008c:	e1a03103 	lsl	r3, r3, #2
+ c100090:	e0833002 	add	r3, r3, r2
+ c100094:	e1a03183 	lsl	r3, r3, #3
+ c100098:	e1a02003 	mov	r2, r3
+ c10009c:	e51b3010 	ldr	r3, [fp, #-16]
+ c1000a0:	e1520003 	cmp	r2, r3
+ c1000a4:	cafffff1 	bgt	c100070 <DelayMs+0x20>
+		;
+}
+ c1000a8:	e24bd00c 	sub	sp, fp, #12
+ c1000ac:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c1000b0:	e12fff1e 	bx	lr
+
+0c1000b4 <sys_init>:
+
+void sys_init( void )
+{
+ c1000b4:	e1a0c00d 	mov	ip, sp
+ c1000b8:	e92dd800 	push	{fp, ip, lr, pc}
+ c1000bc:	e24cb004 	sub	fp, ip, #4
+	rWTCON  = 0;				// deshabilita el watchdog
+ c1000c0:	e59f30e0 	ldr	r3, [pc, #224]	; c1001a8 <sys_init+0xf4>
+ c1000c4:	e3a02000 	mov	r2, #0
+ c1000c8:	e5832000 	str	r2, [r3]
+	rINTMSK = ~0;			// enmascara todas las interrupciones
+ c1000cc:	e59f30d8 	ldr	r3, [pc, #216]	; c1001ac <sys_init+0xf8>
+ c1000d0:	e3e02000 	mvn	r2, #0
+ c1000d4:	e5832000 	str	r2, [r3]
+
+	// Configuracion del gestor de reloj
+	rLOCKTIME   = 0xfff;		// estabilización del PLL = 512 us
+ c1000d8:	e59f30d0 	ldr	r3, [pc, #208]	; c1001b0 <sys_init+0xfc>
+ c1000dc:	e59f20d0 	ldr	r2, [pc, #208]	; c1001b4 <sys_init+0x100>
+ c1000e0:	e5832000 	str	r2, [r3]
+	rPLLCON     = 0x38021;	// MCLK = 64MHz
+ c1000e4:	e3a03776 	mov	r3, #30932992	; 0x1d80000
+ c1000e8:	e59f20c8 	ldr	r2, [pc, #200]	; c1001b8 <sys_init+0x104>
+ c1000ec:	e5832000 	str	r2, [r3]
+	clk_normal = 64000000;
+ c1000f0:	e59f30c4 	ldr	r3, [pc, #196]	; c1001bc <sys_init+0x108>
+ c1000f4:	e59f20c4 	ldr	r2, [pc, #196]	; c1001c0 <sys_init+0x10c>
+ c1000f8:	e5832000 	str	r2, [r3]
+	rCLKSLOW    = 0x8;		// MCLK_SLOW = 500 KHz
+ c1000fc:	e59f30c0 	ldr	r3, [pc, #192]	; c1001c4 <sys_init+0x110>
+ c100100:	e3a02008 	mov	r2, #8
+ c100104:	e5832000 	str	r2, [r3]
+	clk_slow   = 500000;
+ c100108:	e59f30b8 	ldr	r3, [pc, #184]	; c1001c8 <sys_init+0x114>
+ c10010c:	e59f20b8 	ldr	r2, [pc, #184]	; c1001cc <sys_init+0x118>
+ c100110:	e5832000 	str	r2, [r3]
+	rCLKCON     = (1<<10) | (1<<7); 	// modo NORMAL y todos los controladores desactivados menos el BDMA y GPIO (para poder acceder a todos lo perifericos y a los puertos)
+ c100114:	e59f30b4 	ldr	r3, [pc, #180]	; c1001d0 <sys_init+0x11c>
+ c100118:	e3a02d12 	mov	r2, #1152	; 0x480
+ c10011c:	e5832000 	str	r2, [r3]
+	mclk       = clk_normal;
+ c100120:	e59f3094 	ldr	r3, [pc, #148]	; c1001bc <sys_init+0x108>
+ c100124:	e5932000 	ldr	r2, [r3]
+ c100128:	e59f30a4 	ldr	r3, [pc, #164]	; c1001d4 <sys_init+0x120>
+ c10012c:	e5832000 	str	r2, [r3]
+
+	// Configuracion del arbitro de bus
+	rSBUSCON = 0x8000001b;	// prioridad fija por defecto LCD > ZDMA > BDMA > IRQ
+ c100130:	e3a03771 	mov	r3, #29622272	; 0x1c40000
+ c100134:	e3a0216e 	mov	r2, #-2147483621	; 0x8000001b
+ c100138:	e5832000 	str	r2, [r3]
+
+	// Configuracion de cache
+	rSYSCFG = 0;				// deshabilitada
+ c10013c:	e3a03507 	mov	r3, #29360128	; 0x1c00000
+ c100140:	e3a02000 	mov	r2, #0
+ c100144:	e5832000 	str	r2, [r3]
+
+	// Configuacion del controlador de interrupciones
+	rI_PMST = 0x1f1b;		// prioridades fijas por defecto
+ c100148:	e59f3088 	ldr	r3, [pc, #136]	; c1001d8 <sys_init+0x124>
+ c10014c:	e59f2088 	ldr	r2, [pc, #136]	; c1001dc <sys_init+0x128>
+ c100150:	e5832000 	str	r2, [r3]
+	rI_PSLV = 0x1b1b1b1b;
+ c100154:	e59f3084 	ldr	r3, [pc, #132]	; c1001e0 <sys_init+0x12c>
+ c100158:	e59f2084 	ldr	r2, [pc, #132]	; c1001e4 <sys_init+0x130>
+ c10015c:	e5832000 	str	r2, [r3]
+	rINTMOD = 0;				// todas las interrupciones en modo IRQ
+ c100160:	e59f3080 	ldr	r3, [pc, #128]	; c1001e8 <sys_init+0x134>
+ c100164:	e3a02000 	mov	r2, #0
+ c100168:	e5832000 	str	r2, [r3]
+	rEXTINTPND = ~0;			// borra las interrupciones externas pendientes por linea EINT7..4
+ c10016c:	e59f3078 	ldr	r3, [pc, #120]	; c1001ec <sys_init+0x138>
+ c100170:	e3e02000 	mvn	r2, #0
+ c100174:	e5832000 	str	r2, [r3]
+    rI_ISPC = ~0;			// borra todas las interrupciones pendientes
+ c100178:	e59f3070 	ldr	r3, [pc, #112]	; c1001f0 <sys_init+0x13c>
+ c10017c:	e3e02000 	mvn	r2, #0
+ c100180:	e5832000 	str	r2, [r3]
+	rINTCON = 1;				// IRQ vectorizadas, linea IRQ activada, linea FIQ desactivada
+ c100184:	e3a0361e 	mov	r3, #31457280	; 0x1e00000
+ c100188:	e3a02001 	mov	r2, #1
+ c10018c:	e5832000 	str	r2, [r3]
+
+	// Configuracion de puertos
+	port_init();
+ c100190:	e59f305c 	ldr	r3, [pc, #92]	; c1001f4 <sys_init+0x140>
+ c100194:	e1a0e00f 	mov	lr, pc
+ c100198:	e12fff13 	bx	r3
+}
+ c10019c:	e24bd00c 	sub	sp, fp, #12
+ c1001a0:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c1001a4:	e12fff1e 	bx	lr
+ c1001a8:	01d30000 	.word	0x01d30000
+ c1001ac:	01e0000c 	.word	0x01e0000c
+ c1001b0:	01d8000c 	.word	0x01d8000c
+ c1001b4:	00000fff 	.word	0x00000fff
+ c1001b8:	00038021 	.word	0x00038021
+ c1001bc:	0c100f50 	.word	0x0c100f50
+ c1001c0:	03d09000 	.word	0x03d09000
+ c1001c4:	01d80008 	.word	0x01d80008
+ c1001c8:	0c100f54 	.word	0x0c100f54
+ c1001cc:	0007a120 	.word	0x0007a120
+ c1001d0:	01d80004 	.word	0x01d80004
+ c1001d4:	0c100f58 	.word	0x0c100f58
+ c1001d8:	01e00014 	.word	0x01e00014
+ c1001dc:	00001f1b 	.word	0x00001f1b
+ c1001e0:	01e00010 	.word	0x01e00010
+ c1001e4:	1b1b1b1b 	.word	0x1b1b1b1b
+ c1001e8:	01e00008 	.word	0x01e00008
+ c1001ec:	01d20054 	.word	0x01d20054
+ c1001f0:	01e00024 	.word	0x01e00024
+ c1001f4:	0c1001f8 	.word	0x0c1001f8
+
+0c1001f8 <port_init>:
+
+
+inline void port_init( void )
+{
+ c1001f8:	e1a0c00d 	mov	ip, sp
+ c1001fc:	e92dd800 	push	{fp, ip, lr, pc}
+ c100200:	e24cb004 	sub	fp, ip, #4
+
+	rPDATA = ~0;
+ c100204:	e59f3100 	ldr	r3, [pc, #256]	; c10030c <port_init+0x114>
+ c100208:	e3e02000 	mvn	r2, #0
+ c10020c:	e5832000 	str	r2, [r3]
+	rPCONA = (0x7f<<1);		// PA[7:1] = ADDR[22:16], resto = out
+ c100210:	e59f30f8 	ldr	r3, [pc, #248]	; c100310 <port_init+0x118>
+ c100214:	e3a020fe 	mov	r2, #254	; 0xfe
+ c100218:	e5832000 	str	r2, [r3]
+
+	rPDATB = ~0;
+ c10021c:	e59f30f0 	ldr	r3, [pc, #240]	; c100314 <port_init+0x11c>
+ c100220:	e3e02000 	mvn	r2, #0
+ c100224:	e5832000 	str	r2, [r3]
+	rPCONB = (1<<8) | (1<<6) | (0xf);	// PA[8] = nGCS3, PA[6] = nGCS1, PA[3:0] = (nSRAS, nSCAS, SCLK, SCKE), resto = out
+ c100228:	e59f30e8 	ldr	r3, [pc, #232]	; c100318 <port_init+0x120>
+ c10022c:	e59f20e8 	ldr	r2, [pc, #232]	; c10031c <port_init+0x124>
+ c100230:	e5832000 	str	r2, [r3]
+
+	rPDATC = ~0;
+ c100234:	e59f30e4 	ldr	r3, [pc, #228]	; c100320 <port_init+0x128>
+ c100238:	e3e02000 	mvn	r2, #0
+ c10023c:	e5832000 	str	r2, [r3]
+	rPCONC = 0x55555555;		// PC[x] = out
+ c100240:	e59f30dc 	ldr	r3, [pc, #220]	; c100324 <port_init+0x12c>
+ c100244:	e59f20dc 	ldr	r2, [pc, #220]	; c100328 <port_init+0x130>
+ c100248:	e5832000 	str	r2, [r3]
+	rPUPC  = ~0;		 		// Pull-up disable
+ c10024c:	e59f30d8 	ldr	r3, [pc, #216]	; c10032c <port_init+0x134>
+ c100250:	e3e02000 	mvn	r2, #0
+ c100254:	e5832000 	str	r2, [r3]
+
+	rPDATD = ~0;
+ c100258:	e59f30d0 	ldr	r3, [pc, #208]	; c100330 <port_init+0x138>
+ c10025c:	e3e02000 	mvn	r2, #0
+ c100260:	e5832000 	str	r2, [r3]
+	rPCOND = 0x5555;			// PD[x] = out
+ c100264:	e59f30c8 	ldr	r3, [pc, #200]	; c100334 <port_init+0x13c>
+ c100268:	e59f20c8 	ldr	r2, [pc, #200]	; c100338 <port_init+0x140>
+ c10026c:	e5832000 	str	r2, [r3]
+	rPUPD  = ~0;				// Pull-up disable
+ c100270:	e59f30c4 	ldr	r3, [pc, #196]	; c10033c <port_init+0x144>
+ c100274:	e3e02000 	mvn	r2, #0
+ c100278:	e5832000 	str	r2, [r3]
+
+	rPDATE = ~0;
+ c10027c:	e59f30bc 	ldr	r3, [pc, #188]	; c100340 <port_init+0x148>
+ c100280:	e3e02000 	mvn	r2, #0
+ c100284:	e5832000 	str	r2, [r3]
+	rPCONE = 0x15555; 		// PE[x] = out
+ c100288:	e59f30b4 	ldr	r3, [pc, #180]	; c100344 <port_init+0x14c>
+ c10028c:	e59f20b4 	ldr	r2, [pc, #180]	; c100348 <port_init+0x150>
+ c100290:	e5832000 	str	r2, [r3]
+	rPUPE  = ~0;		 		// Pull-up disable
+ c100294:	e59f30b0 	ldr	r3, [pc, #176]	; c10034c <port_init+0x154>
+ c100298:	e3e02000 	mvn	r2, #0
+ c10029c:	e5832000 	str	r2, [r3]
+
+	rPDATF = ~0;
+ c1002a0:	e59f30a8 	ldr	r3, [pc, #168]	; c100350 <port_init+0x158>
+ c1002a4:	e3e02000 	mvn	r2, #0
+ c1002a8:	e5832000 	str	r2, [r3]
+	rPCONF = 0x002555; 		// PF[8] = in, PF[7] = in, resto = out
+ c1002ac:	e59f30a0 	ldr	r3, [pc, #160]	; c100354 <port_init+0x15c>
+ c1002b0:	e59f20a0 	ldr	r2, [pc, #160]	; c100358 <port_init+0x160>
+ c1002b4:	e5832000 	str	r2, [r3]
+	rPUPF  = ~0;			 	// Pull-up disable
+ c1002b8:	e59f309c 	ldr	r3, [pc, #156]	; c10035c <port_init+0x164>
+ c1002bc:	e3e02000 	mvn	r2, #0
+ c1002c0:	e5832000 	str	r2, [r3]
+
+	rPDATG = ~0;
+ c1002c4:	e59f3094 	ldr	r3, [pc, #148]	; c100360 <port_init+0x168>
+ c1002c8:	e3e02000 	mvn	r2, #0
+ c1002cc:	e5832000 	str	r2, [r3]
+	rPCONG = 0x5555;			// PG[x] = out
+ c1002d0:	e59f308c 	ldr	r3, [pc, #140]	; c100364 <port_init+0x16c>
+ c1002d4:	e59f205c 	ldr	r2, [pc, #92]	; c100338 <port_init+0x140>
+ c1002d8:	e5832000 	str	r2, [r3]
+	rPUPG  = ~0;		 		// Pull-up disable
+ c1002dc:	e59f3084 	ldr	r3, [pc, #132]	; c100368 <port_init+0x170>
+ c1002e0:	e3e02000 	mvn	r2, #0
+ c1002e4:	e5832000 	str	r2, [r3]
+
+	rSPUCR = 0x7;			// DATA[15:0] Pull-up disable
+ c1002e8:	e59f307c 	ldr	r3, [pc, #124]	; c10036c <port_init+0x174>
+ c1002ec:	e3a02007 	mov	r2, #7
+ c1002f0:	e5832000 	str	r2, [r3]
+
+	rEXTINT = 0x22222222;	// Falling edge triggered
+ c1002f4:	e59f3074 	ldr	r3, [pc, #116]	; c100370 <port_init+0x178>
+ c1002f8:	e59f2074 	ldr	r2, [pc, #116]	; c100374 <port_init+0x17c>
+ c1002fc:	e5832000 	str	r2, [r3]
+}
+ c100300:	e24bd00c 	sub	sp, fp, #12
+ c100304:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c100308:	e12fff1e 	bx	lr
+ c10030c:	01d20004 	.word	0x01d20004
+ c100310:	01d20000 	.word	0x01d20000
+ c100314:	01d2000c 	.word	0x01d2000c
+ c100318:	01d20008 	.word	0x01d20008
+ c10031c:	0000014f 	.word	0x0000014f
+ c100320:	01d20014 	.word	0x01d20014
+ c100324:	01d20010 	.word	0x01d20010
+ c100328:	55555555 	.word	0x55555555
+ c10032c:	01d20018 	.word	0x01d20018
+ c100330:	01d20020 	.word	0x01d20020
+ c100334:	01d2001c 	.word	0x01d2001c
+ c100338:	00005555 	.word	0x00005555
+ c10033c:	01d20024 	.word	0x01d20024
+ c100340:	01d2002c 	.word	0x01d2002c
+ c100344:	01d20028 	.word	0x01d20028
+ c100348:	00015555 	.word	0x00015555
+ c10034c:	01d20030 	.word	0x01d20030
+ c100350:	01d20038 	.word	0x01d20038
+ c100354:	01d20034 	.word	0x01d20034
+ c100358:	00002555 	.word	0x00002555
+ c10035c:	01d2003c 	.word	0x01d2003c
+ c100360:	01d20044 	.word	0x01d20044
+ c100364:	01d20040 	.word	0x01d20040
+ c100368:	01d20048 	.word	0x01d20048
+ c10036c:	01d2004c 	.word	0x01d2004c
+ c100370:	01d20050 	.word	0x01d20050
+ c100374:	22222222 	.word	0x22222222
+
+0c100378 <D8Led_init>:
+/*--- declaracion de funciones ---*/
+void D8Led_init(void);
+void D8Led_symbol(int value);
+/*--- codigo de las funciones ---*/
+void D8Led_init(void)
+{
+ c100378:	e1a0c00d 	mov	ip, sp
+ c10037c:	e92dd800 	push	{fp, ip, lr, pc}
+ c100380:	e24cb004 	sub	fp, ip, #4
+/* Estado inicial del display con todos los segmentos iluminados
+(buscar en los ficheros de cabecera la direccion implicada--->44blib.h) */ 
+	LED8ADDR = 0; 
+ c100384:	e3a03785 	mov	r3, #34865152	; 0x2140000
+ c100388:	e3a02000 	mov	r2, #0
+ c10038c:	e5c32000 	strb	r2, [r3]
+}
+ c100390:	e24bd00c 	sub	sp, fp, #12
+ c100394:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c100398:	e12fff1e 	bx	lr
+
+0c10039c <D8Led_symbol>:
+void D8Led_symbol(int value)
+{
+ c10039c:	e1a0c00d 	mov	ip, sp
+ c1003a0:	e92dd800 	push	{fp, ip, lr, pc}
+ c1003a4:	e24cb004 	sub	fp, ip, #4
+ c1003a8:	e24dd008 	sub	sp, sp, #8
+ c1003ac:	e50b0010 	str	r0, [fp, #-16]
+// muestra Symbol[value] en el display
+	LED8ADDR=Symbol[value];
+ c1003b0:	e3a03785 	mov	r3, #34865152	; 0x2140000
+ c1003b4:	e59f2018 	ldr	r2, [pc, #24]	; c1003d4 <D8Led_symbol+0x38>
+ c1003b8:	e51b1010 	ldr	r1, [fp, #-16]
+ c1003bc:	e7922101 	ldr	r2, [r2, r1, lsl #2]
+ c1003c0:	e20220ff 	and	r2, r2, #255	; 0xff
+ c1003c4:	e5c32000 	strb	r2, [r3]
+}
+ c1003c8:	e24bd00c 	sub	sp, fp, #12
+ c1003cc:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c1003d0:	e12fff1e 	bx	lr
+ c1003d4:	0c100f5c 	.word	0x0c100f5c
+
+0c1003d8 <at24c04_bytewrite>:
+#include "at24c04.h"
+#include "iic.h"
+
+
+void at24c04_bytewrite( uint16 addr, uint8 data )
+{
+ c1003d8:	e1a0c00d 	mov	ip, sp
+ c1003dc:	e92dd800 	push	{fp, ip, lr, pc}
+ c1003e0:	e24cb004 	sub	fp, ip, #4
+ c1003e4:	e24dd010 	sub	sp, sp, #16
+ c1003e8:	e1a02000 	mov	r2, r0
+ c1003ec:	e1a03001 	mov	r3, r1
+ c1003f0:	e14b21b6 	strh	r2, [fp, #-22]	; 0xffffffea
+ c1003f4:	e54b3017 	strb	r3, [fp, #-23]	; 0xffffffe9
+	uint8 page;
+	
+	page = (addr & 0x100) >> 8;	// Extrae el número de página 
+ c1003f8:	e15b31b6 	ldrh	r3, [fp, #-22]	; 0xffffffea
+ c1003fc:	e2033c01 	and	r3, r3, #256	; 0x100
+ c100400:	e1a03443 	asr	r3, r3, #8
+ c100404:	e54b300d 	strb	r3, [fp, #-13]
+
+	/*Añadir el prefijo golden_ para usar la versión de test. Ej. golden_iic_putByte_start*/
+	iic_putByte_start( (AT24C04_ADDRESS << 2) | (page << 1) | AT24C04_WRITE );
+ c100408:	e55b300d 	ldrb	r3, [fp, #-13]
+ c10040c:	e1a03083 	lsl	r3, r3, #1
+ c100410:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100414:	e1e03003 	mvn	r3, r3
+ c100418:	e203305f 	and	r3, r3, #95	; 0x5f
+ c10041c:	e1e03003 	mvn	r3, r3
+ c100420:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100424:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100428:	e1a00003 	mov	r0, r3
+ c10042c:	eb000065 	bl	c1005c8 <iic_putByte_start>
+	iic_putByte( addr & 0xFF );
+ c100430:	e15b31b6 	ldrh	r3, [fp, #-22]	; 0xffffffea
+ c100434:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100438:	e1a00003 	mov	r0, r3
+ c10043c:	eb00007f 	bl	c100640 <iic_putByte>
+	iic_putByte_stop( data );
+ c100440:	e55b3017 	ldrb	r3, [fp, #-23]	; 0xffffffe9
+ c100444:	e1a00003 	mov	r0, r3
+ c100448:	eb000097 	bl	c1006ac <iic_putByte_stop>
+}
+ c10044c:	e24bd00c 	sub	sp, fp, #12
+ c100450:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c100454:	e12fff1e 	bx	lr
+
+0c100458 <at24c04_byteread>:
+	
+void at24c04_byteread( uint16 addr, uint8 *data )
+{
+ c100458:	e1a0c00d 	mov	ip, sp
+ c10045c:	e92dd800 	push	{fp, ip, lr, pc}
+ c100460:	e24cb004 	sub	fp, ip, #4
+ c100464:	e24dd010 	sub	sp, sp, #16
+ c100468:	e1a03000 	mov	r3, r0
+ c10046c:	e50b101c 	str	r1, [fp, #-28]	; 0xffffffe4
+ c100470:	e14b31b6 	strh	r3, [fp, #-22]	; 0xffffffea
+	uint8 page;
+	
+	page = (addr & 0x100) >> 8;	// Extrae el número de página 
+ c100474:	e15b31b6 	ldrh	r3, [fp, #-22]	; 0xffffffea
+ c100478:	e2033c01 	and	r3, r3, #256	; 0x100
+ c10047c:	e1a03443 	asr	r3, r3, #8
+ c100480:	e54b300d 	strb	r3, [fp, #-13]
+	
+	iic_putByte_start( (AT24C04_ADDRESS << 2) | (page << 1) | AT24C04_WRITE );  // Lleva el contador de dirección de la EEPROM a la dirección indicada
+ c100484:	e55b300d 	ldrb	r3, [fp, #-13]
+ c100488:	e1a03083 	lsl	r3, r3, #1
+ c10048c:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100490:	e1e03003 	mvn	r3, r3
+ c100494:	e203305f 	and	r3, r3, #95	; 0x5f
+ c100498:	e1e03003 	mvn	r3, r3
+ c10049c:	e20330ff 	and	r3, r3, #255	; 0xff
+ c1004a0:	e20330ff 	and	r3, r3, #255	; 0xff
+ c1004a4:	e1a00003 	mov	r0, r3
+ c1004a8:	eb000046 	bl	c1005c8 <iic_putByte_start>
+	iic_putByte( addr & 0xFF );
+ c1004ac:	e15b31b6 	ldrh	r3, [fp, #-22]	; 0xffffffea
+ c1004b0:	e20330ff 	and	r3, r3, #255	; 0xff
+ c1004b4:	e1a00003 	mov	r0, r3
+ c1004b8:	eb000060 	bl	c100640 <iic_putByte>
+	iic_getByte_start( (AT24C04_ADDRESS << 2) | (page << 1) | AT24C04_READ );
+ c1004bc:	e55b300d 	ldrb	r3, [fp, #-13]
+ c1004c0:	e1a03083 	lsl	r3, r3, #1
+ c1004c4:	e20330ff 	and	r3, r3, #255	; 0xff
+ c1004c8:	e1e03003 	mvn	r3, r3
+ c1004cc:	e203305e 	and	r3, r3, #94	; 0x5e
+ c1004d0:	e1e03003 	mvn	r3, r3
+ c1004d4:	e20330ff 	and	r3, r3, #255	; 0xff
+ c1004d8:	e20330ff 	and	r3, r3, #255	; 0xff
+ c1004dc:	e1a00003 	mov	r0, r3
+ c1004e0:	eb000096 	bl	c100740 <iic_getByte_start>
+	*data = iic_getByte_stop( NO_RxACK ); 								// En una EEPROM, no debe generarse ACK tras el último dato recibido
+ c1004e4:	e3a00000 	mov	r0, #0
+ c1004e8:	eb0000c5 	bl	c100804 <iic_getByte_stop>
+ c1004ec:	e1a03000 	mov	r3, r0
+ c1004f0:	e1a02003 	mov	r2, r3
+ c1004f4:	e51b301c 	ldr	r3, [fp, #-28]	; 0xffffffe4
+ c1004f8:	e5c32000 	strb	r2, [r3]
+}
+ c1004fc:	e24bd00c 	sub	sp, fp, #12
+ c100500:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c100504:	e12fff1e 	bx	lr
+
+0c100508 <iic_init>:
+extern uint32 mclk;			   // Frecuencia actual del reloj (Hz)
+
+extern void DelayMs(int ms_time);
+
+void iic_init( void )
+{
+ c100508:	e1a0c00d 	mov	ip, sp
+ c10050c:	e92dd800 	push	{fp, ip, lr, pc}
+ c100510:	e24cb004 	sub	fp, ip, #4
+    // Enable IIC & GPIO & BDMA blocks (si no se activa BDMA, el controlador IIC no es accesible)
+    rCLKCON = rCLKCON | 0x2480;
+ c100514:	e59f308c 	ldr	r3, [pc, #140]	; c1005a8 <iic_init+0xa0>
+ c100518:	e59f2088 	ldr	r2, [pc, #136]	; c1005a8 <iic_init+0xa0>
+ c10051c:	e5922000 	ldr	r2, [r2]
+ c100520:	e3822d92 	orr	r2, r2, #9344	; 0x2480
+ c100524:	e5832000 	str	r2, [r3]
+    // PF[1] = IICSDA, PF[0] = IICSCL
+    rPCONF = 0xA;
+ c100528:	e59f307c 	ldr	r3, [pc, #124]	; c1005ac <iic_init+0xa4>
+ c10052c:	e3a0200a 	mov	r2, #10
+ c100530:	e5832000 	str	r2, [r3]
+    // Pull-up enable
+    rPUPF = 0x0;
+ c100534:	e59f3074 	ldr	r3, [pc, #116]	; c1005b0 <iic_init+0xa8>
+ c100538:	e3a02000 	mov	r2, #0
+ c10053c:	e5832000 	str	r2, [r3]
+	
+    //Configurar la dirección del slave
+    rIICADD = S3C44B0X_SLAVE_ADDRESS;
+ c100540:	e59f306c 	ldr	r3, [pc, #108]	; c1005b4 <iic_init+0xac>
+ c100544:	e3a02008 	mov	r2, #8
+ c100548:	e5832000 	str	r2, [r3]
+
+    //Generación ACK habilitada, interrupciones habilitadas
+    rIICCON = rIICCON | 0xA0;
+ c10054c:	e59f3064 	ldr	r3, [pc, #100]	; c1005b8 <iic_init+0xb0>
+ c100550:	e59f2060 	ldr	r2, [pc, #96]	; c1005b8 <iic_init+0xb0>
+ c100554:	e5922000 	ldr	r2, [r2]
+ c100558:	e38220a0 	orr	r2, r2, #160	; 0xa0
+ c10055c:	e5832000 	str	r2, [r3]
+    rIICCON = rIICCON | ((mclk / 4000000 - 1) & 0xf); 	//Valor de preescalado, PREESCALER = mclk/16/250000 -1
+ c100560:	e59f3050 	ldr	r3, [pc, #80]	; c1005b8 <iic_init+0xb0>
+ c100564:	e59f204c 	ldr	r2, [pc, #76]	; c1005b8 <iic_init+0xb0>
+ c100568:	e5921000 	ldr	r1, [r2]
+ c10056c:	e59f2048 	ldr	r2, [pc, #72]	; c1005bc <iic_init+0xb4>
+ c100570:	e5920000 	ldr	r0, [r2]
+ c100574:	e59f2044 	ldr	r2, [pc, #68]	; c1005c0 <iic_init+0xb8>
+ c100578:	e082c290 	umull	ip, r2, r0, r2
+ c10057c:	e1a02a22 	lsr	r2, r2, #20
+ c100580:	e2422001 	sub	r2, r2, #1
+ c100584:	e202200f 	and	r2, r2, #15
+ c100588:	e1812002 	orr	r2, r1, r2
+ c10058c:	e5832000 	str	r2, [r3]
+	
+    // Activa Tx/Rx
+    rIICSTAT = 0x10;
+ c100590:	e59f302c 	ldr	r3, [pc, #44]	; c1005c4 <iic_init+0xbc>
+ c100594:	e3a02010 	mov	r2, #16
+ c100598:	e5832000 	str	r2, [r3]
+}
+ c10059c:	e24bd00c 	sub	sp, fp, #12
+ c1005a0:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c1005a4:	e12fff1e 	bx	lr
+ c1005a8:	01d80004 	.word	0x01d80004
+ c1005ac:	01d20034 	.word	0x01d20034
+ c1005b0:	01d2003c 	.word	0x01d2003c
+ c1005b4:	01d60008 	.word	0x01d60008
+ c1005b8:	01d60000 	.word	0x01d60000
+ c1005bc:	0c100f58 	.word	0x0c100f58
+ c1005c0:	431bde83 	.word	0x431bde83
+ c1005c4:	01d60004 	.word	0x01d60004
+
+0c1005c8 <iic_putByte_start>:
+
+void iic_putByte_start( uint8 byte )
+{
+ c1005c8:	e1a0c00d 	mov	ip, sp
+ c1005cc:	e92dd800 	push	{fp, ip, lr, pc}
+ c1005d0:	e24cb004 	sub	fp, ip, #4
+ c1005d4:	e24dd008 	sub	sp, sp, #8
+ c1005d8:	e1a03000 	mov	r3, r0
+ c1005dc:	e54b300d 	strb	r3, [fp, #-13]
+	// Escribe el dato
+	rIICDS = byte;
+ c1005e0:	e59f304c 	ldr	r3, [pc, #76]	; c100634 <iic_putByte_start+0x6c>
+ c1005e4:	e55b200d 	ldrb	r2, [fp, #-13]
+ c1005e8:	e5832000 	str	r2, [r3]
+	// Máster Tx, start condition, Tx/Rx habilitada
+	rIICSTAT= 0xf0;
+ c1005ec:	e59f3044 	ldr	r3, [pc, #68]	; c100638 <iic_putByte_start+0x70>
+ c1005f0:	e3a020f0 	mov	r2, #240	; 0xf0
+ c1005f4:	e5832000 	str	r2, [r3]
+	// Comienza la transmisión (borrando pending bit del IICCON)
+	rIICCON= rIICCON & 0xef;
+ c1005f8:	e59f303c 	ldr	r3, [pc, #60]	; c10063c <iic_putByte_start+0x74>
+ c1005fc:	e59f2038 	ldr	r2, [pc, #56]	; c10063c <iic_putByte_start+0x74>
+ c100600:	e5922000 	ldr	r2, [r2]
+ c100604:	e20220ef 	and	r2, r2, #239	; 0xef
+ c100608:	e5832000 	str	r2, [r3]
+	// Espera la recepción de ACK
+	while ((rIICSTAT & 0x1) == 1);
+ c10060c:	e1a00000 	nop			; (mov r0, r0)
+ c100610:	e59f3020 	ldr	r3, [pc, #32]	; c100638 <iic_putByte_start+0x70>
+ c100614:	e5933000 	ldr	r3, [r3]
+ c100618:	e2033001 	and	r3, r3, #1
+ c10061c:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100620:	e3530000 	cmp	r3, #0
+ c100624:	1afffff9 	bne	c100610 <iic_putByte_start+0x48>
+}
+ c100628:	e24bd00c 	sub	sp, fp, #12
+ c10062c:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c100630:	e12fff1e 	bx	lr
+ c100634:	01d6000c 	.word	0x01d6000c
+ c100638:	01d60004 	.word	0x01d60004
+ c10063c:	01d60000 	.word	0x01d60000
+
+0c100640 <iic_putByte>:
+
+void iic_putByte( uint8 byte )
+{
+ c100640:	e1a0c00d 	mov	ip, sp
+ c100644:	e92dd800 	push	{fp, ip, lr, pc}
+ c100648:	e24cb004 	sub	fp, ip, #4
+ c10064c:	e24dd008 	sub	sp, sp, #8
+ c100650:	e1a03000 	mov	r3, r0
+ c100654:	e54b300d 	strb	r3, [fp, #-13]
+    // Escribe el dato
+	rIICDS = byte;
+ c100658:	e59f3040 	ldr	r3, [pc, #64]	; c1006a0 <iic_putByte+0x60>
+ c10065c:	e55b200d 	ldrb	r2, [fp, #-13]
+ c100660:	e5832000 	str	r2, [r3]
+	// Comienza la transmisión del dato (borrando pending bit del IICCON)
+	rIICCON= rIICCON & 0xef;
+ c100664:	e59f3038 	ldr	r3, [pc, #56]	; c1006a4 <iic_putByte+0x64>
+ c100668:	e59f2034 	ldr	r2, [pc, #52]	; c1006a4 <iic_putByte+0x64>
+ c10066c:	e5922000 	ldr	r2, [r2]
+ c100670:	e20220ef 	and	r2, r2, #239	; 0xef
+ c100674:	e5832000 	str	r2, [r3]
+    // Espera la recepción de ACK  
+	while ((rIICSTAT & 0x1) == 1);
+ c100678:	e1a00000 	nop			; (mov r0, r0)
+ c10067c:	e59f3024 	ldr	r3, [pc, #36]	; c1006a8 <iic_putByte+0x68>
+ c100680:	e5933000 	ldr	r3, [r3]
+ c100684:	e2033001 	and	r3, r3, #1
+ c100688:	e20330ff 	and	r3, r3, #255	; 0xff
+ c10068c:	e3530000 	cmp	r3, #0
+ c100690:	1afffff9 	bne	c10067c <iic_putByte+0x3c>
+};
+ c100694:	e24bd00c 	sub	sp, fp, #12
+ c100698:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c10069c:	e12fff1e 	bx	lr
+ c1006a0:	01d6000c 	.word	0x01d6000c
+ c1006a4:	01d60000 	.word	0x01d60000
+ c1006a8:	01d60004 	.word	0x01d60004
+
+0c1006ac <iic_putByte_stop>:
+
+void iic_putByte_stop( uint8 byte )
+{
+ c1006ac:	e1a0c00d 	mov	ip, sp
+ c1006b0:	e92dd800 	push	{fp, ip, lr, pc}
+ c1006b4:	e24cb004 	sub	fp, ip, #4
+ c1006b8:	e24dd008 	sub	sp, sp, #8
+ c1006bc:	e1a03000 	mov	r3, r0
+ c1006c0:	e54b300d 	strb	r3, [fp, #-13]
+    // Escribe el dato
+	rIICDS = byte;
+ c1006c4:	e59f3068 	ldr	r3, [pc, #104]	; c100734 <iic_putByte_stop+0x88>
+ c1006c8:	e55b200d 	ldrb	r2, [fp, #-13]
+ c1006cc:	e5832000 	str	r2, [r3]
+	// Comienza la trasmisión del dato (borrando pending bit del IICCON)
+	rIICCON= rIICCON & 0xef;
+ c1006d0:	e59f3060 	ldr	r3, [pc, #96]	; c100738 <iic_putByte_stop+0x8c>
+ c1006d4:	e59f205c 	ldr	r2, [pc, #92]	; c100738 <iic_putByte_stop+0x8c>
+ c1006d8:	e5922000 	ldr	r2, [r2]
+ c1006dc:	e20220ef 	and	r2, r2, #239	; 0xef
+ c1006e0:	e5832000 	str	r2, [r3]
+    // Espera la recepción de ACK  
+	while ((rIICSTAT & 0x1) == 1);
+ c1006e4:	e1a00000 	nop			; (mov r0, r0)
+ c1006e8:	e59f304c 	ldr	r3, [pc, #76]	; c10073c <iic_putByte_stop+0x90>
+ c1006ec:	e5933000 	ldr	r3, [r3]
+ c1006f0:	e2033001 	and	r3, r3, #1
+ c1006f4:	e20330ff 	and	r3, r3, #255	; 0xff
+ c1006f8:	e3530000 	cmp	r3, #0
+ c1006fc:	1afffff9 	bne	c1006e8 <iic_putByte_stop+0x3c>
+    
+    // Máster Tx, stop condition, Tx/Rx habilitada
+	rIICSTAT= 0xd0;
+ c100700:	e59f3034 	ldr	r3, [pc, #52]	; c10073c <iic_putByte_stop+0x90>
+ c100704:	e3a020d0 	mov	r2, #208	; 0xd0
+ c100708:	e5832000 	str	r2, [r3]
+    // Comienza la trasmisión de STOP (borrando pending bit del IICCON)
+	rIICCON= rIICCON & 0xef;
+ c10070c:	e59f3024 	ldr	r3, [pc, #36]	; c100738 <iic_putByte_stop+0x8c>
+ c100710:	e59f2020 	ldr	r2, [pc, #32]	; c100738 <iic_putByte_stop+0x8c>
+ c100714:	e5922000 	ldr	r2, [r2]
+ c100718:	e20220ef 	and	r2, r2, #239	; 0xef
+ c10071c:	e5832000 	str	r2, [r3]
+    // Espera a que la stop condition tenga efecto (5 ms para la at24c04)
+	DelayMs(5);
+ c100720:	e3a00005 	mov	r0, #5
+ c100724:	ebfffe49 	bl	c100050 <DelayMs>
+
+}
+ c100728:	e24bd00c 	sub	sp, fp, #12
+ c10072c:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c100730:	e12fff1e 	bx	lr
+ c100734:	01d6000c 	.word	0x01d6000c
+ c100738:	01d60000 	.word	0x01d60000
+ c10073c:	01d60004 	.word	0x01d60004
+
+0c100740 <iic_getByte_start>:
+
+void iic_getByte_start( uint8 byte )
+{
+ c100740:	e1a0c00d 	mov	ip, sp
+ c100744:	e92dd800 	push	{fp, ip, lr, pc}
+ c100748:	e24cb004 	sub	fp, ip, #4
+ c10074c:	e24dd008 	sub	sp, sp, #8
+ c100750:	e1a03000 	mov	r3, r0
+ c100754:	e54b300d 	strb	r3, [fp, #-13]
+	// Escribe el dato
+	rIICDS = byte;
+ c100758:	e59f304c 	ldr	r3, [pc, #76]	; c1007ac <iic_getByte_start+0x6c>
+ c10075c:	e55b200d 	ldrb	r2, [fp, #-13]
+ c100760:	e5832000 	str	r2, [r3]
+    // Máster Rx, start condition, Tx/Rx habilitada
+	rIICSTAT= 0xb0;
+ c100764:	e59f3044 	ldr	r3, [pc, #68]	; c1007b0 <iic_getByte_start+0x70>
+ c100768:	e3a020b0 	mov	r2, #176	; 0xb0
+ c10076c:	e5832000 	str	r2, [r3]
+    // Comienza la transmisión (borrando pending bit del IICCON)
+	rIICCON= rIICCON & 0xef;
+ c100770:	e59f303c 	ldr	r3, [pc, #60]	; c1007b4 <iic_getByte_start+0x74>
+ c100774:	e59f2038 	ldr	r2, [pc, #56]	; c1007b4 <iic_getByte_start+0x74>
+ c100778:	e5922000 	ldr	r2, [r2]
+ c10077c:	e20220ef 	and	r2, r2, #239	; 0xef
+ c100780:	e5832000 	str	r2, [r3]
+    // Espera la rececpión de ACK
+	while ((rIICSTAT & 0x1) == 1);
+ c100784:	e1a00000 	nop			; (mov r0, r0)
+ c100788:	e59f3020 	ldr	r3, [pc, #32]	; c1007b0 <iic_getByte_start+0x70>
+ c10078c:	e5933000 	ldr	r3, [r3]
+ c100790:	e2033001 	and	r3, r3, #1
+ c100794:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100798:	e3530000 	cmp	r3, #0
+ c10079c:	1afffff9 	bne	c100788 <iic_getByte_start+0x48>
+}
+ c1007a0:	e24bd00c 	sub	sp, fp, #12
+ c1007a4:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c1007a8:	e12fff1e 	bx	lr
+ c1007ac:	01d6000c 	.word	0x01d6000c
+ c1007b0:	01d60004 	.word	0x01d60004
+ c1007b4:	01d60000 	.word	0x01d60000
+
+0c1007b8 <iic_getByte>:
+
+uint8 iic_getByte( void )
+{
+ c1007b8:	e1a0c00d 	mov	ip, sp
+ c1007bc:	e92dd800 	push	{fp, ip, lr, pc}
+ c1007c0:	e24cb004 	sub	fp, ip, #4
+    // Reanuda la recepción (borrando pending bit del IICCON)
+	rIICCON= rIICCON & 0xef;
+ c1007c4:	e59f3030 	ldr	r3, [pc, #48]	; c1007fc <iic_getByte+0x44>
+ c1007c8:	e59f202c 	ldr	r2, [pc, #44]	; c1007fc <iic_getByte+0x44>
+ c1007cc:	e5922000 	ldr	r2, [r2]
+ c1007d0:	e20220ef 	and	r2, r2, #239	; 0xef
+ c1007d4:	e5832000 	str	r2, [r3]
+	// Espera la recepción del dato
+	while ((rIICCON & 0x10) == 1);
+ c1007d8:	e59f301c 	ldr	r3, [pc, #28]	; c1007fc <iic_getByte+0x44>
+ c1007dc:	e5933000 	ldr	r3, [r3]
+    return rIICDS;// Lee el dato
+ c1007e0:	e59f3018 	ldr	r3, [pc, #24]	; c100800 <iic_getByte+0x48>
+ c1007e4:	e5933000 	ldr	r3, [r3]
+ c1007e8:	e20330ff 	and	r3, r3, #255	; 0xff
+}
+ c1007ec:	e1a00003 	mov	r0, r3
+ c1007f0:	e24bd00c 	sub	sp, fp, #12
+ c1007f4:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c1007f8:	e12fff1e 	bx	lr
+ c1007fc:	01d60000 	.word	0x01d60000
+ c100800:	01d6000c 	.word	0x01d6000c
+
+0c100804 <iic_getByte_stop>:
+
+uint8 iic_getByte_stop( int8 ack )
+{
+ c100804:	e1a0c00d 	mov	ip, sp
+ c100808:	e92dd800 	push	{fp, ip, lr, pc}
+ c10080c:	e24cb004 	sub	fp, ip, #4
+ c100810:	e24dd010 	sub	sp, sp, #16
+ c100814:	e1a03000 	mov	r3, r0
+ c100818:	e54b3015 	strb	r3, [fp, #-21]	; 0xffffffeb
+	uint8 byte;
+
+    rIICCON = (rIICCON & ~(1 << 7)) | (ack << 7); // Habilita/deshabilita la generación de ACK
+ c10081c:	e59f30a0 	ldr	r3, [pc, #160]	; c1008c4 <iic_getByte_stop+0xc0>
+ c100820:	e59f209c 	ldr	r2, [pc, #156]	; c1008c4 <iic_getByte_stop+0xc0>
+ c100824:	e5922000 	ldr	r2, [r2]
+ c100828:	e3c21080 	bic	r1, r2, #128	; 0x80
+ c10082c:	e15b21d5 	ldrsb	r2, [fp, #-21]	; 0xffffffeb
+ c100830:	e1a02382 	lsl	r2, r2, #7
+ c100834:	e1812002 	orr	r2, r1, r2
+ c100838:	e5832000 	str	r2, [r3]
+
+    // Reanuda la recepción (borrando pending bit del IICCON)
+    rIICCON= rIICCON & 0xef;
+ c10083c:	e59f3080 	ldr	r3, [pc, #128]	; c1008c4 <iic_getByte_stop+0xc0>
+ c100840:	e59f207c 	ldr	r2, [pc, #124]	; c1008c4 <iic_getByte_stop+0xc0>
+ c100844:	e5922000 	ldr	r2, [r2]
+ c100848:	e20220ef 	and	r2, r2, #239	; 0xef
+ c10084c:	e5832000 	str	r2, [r3]
+	// Espera la recepción del dato
+    while ((rIICCON & 0x10) == 0);
+ c100850:	e1a00000 	nop			; (mov r0, r0)
+ c100854:	e59f3068 	ldr	r3, [pc, #104]	; c1008c4 <iic_getByte_stop+0xc0>
+ c100858:	e5933000 	ldr	r3, [r3]
+ c10085c:	e2033010 	and	r3, r3, #16
+ c100860:	e3530000 	cmp	r3, #0
+ c100864:	0afffffa 	beq	c100854 <iic_getByte_stop+0x50>
+    byte = rIICDS;	// Lee el dato
+ c100868:	e59f3058 	ldr	r3, [pc, #88]	; c1008c8 <iic_getByte_stop+0xc4>
+ c10086c:	e5933000 	ldr	r3, [r3]
+ c100870:	e54b300d 	strb	r3, [fp, #-13]
+
+   	// Máster Rx, stop condition, Tx/Rx habilitada
+    rIICSTAT= 0x90;
+ c100874:	e59f3050 	ldr	r3, [pc, #80]	; c1008cc <iic_getByte_stop+0xc8>
+ c100878:	e3a02090 	mov	r2, #144	; 0x90
+ c10087c:	e5832000 	str	r2, [r3]
+   	// Comienza la trasmisión de STOP (borrando pending bit del IICCON)
+    rIICCON= rIICCON & 0xef;
+ c100880:	e59f303c 	ldr	r3, [pc, #60]	; c1008c4 <iic_getByte_stop+0xc0>
+ c100884:	e59f2038 	ldr	r2, [pc, #56]	; c1008c4 <iic_getByte_stop+0xc0>
+ c100888:	e5922000 	ldr	r2, [r2]
+ c10088c:	e20220ef 	and	r2, r2, #239	; 0xef
+ c100890:	e5832000 	str	r2, [r3]
+   	// Espera a que la stop condition tenga efecto (5 ms para la at24c04)
+    DelayMs(5);
+ c100894:	e3a00005 	mov	r0, #5
+ c100898:	ebfffdec 	bl	c100050 <DelayMs>
+
+	rIICCON |= (1<<7); // Habilita la generación de ACK
+ c10089c:	e59f3020 	ldr	r3, [pc, #32]	; c1008c4 <iic_getByte_stop+0xc0>
+ c1008a0:	e59f201c 	ldr	r2, [pc, #28]	; c1008c4 <iic_getByte_stop+0xc0>
+ c1008a4:	e5922000 	ldr	r2, [r2]
+ c1008a8:	e3822080 	orr	r2, r2, #128	; 0x80
+ c1008ac:	e5832000 	str	r2, [r3]
+   	return byte;
+ c1008b0:	e55b300d 	ldrb	r3, [fp, #-13]
+}
+ c1008b4:	e1a00003 	mov	r0, r3
+ c1008b8:	e24bd00c 	sub	sp, fp, #12
+ c1008bc:	e89d6800 	ldm	sp, {fp, sp, lr}
+ c1008c0:	e12fff1e 	bx	lr
+ c1008c4:	01d60000 	.word	0x01d60000
+ c1008c8:	01d6000c 	.word	0x01d6000c
+ c1008cc:	01d60004 	.word	0x01d60004
+
+0c1008d0 <start>:
+	.global start
+    .extern Main
+    .equ STACK, 0x0C7FF000
+
+start: 
+    LDR SP,=STACK
+ c1008d0:	e59fd00c 	ldr	sp, [pc, #12]	; c1008e4 <End+0x4>
+    MOV FP,#0
+ c1008d4:	e3a0b000 	mov	fp, #0
+    
+    MOV LR,PC
+ c1008d8:	e1a0e00f 	mov	lr, pc
+    LDR PC,=Main
+ c1008dc:	e59ff004 	ldr	pc, [pc, #4]	; c1008e8 <End+0x8>
+
+0c1008e0 <End>:
+
+End:
+    B End
+ c1008e0:	eafffffe 	b	c1008e0 <End>
+ c1008e4:	0c7ff000 	.word	0x0c7ff000
+ c1008e8:	0c1008ec 	.word	0x0c1008ec
+
+0c1008ec <Main>:
+extern void at24c04_byteread( uint16 addr, uint8 *data );
+
+int val;
+
+void Main( void )
+{
+ c1008ec:	e1a0c00d 	mov	ip, sp
+ c1008f0:	e92dd800 	push	{fp, ip, lr, pc}
+ c1008f4:	e24cb004 	sub	fp, ip, #4
+ c1008f8:	e24ddf82 	sub	sp, sp, #520	; 0x208
+    uint8 buffer[AT24C04_DEPTH];
+    uint16 i;
+    
+    sys_init();
+ c1008fc:	ebfffdec 	bl	c1000b4 <sys_init>
+    iic_init();
+ c100900:	ebffff00 	bl	c100508 <iic_init>
+    D8Led_symbol(8);//8
+ c100904:	e3a00008 	mov	r0, #8
+ c100908:	ebfffea3 	bl	c10039c <D8Led_symbol>
+
+    //Inicializamos la EEPROM
+    for( i=0; i<AT24C04_DEPTH; i++ ){
+ c10090c:	e3a03000 	mov	r3, #0
+ c100910:	e14b30be 	strh	r3, [fp, #-14]
+ c100914:	ea00000e 	b	c100954 <Main+0x68>
+      val = (uint8)i%16;
+ c100918:	e15b30be 	ldrh	r3, [fp, #-14]
+ c10091c:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100920:	e203200f 	and	r2, r3, #15
+ c100924:	e59f3108 	ldr	r3, [pc, #264]	; c100a34 <Main+0x148>
+ c100928:	e5832000 	str	r2, [r3]
+      at24c04_bytewrite( i, val );
+ c10092c:	e59f3100 	ldr	r3, [pc, #256]	; c100a34 <Main+0x148>
+ c100930:	e5933000 	ldr	r3, [r3]
+ c100934:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100938:	e15b20be 	ldrh	r2, [fp, #-14]
+ c10093c:	e1a00002 	mov	r0, r2
+ c100940:	e1a01003 	mov	r1, r3
+ c100944:	ebfffea3 	bl	c1003d8 <at24c04_bytewrite>
+    sys_init();
+    iic_init();
+    D8Led_symbol(8);//8
+
+    //Inicializamos la EEPROM
+    for( i=0; i<AT24C04_DEPTH; i++ ){
+ c100948:	e15b30be 	ldrh	r3, [fp, #-14]
+ c10094c:	e2833001 	add	r3, r3, #1
+ c100950:	e14b30be 	strh	r3, [fp, #-14]
+ c100954:	e15b20be 	ldrh	r2, [fp, #-14]
+ c100958:	e59f30d8 	ldr	r3, [pc, #216]	; c100a38 <Main+0x14c>
+ c10095c:	e1520003 	cmp	r2, r3
+ c100960:	9affffec 	bls	c100918 <Main+0x2c>
+      val = (uint8)i%16;
+      at24c04_bytewrite( i, val );
+    }
+
+    for( i=0; i<AT24C04_DEPTH; i++ ){
+ c100964:	e3a03000 	mov	r3, #0
+ c100968:	e14b30be 	strh	r3, [fp, #-14]
+ c10096c:	ea000009 	b	c100998 <Main+0xac>
+    	golden_at24c04_byteread( i, &buffer[i] );
+ c100970:	e15b20be 	ldrh	r2, [fp, #-14]
+ c100974:	e15b30be 	ldrh	r3, [fp, #-14]
+ c100978:	e24b1e21 	sub	r1, fp, #528	; 0x210
+ c10097c:	e0813003 	add	r3, r1, r3
+ c100980:	e1a00002 	mov	r0, r2
+ c100984:	e1a01003 	mov	r1, r3
+ c100988:	eb00004b 	bl	c100abc <golden_at24c04_byteread>
+    for( i=0; i<AT24C04_DEPTH; i++ ){
+      val = (uint8)i%16;
+      at24c04_bytewrite( i, val );
+    }
+
+    for( i=0; i<AT24C04_DEPTH; i++ ){
+ c10098c:	e15b30be 	ldrh	r3, [fp, #-14]
+ c100990:	e2833001 	add	r3, r3, #1
+ c100994:	e14b30be 	strh	r3, [fp, #-14]
+ c100998:	e15b20be 	ldrh	r2, [fp, #-14]
+ c10099c:	e59f3094 	ldr	r3, [pc, #148]	; c100a38 <Main+0x14c>
+ c1009a0:	e1520003 	cmp	r2, r3
+ c1009a4:	9afffff1 	bls	c100970 <Main+0x84>
+    	golden_at24c04_byteread( i, &buffer[i] );
+    }
+
+    DelayMs(100);
+ c1009a8:	e3a00064 	mov	r0, #100	; 0x64
+ c1009ac:	ebfffda7 	bl	c100050 <DelayMs>
+
+    for( i=0; i<AT24C04_DEPTH; i++ ){
+ c1009b0:	e3a03000 	mov	r3, #0
+ c1009b4:	e14b30be 	strh	r3, [fp, #-14]
+ c1009b8:	ea000018 	b	c100a20 <Main+0x134>
+    	golden_at24c04_byteread( i, &buffer[i] );
+ c1009bc:	e15b20be 	ldrh	r2, [fp, #-14]
+ c1009c0:	e15b30be 	ldrh	r3, [fp, #-14]
+ c1009c4:	e24b1e21 	sub	r1, fp, #528	; 0x210
+ c1009c8:	e0813003 	add	r3, r1, r3
+ c1009cc:	e1a00002 	mov	r0, r2
+ c1009d0:	e1a01003 	mov	r1, r3
+ c1009d4:	eb000038 	bl	c100abc <golden_at24c04_byteread>
+      val = buffer[i] & 0xF;
+ c1009d8:	e15b20be 	ldrh	r2, [fp, #-14]
+ c1009dc:	e59f3058 	ldr	r3, [pc, #88]	; c100a3c <Main+0x150>
+ c1009e0:	e24b100c 	sub	r1, fp, #12
+ c1009e4:	e0812002 	add	r2, r1, r2
+ c1009e8:	e0823003 	add	r3, r2, r3
+ c1009ec:	e5d33000 	ldrb	r3, [r3]
+ c1009f0:	e203200f 	and	r2, r3, #15
+ c1009f4:	e59f3038 	ldr	r3, [pc, #56]	; c100a34 <Main+0x148>
+ c1009f8:	e5832000 	str	r2, [r3]
+      D8Led_symbol(val);
+ c1009fc:	e59f3030 	ldr	r3, [pc, #48]	; c100a34 <Main+0x148>
+ c100a00:	e5933000 	ldr	r3, [r3]
+ c100a04:	e1a00003 	mov	r0, r3
+ c100a08:	ebfffe63 	bl	c10039c <D8Led_symbol>
+      DelayMs(100);
+ c100a0c:	e3a00064 	mov	r0, #100	; 0x64
+ c100a10:	ebfffd8e 	bl	c100050 <DelayMs>
+    	golden_at24c04_byteread( i, &buffer[i] );
+    }
+
+    DelayMs(100);
+
+    for( i=0; i<AT24C04_DEPTH; i++ ){
+ c100a14:	e15b30be 	ldrh	r3, [fp, #-14]
+ c100a18:	e2833001 	add	r3, r3, #1
+ c100a1c:	e14b30be 	strh	r3, [fp, #-14]
+ c100a20:	e15b20be 	ldrh	r2, [fp, #-14]
+ c100a24:	e59f300c 	ldr	r3, [pc, #12]	; c100a38 <Main+0x14c>
+ c100a28:	e1520003 	cmp	r2, r3
+ c100a2c:	9affffe2 	bls	c1009bc <Main+0xd0>
+      val = buffer[i] & 0xF;
+      D8Led_symbol(val);
+      DelayMs(100);
+    }
+
+    while( 1 );
+ c100a30:	eafffffe 	b	c100a30 <Main+0x144>
+ c100a34:	0c100fac 	.word	0x0c100fac
+ c100a38:	000001ff 	.word	0x000001ff
+ c100a3c:	fffffdfc 	.word	0xfffffdfc
+
+0c100a40 <golden_at24c04_bytewrite>:
+ c100a40:	e92d4800 	push	{fp, lr}
+ c100a44:	e28db004 	add	fp, sp, #4
+ c100a48:	e24dd010 	sub	sp, sp, #16
+ c100a4c:	e1a02000 	mov	r2, r0
+ c100a50:	e1a03001 	mov	r3, r1
+ c100a54:	e14b20be 	strh	r2, [fp, #-14]
+ c100a58:	e54b300f 	strb	r3, [fp, #-15]
+ c100a5c:	e15b30be 	ldrh	r3, [fp, #-14]
+ c100a60:	e2033c01 	and	r3, r3, #256	; 0x100
+ c100a64:	e1a03443 	asr	r3, r3, #8
+ c100a68:	e54b3005 	strb	r3, [fp, #-5]
+ c100a6c:	e55b3005 	ldrb	r3, [fp, #-5]
+ c100a70:	e1a03083 	lsl	r3, r3, #1
+ c100a74:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100a78:	e1e03003 	mvn	r3, r3
+ c100a7c:	e203305f 	and	r3, r3, #95	; 0x5f
+ c100a80:	e1e03003 	mvn	r3, r3
+ c100a84:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100a88:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100a8c:	e1a00003 	mov	r0, r3
+ c100a90:	eb000066 	bl	c100c30 <golden_iic_putByte_start>
+ c100a94:	e15b30be 	ldrh	r3, [fp, #-14]
+ c100a98:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100a9c:	e1a00003 	mov	r0, r3
+ c100aa0:	eb00007e 	bl	c100ca0 <golden_iic_putByte>
+ c100aa4:	e55b300f 	ldrb	r3, [fp, #-15]
+ c100aa8:	e1a00003 	mov	r0, r3
+ c100aac:	eb000093 	bl	c100d00 <golden_iic_putByte_stop>
+ c100ab0:	e24bd004 	sub	sp, fp, #4
+ c100ab4:	e8bd4800 	pop	{fp, lr}
+ c100ab8:	e12fff1e 	bx	lr
+
+0c100abc <golden_at24c04_byteread>:
+ c100abc:	e92d4800 	push	{fp, lr}
+ c100ac0:	e28db004 	add	fp, sp, #4
+ c100ac4:	e24dd010 	sub	sp, sp, #16
+ c100ac8:	e1a03000 	mov	r3, r0
+ c100acc:	e50b1014 	str	r1, [fp, #-20]	; 0xffffffec
+ c100ad0:	e14b30be 	strh	r3, [fp, #-14]
+ c100ad4:	e15b30be 	ldrh	r3, [fp, #-14]
+ c100ad8:	e2033c01 	and	r3, r3, #256	; 0x100
+ c100adc:	e1a03443 	asr	r3, r3, #8
+ c100ae0:	e54b3005 	strb	r3, [fp, #-5]
+ c100ae4:	e55b3005 	ldrb	r3, [fp, #-5]
+ c100ae8:	e1a03083 	lsl	r3, r3, #1
+ c100aec:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100af0:	e1e03003 	mvn	r3, r3
+ c100af4:	e203305f 	and	r3, r3, #95	; 0x5f
+ c100af8:	e1e03003 	mvn	r3, r3
+ c100afc:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100b00:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100b04:	e1a00003 	mov	r0, r3
+ c100b08:	eb000048 	bl	c100c30 <golden_iic_putByte_start>
+ c100b0c:	e15b30be 	ldrh	r3, [fp, #-14]
+ c100b10:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100b14:	e1a00003 	mov	r0, r3
+ c100b18:	eb000060 	bl	c100ca0 <golden_iic_putByte>
+ c100b1c:	e55b3005 	ldrb	r3, [fp, #-5]
+ c100b20:	e1a03083 	lsl	r3, r3, #1
+ c100b24:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100b28:	e1e03003 	mvn	r3, r3
+ c100b2c:	e203305e 	and	r3, r3, #94	; 0x5e
+ c100b30:	e1e03003 	mvn	r3, r3
+ c100b34:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100b38:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100b3c:	e1a00003 	mov	r0, r3
+ c100b40:	eb000091 	bl	c100d8c <golden_iic_getByte_start>
+ c100b44:	e3a00000 	mov	r0, #0
+ c100b48:	eb0000c1 	bl	c100e54 <golden_iic_getByte_stop>
+ c100b4c:	e1a03000 	mov	r3, r0
+ c100b50:	e1a02003 	mov	r2, r3
+ c100b54:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+ c100b58:	e5c32000 	strb	r2, [r3]
+ c100b5c:	e24bd004 	sub	sp, fp, #4
+ c100b60:	e8bd4800 	pop	{fp, lr}
+ c100b64:	e12fff1e 	bx	lr
+
+0c100b68 <golden_iic_init>:
+ c100b68:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+ c100b6c:	e28db000 	add	fp, sp, #0
+ c100b70:	e59f3098 	ldr	r3, [pc, #152]	; c100c10 <golden_iic_init+0xa8>
+ c100b74:	e59f2094 	ldr	r2, [pc, #148]	; c100c10 <golden_iic_init+0xa8>
+ c100b78:	e5922000 	ldr	r2, [r2]
+ c100b7c:	e3822d92 	orr	r2, r2, #9344	; 0x2480
+ c100b80:	e5832000 	str	r2, [r3]
+ c100b84:	e59f3088 	ldr	r3, [pc, #136]	; c100c14 <golden_iic_init+0xac>
+ c100b88:	e59f2084 	ldr	r2, [pc, #132]	; c100c14 <golden_iic_init+0xac>
+ c100b8c:	e5922000 	ldr	r2, [r2]
+ c100b90:	e3c2200f 	bic	r2, r2, #15
+ c100b94:	e382200a 	orr	r2, r2, #10
+ c100b98:	e5832000 	str	r2, [r3]
+ c100b9c:	e59f3074 	ldr	r3, [pc, #116]	; c100c18 <golden_iic_init+0xb0>
+ c100ba0:	e59f2070 	ldr	r2, [pc, #112]	; c100c18 <golden_iic_init+0xb0>
+ c100ba4:	e5922000 	ldr	r2, [r2]
+ c100ba8:	e3c22003 	bic	r2, r2, #3
+ c100bac:	e5832000 	str	r2, [r3]
+ c100bb0:	e59f3064 	ldr	r3, [pc, #100]	; c100c1c <golden_iic_init+0xb4>
+ c100bb4:	e3a02010 	mov	r2, #16
+ c100bb8:	e5832000 	str	r2, [r3]
+ c100bbc:	e59f305c 	ldr	r3, [pc, #92]	; c100c20 <golden_iic_init+0xb8>
+ c100bc0:	e3a020a0 	mov	r2, #160	; 0xa0
+ c100bc4:	e5832000 	str	r2, [r3]
+ c100bc8:	e59f3050 	ldr	r3, [pc, #80]	; c100c20 <golden_iic_init+0xb8>
+ c100bcc:	e59f204c 	ldr	r2, [pc, #76]	; c100c20 <golden_iic_init+0xb8>
+ c100bd0:	e5921000 	ldr	r1, [r2]
+ c100bd4:	e59f2048 	ldr	r2, [pc, #72]	; c100c24 <golden_iic_init+0xbc>
+ c100bd8:	e5920000 	ldr	r0, [r2]
+ c100bdc:	e59f2044 	ldr	r2, [pc, #68]	; c100c28 <golden_iic_init+0xc0>
+ c100be0:	e082c290 	umull	ip, r2, r0, r2
+ c100be4:	e1a02a22 	lsr	r2, r2, #20
+ c100be8:	e2422001 	sub	r2, r2, #1
+ c100bec:	e202200f 	and	r2, r2, #15
+ c100bf0:	e1812002 	orr	r2, r1, r2
+ c100bf4:	e5832000 	str	r2, [r3]
+ c100bf8:	e59f302c 	ldr	r3, [pc, #44]	; c100c2c <golden_iic_init+0xc4>
+ c100bfc:	e3a02010 	mov	r2, #16
+ c100c00:	e5832000 	str	r2, [r3]
+ c100c04:	e28bd000 	add	sp, fp, #0
+ c100c08:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
+ c100c0c:	e12fff1e 	bx	lr
+ c100c10:	01d80004 	.word	0x01d80004
+ c100c14:	01d20034 	.word	0x01d20034
+ c100c18:	01d2003c 	.word	0x01d2003c
+ c100c1c:	01d60008 	.word	0x01d60008
+ c100c20:	01d60000 	.word	0x01d60000
+ c100c24:	0c100f58 	.word	0x0c100f58
+ c100c28:	431bde83 	.word	0x431bde83
+ c100c2c:	01d60004 	.word	0x01d60004
+
+0c100c30 <golden_iic_putByte_start>:
+ c100c30:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+ c100c34:	e28db000 	add	fp, sp, #0
+ c100c38:	e24dd00c 	sub	sp, sp, #12
+ c100c3c:	e1a03000 	mov	r3, r0
+ c100c40:	e54b3005 	strb	r3, [fp, #-5]
+ c100c44:	e59f3048 	ldr	r3, [pc, #72]	; c100c94 <golden_iic_putByte_start+0x64>
+ c100c48:	e55b2005 	ldrb	r2, [fp, #-5]
+ c100c4c:	e5832000 	str	r2, [r3]
+ c100c50:	e59f3040 	ldr	r3, [pc, #64]	; c100c98 <golden_iic_putByte_start+0x68>
+ c100c54:	e3a020f0 	mov	r2, #240	; 0xf0
+ c100c58:	e5832000 	str	r2, [r3]
+ c100c5c:	e59f3038 	ldr	r3, [pc, #56]	; c100c9c <golden_iic_putByte_start+0x6c>
+ c100c60:	e59f2034 	ldr	r2, [pc, #52]	; c100c9c <golden_iic_putByte_start+0x6c>
+ c100c64:	e5922000 	ldr	r2, [r2]
+ c100c68:	e3c22010 	bic	r2, r2, #16
+ c100c6c:	e5832000 	str	r2, [r3]
+ c100c70:	e1a00000 	nop			; (mov r0, r0)
+ c100c74:	e59f3020 	ldr	r3, [pc, #32]	; c100c9c <golden_iic_putByte_start+0x6c>
+ c100c78:	e5933000 	ldr	r3, [r3]
+ c100c7c:	e2033010 	and	r3, r3, #16
+ c100c80:	e3530000 	cmp	r3, #0
+ c100c84:	0afffffa 	beq	c100c74 <golden_iic_putByte_start+0x44>
+ c100c88:	e28bd000 	add	sp, fp, #0
+ c100c8c:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
+ c100c90:	e12fff1e 	bx	lr
+ c100c94:	01d6000c 	.word	0x01d6000c
+ c100c98:	01d60004 	.word	0x01d60004
+ c100c9c:	01d60000 	.word	0x01d60000
+
+0c100ca0 <golden_iic_putByte>:
+ c100ca0:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+ c100ca4:	e28db000 	add	fp, sp, #0
+ c100ca8:	e24dd00c 	sub	sp, sp, #12
+ c100cac:	e1a03000 	mov	r3, r0
+ c100cb0:	e54b3005 	strb	r3, [fp, #-5]
+ c100cb4:	e59f303c 	ldr	r3, [pc, #60]	; c100cf8 <golden_iic_putByte+0x58>
+ c100cb8:	e55b2005 	ldrb	r2, [fp, #-5]
+ c100cbc:	e5832000 	str	r2, [r3]
+ c100cc0:	e59f3034 	ldr	r3, [pc, #52]	; c100cfc <golden_iic_putByte+0x5c>
+ c100cc4:	e59f2030 	ldr	r2, [pc, #48]	; c100cfc <golden_iic_putByte+0x5c>
+ c100cc8:	e5922000 	ldr	r2, [r2]
+ c100ccc:	e3c22010 	bic	r2, r2, #16
+ c100cd0:	e5832000 	str	r2, [r3]
+ c100cd4:	e1a00000 	nop			; (mov r0, r0)
+ c100cd8:	e59f301c 	ldr	r3, [pc, #28]	; c100cfc <golden_iic_putByte+0x5c>
+ c100cdc:	e5933000 	ldr	r3, [r3]
+ c100ce0:	e2033010 	and	r3, r3, #16
+ c100ce4:	e3530000 	cmp	r3, #0
+ c100ce8:	0afffffa 	beq	c100cd8 <golden_iic_putByte+0x38>
+ c100cec:	e28bd000 	add	sp, fp, #0
+ c100cf0:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
+ c100cf4:	e12fff1e 	bx	lr
+ c100cf8:	01d6000c 	.word	0x01d6000c
+ c100cfc:	01d60000 	.word	0x01d60000
+
+0c100d00 <golden_iic_putByte_stop>:
+ c100d00:	e92d4800 	push	{fp, lr}
+ c100d04:	e28db004 	add	fp, sp, #4
+ c100d08:	e24dd008 	sub	sp, sp, #8
+ c100d0c:	e1a03000 	mov	r3, r0
+ c100d10:	e54b3005 	strb	r3, [fp, #-5]
+ c100d14:	e59f3064 	ldr	r3, [pc, #100]	; c100d80 <golden_iic_putByte_stop+0x80>
+ c100d18:	e55b2005 	ldrb	r2, [fp, #-5]
+ c100d1c:	e5832000 	str	r2, [r3]
+ c100d20:	e59f305c 	ldr	r3, [pc, #92]	; c100d84 <golden_iic_putByte_stop+0x84>
+ c100d24:	e59f2058 	ldr	r2, [pc, #88]	; c100d84 <golden_iic_putByte_stop+0x84>
+ c100d28:	e5922000 	ldr	r2, [r2]
+ c100d2c:	e3c22010 	bic	r2, r2, #16
+ c100d30:	e5832000 	str	r2, [r3]
+ c100d34:	e1a00000 	nop			; (mov r0, r0)
+ c100d38:	e59f3044 	ldr	r3, [pc, #68]	; c100d84 <golden_iic_putByte_stop+0x84>
+ c100d3c:	e5933000 	ldr	r3, [r3]
+ c100d40:	e2033010 	and	r3, r3, #16
+ c100d44:	e3530000 	cmp	r3, #0
+ c100d48:	0afffffa 	beq	c100d38 <golden_iic_putByte_stop+0x38>
+ c100d4c:	e59f3034 	ldr	r3, [pc, #52]	; c100d88 <golden_iic_putByte_stop+0x88>
+ c100d50:	e3a020d0 	mov	r2, #208	; 0xd0
+ c100d54:	e5832000 	str	r2, [r3]
+ c100d58:	e59f3024 	ldr	r3, [pc, #36]	; c100d84 <golden_iic_putByte_stop+0x84>
+ c100d5c:	e59f2020 	ldr	r2, [pc, #32]	; c100d84 <golden_iic_putByte_stop+0x84>
+ c100d60:	e5922000 	ldr	r2, [r2]
+ c100d64:	e3c22010 	bic	r2, r2, #16
+ c100d68:	e5832000 	str	r2, [r3]
+ c100d6c:	e3a00005 	mov	r0, #5
+ c100d70:	ebfffcb6 	bl	c100050 <DelayMs>
+ c100d74:	e24bd004 	sub	sp, fp, #4
+ c100d78:	e8bd4800 	pop	{fp, lr}
+ c100d7c:	e12fff1e 	bx	lr
+ c100d80:	01d6000c 	.word	0x01d6000c
+ c100d84:	01d60000 	.word	0x01d60000
+ c100d88:	01d60004 	.word	0x01d60004
+
+0c100d8c <golden_iic_getByte_start>:
+ c100d8c:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+ c100d90:	e28db000 	add	fp, sp, #0
+ c100d94:	e24dd00c 	sub	sp, sp, #12
+ c100d98:	e1a03000 	mov	r3, r0
+ c100d9c:	e54b3005 	strb	r3, [fp, #-5]
+ c100da0:	e59f3048 	ldr	r3, [pc, #72]	; c100df0 <golden_iic_getByte_start+0x64>
+ c100da4:	e55b2005 	ldrb	r2, [fp, #-5]
+ c100da8:	e5832000 	str	r2, [r3]
+ c100dac:	e59f3040 	ldr	r3, [pc, #64]	; c100df4 <golden_iic_getByte_start+0x68>
+ c100db0:	e3a020b0 	mov	r2, #176	; 0xb0
+ c100db4:	e5832000 	str	r2, [r3]
+ c100db8:	e59f3038 	ldr	r3, [pc, #56]	; c100df8 <golden_iic_getByte_start+0x6c>
+ c100dbc:	e59f2034 	ldr	r2, [pc, #52]	; c100df8 <golden_iic_getByte_start+0x6c>
+ c100dc0:	e5922000 	ldr	r2, [r2]
+ c100dc4:	e3c22010 	bic	r2, r2, #16
+ c100dc8:	e5832000 	str	r2, [r3]
+ c100dcc:	e1a00000 	nop			; (mov r0, r0)
+ c100dd0:	e59f3020 	ldr	r3, [pc, #32]	; c100df8 <golden_iic_getByte_start+0x6c>
+ c100dd4:	e5933000 	ldr	r3, [r3]
+ c100dd8:	e2033010 	and	r3, r3, #16
+ c100ddc:	e3530000 	cmp	r3, #0
+ c100de0:	0afffffa 	beq	c100dd0 <golden_iic_getByte_start+0x44>
+ c100de4:	e28bd000 	add	sp, fp, #0
+ c100de8:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
+ c100dec:	e12fff1e 	bx	lr
+ c100df0:	01d6000c 	.word	0x01d6000c
+ c100df4:	01d60004 	.word	0x01d60004
+ c100df8:	01d60000 	.word	0x01d60000
+
+0c100dfc <golden_iic_getByte>:
+ c100dfc:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+ c100e00:	e28db000 	add	fp, sp, #0
+ c100e04:	e59f3040 	ldr	r3, [pc, #64]	; c100e4c <golden_iic_getByte+0x50>
+ c100e08:	e59f203c 	ldr	r2, [pc, #60]	; c100e4c <golden_iic_getByte+0x50>
+ c100e0c:	e5922000 	ldr	r2, [r2]
+ c100e10:	e3c22010 	bic	r2, r2, #16
+ c100e14:	e5832000 	str	r2, [r3]
+ c100e18:	e1a00000 	nop			; (mov r0, r0)
+ c100e1c:	e59f3028 	ldr	r3, [pc, #40]	; c100e4c <golden_iic_getByte+0x50>
+ c100e20:	e5933000 	ldr	r3, [r3]
+ c100e24:	e2033010 	and	r3, r3, #16
+ c100e28:	e3530000 	cmp	r3, #0
+ c100e2c:	0afffffa 	beq	c100e1c <golden_iic_getByte+0x20>
+ c100e30:	e59f3018 	ldr	r3, [pc, #24]	; c100e50 <golden_iic_getByte+0x54>
+ c100e34:	e5933000 	ldr	r3, [r3]
+ c100e38:	e20330ff 	and	r3, r3, #255	; 0xff
+ c100e3c:	e1a00003 	mov	r0, r3
+ c100e40:	e28bd000 	add	sp, fp, #0
+ c100e44:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
+ c100e48:	e12fff1e 	bx	lr
+ c100e4c:	01d60000 	.word	0x01d60000
+ c100e50:	01d6000c 	.word	0x01d6000c
+
+0c100e54 <golden_iic_getByte_stop>:
+ c100e54:	e92d4800 	push	{fp, lr}
+ c100e58:	e28db004 	add	fp, sp, #4
+ c100e5c:	e24dd010 	sub	sp, sp, #16
+ c100e60:	e1a03000 	mov	r3, r0
+ c100e64:	e54b300d 	strb	r3, [fp, #-13]
+ c100e68:	e59f30a0 	ldr	r3, [pc, #160]	; c100f10 <golden_iic_getByte_stop+0xbc>
+ c100e6c:	e59f209c 	ldr	r2, [pc, #156]	; c100f10 <golden_iic_getByte_stop+0xbc>
+ c100e70:	e5922000 	ldr	r2, [r2]
+ c100e74:	e3c21080 	bic	r1, r2, #128	; 0x80
+ c100e78:	e15b20dd 	ldrsb	r2, [fp, #-13]
+ c100e7c:	e1a02382 	lsl	r2, r2, #7
+ c100e80:	e1812002 	orr	r2, r1, r2
+ c100e84:	e5832000 	str	r2, [r3]
+ c100e88:	e59f3080 	ldr	r3, [pc, #128]	; c100f10 <golden_iic_getByte_stop+0xbc>
+ c100e8c:	e59f207c 	ldr	r2, [pc, #124]	; c100f10 <golden_iic_getByte_stop+0xbc>
+ c100e90:	e5922000 	ldr	r2, [r2]
+ c100e94:	e3c22010 	bic	r2, r2, #16
+ c100e98:	e5832000 	str	r2, [r3]
+ c100e9c:	e1a00000 	nop			; (mov r0, r0)
+ c100ea0:	e59f3068 	ldr	r3, [pc, #104]	; c100f10 <golden_iic_getByte_stop+0xbc>
+ c100ea4:	e5933000 	ldr	r3, [r3]
+ c100ea8:	e2033010 	and	r3, r3, #16
+ c100eac:	e3530000 	cmp	r3, #0
+ c100eb0:	0afffffa 	beq	c100ea0 <golden_iic_getByte_stop+0x4c>
+ c100eb4:	e59f3058 	ldr	r3, [pc, #88]	; c100f14 <golden_iic_getByte_stop+0xc0>
+ c100eb8:	e5933000 	ldr	r3, [r3]
+ c100ebc:	e54b3005 	strb	r3, [fp, #-5]
+ c100ec0:	e59f3050 	ldr	r3, [pc, #80]	; c100f18 <golden_iic_getByte_stop+0xc4>
+ c100ec4:	e3a02090 	mov	r2, #144	; 0x90
+ c100ec8:	e5832000 	str	r2, [r3]
+ c100ecc:	e59f303c 	ldr	r3, [pc, #60]	; c100f10 <golden_iic_getByte_stop+0xbc>
+ c100ed0:	e59f2038 	ldr	r2, [pc, #56]	; c100f10 <golden_iic_getByte_stop+0xbc>
+ c100ed4:	e5922000 	ldr	r2, [r2]
+ c100ed8:	e3c22010 	bic	r2, r2, #16
+ c100edc:	e5832000 	str	r2, [r3]
+ c100ee0:	e3a00005 	mov	r0, #5
+ c100ee4:	ebfffc59 	bl	c100050 <DelayMs>
+ c100ee8:	e59f3020 	ldr	r3, [pc, #32]	; c100f10 <golden_iic_getByte_stop+0xbc>
+ c100eec:	e59f201c 	ldr	r2, [pc, #28]	; c100f10 <golden_iic_getByte_stop+0xbc>
+ c100ef0:	e5922000 	ldr	r2, [r2]
+ c100ef4:	e3822080 	orr	r2, r2, #128	; 0x80
+ c100ef8:	e5832000 	str	r2, [r3]
+ c100efc:	e55b3005 	ldrb	r3, [fp, #-5]
+ c100f00:	e1a00003 	mov	r0, r3
+ c100f04:	e24bd004 	sub	sp, fp, #4
+ c100f08:	e8bd4800 	pop	{fp, lr}
+ c100f0c:	e12fff1e 	bx	lr
+ c100f10:	01d60000 	.word	0x01d60000
+ c100f14:	01d6000c 	.word	0x01d6000c
+ c100f18:	01d60004 	.word	0x01d60004
+
+Disassembly of section .init:
+
+0c100f1c <_init>:
+ c100f1c:	e1a0c00d 	mov	ip, sp
+ c100f20:	e92ddff8 	push	{r3, r4, r5, r6, r7, r8, r9, sl, fp, ip, lr, pc}
+ c100f24:	e24cb004 	sub	fp, ip, #4
+ c100f28:	e24bd028 	sub	sp, fp, #40	; 0x28
+ c100f2c:	e89d6ff0 	ldm	sp, {r4, r5, r6, r7, r8, r9, sl, fp, sp, lr}
+ c100f30:	e12fff1e 	bx	lr
+
+Disassembly of section .fini:
+
+0c100f34 <_fini>:
+ c100f34:	e1a0c00d 	mov	ip, sp
+ c100f38:	e92ddff8 	push	{r3, r4, r5, r6, r7, r8, r9, sl, fp, ip, lr, pc}
+ c100f3c:	e24cb004 	sub	fp, ip, #4
+ c100f40:	e24bd028 	sub	sp, fp, #40	; 0x28
+ c100f44:	e89d6ff0 	ldm	sp, {r4, r5, r6, r7, r8, r9, sl, fp, sp, lr}
+ c100f48:	e12fff1e 	bx	lr
