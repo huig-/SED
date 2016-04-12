@@ -8,6 +8,8 @@ extern void iic_init();
 extern void D8Led_symbol(int value);
 extern void at24c04_bytewrite( uint16 addr, uint8 data );
 extern void at24c04_byteread( uint16 addr, uint8 *data );
+extern void Eint4567_init(void);
+extern void keyboard_init();
 
 int val;
 
@@ -19,25 +21,7 @@ void Main( void )
     sys_init();
     iic_init();
     D8Led_symbol(8);//8
-
-    //Inicializamos la EEPROM
-    for( i=0; i<AT24C04_DEPTH; i++ ){
-      val = (uint8)i%16;
-      at24c04_bytewrite( i, val );
-    }
-
-    for( i=0; i<AT24C04_DEPTH; i++ ){
-    	golden_at24c04_byteread( i, &buffer[i] );
-    }
-
-    DelayMs(100);
-
-    for( i=0; i<AT24C04_DEPTH; i++ ){
-    	golden_at24c04_byteread( i, &buffer[i] );
-      val = buffer[i] & 0xF;
-      D8Led_symbol(val);
-      DelayMs(100);
-    }
-
+    Eint4567_init();
+    keyboard_init();
     while( 1 );
 }

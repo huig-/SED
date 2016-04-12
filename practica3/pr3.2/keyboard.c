@@ -1,7 +1,8 @@
 /*--- Ficheros de cabecera ---*/
 #include "44b.h"
-#include "44blib.h"
+//#include "44blib.h"
 #include "def.h"
+#include "common_types.h"
 /*--- Definición de macros ---*/
 #define KEY_VALUE_MASK 0xF
 /*--- Variables globales ---*/
@@ -9,8 +10,7 @@ volatile UCHAR *keyboard_base = (UCHAR *)0x06000000;
 int key;
 extern int state;
 uint8 addr; //address to access
-int pos; //indicates the index of addr
-uint8 byte; //byte to write in mem
+uint8 bytes; //byte to write in mem
 /*--- Funciones externas ---*/
 void D8Led_symbol(int value);
 /*--- Declaracion de funciones ---*/
@@ -21,7 +21,6 @@ int key_read();
 void keyboard_init()
 {
 	addr = 0x0;
-	pos = 7;
 	/* Configurar el puerto G (si no lo estuviese ya) */	
 		// Establece la funcion de los pines (EINT0-7)
 	rPCONG = rPCONG | 0xC;
@@ -39,7 +38,7 @@ void keyboard_init()
 		// Habilita int. vectorizadas y la linea IRQ (FIQ no) mediante INTCON
 	rINTCON = 0x1;
 	/* Habilitar linea EINT1 */
-	rINTMSK = ~(BIT_EINT1 | BIT_GLOBAL);
+	//rINTMSK = ~(BIT_EINT1 | BIT_GLOBAL);
 	/* Por precaucion, se vuelven a borrar los bits de INTPND correspondientes*/
 	rI_ISPC = 0x3ffffff;
 }
@@ -52,15 +51,17 @@ void KeyboardInt(void)
 	/* Si la tecla se ha identificado, visualizarla en el 8SEG*/
 	if(key > -1)
 	{
-		if (state == 1 || state == 2) {
-		    addr = addr + (key << pos); 
-		    pos -= 1;
-		    if (pos == 0) pos = 7;
+		if (state == 1) {
+			addr = key << 4;
 		}
-		else if (state == 3 || state == 4) {
-		    byte = byte + (key << pos);
-		    pos -= 1;
-		    if (pos == 0) pos = 7;
+		else if (state == 2) {
+		    addr = addr + key;
+		}
+		else if (state == 3) {
+			bytes = key << 4;
+		}
+		else if (state == 4) {
+		    bytes = bytes + key;
 		}
 	}
 	/* Esperar a se libere la tecla: consultar bit 1 del registro de datos del puerto G */

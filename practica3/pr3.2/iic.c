@@ -12,7 +12,7 @@ void iic_init( void )
     // PF[1] = IICSDA, PF[0] = IICSCL
     rPCONF = 0xA;
     // Pull-up enable
-    rPUPF = 0x0;
+    rPUPF &= 0xFC;
 	
     //Configurar la dirección del slave
     rIICADD = S3C44B0X_SLAVE_ADDRESS;
@@ -34,7 +34,7 @@ void iic_putByte_start( uint8 byte )
 	// Comienza la transmisión (borrando pending bit del IICCON)
 	rIICCON= rIICCON & 0xef;
 	// Espera la recepción de ACK
-	while ((rIICSTAT & 0x1) == 1);
+	while ((rIICCON & 0x10) == 0);//while ((rIICSTAT & 0x1) == 1);
 }
 
 void iic_putByte( uint8 byte )
@@ -44,7 +44,7 @@ void iic_putByte( uint8 byte )
 	// Comienza la transmisión del dato (borrando pending bit del IICCON)
 	rIICCON= rIICCON & 0xef;
     // Espera la recepción de ACK  
-	while ((rIICSTAT & 0x1) == 1);
+	while ((rIICCON & 0x10) == 0);
 };
 
 void iic_putByte_stop( uint8 byte )
@@ -53,8 +53,8 @@ void iic_putByte_stop( uint8 byte )
 	rIICDS = byte;
 	// Comienza la trasmisión del dato (borrando pending bit del IICCON)
 	rIICCON= rIICCON & 0xef;
-    // Espera la recepción de ACK  
-	while ((rIICSTAT & 0x1) == 1);
+    // Espera la recepción de ACK
+	while ((rIICCON & 0x10) == 0);
     
     // Máster Tx, stop condition, Tx/Rx habilitada
 	rIICSTAT= 0xd0;
@@ -74,7 +74,7 @@ void iic_getByte_start( uint8 byte )
     // Comienza la transmisión (borrando pending bit del IICCON)
 	rIICCON= rIICCON & 0xef;
     // Espera la rececpión de ACK
-	while ((rIICSTAT & 0x1) == 1);
+	while ((rIICCON & 0x10) == 0);
 }
 
 uint8 iic_getByte( void )
@@ -95,7 +95,7 @@ uint8 iic_getByte_stop( int8 ack )
     // Reanuda la recepción (borrando pending bit del IICCON)
     rIICCON= rIICCON & 0xef;
 	// Espera la recepción del dato
-    while ((rIICCON & 0x10) == 0);
+    while (!(rIICCON & 0x10));
     byte = rIICDS;	// Lee el dato
 
    	// Máster Rx, stop condition, Tx/Rx habilitada

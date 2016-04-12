@@ -1,14 +1,15 @@
 /*--- ficheros de cabecera ---*/
-#include "44blib.h"
 #include "44b.h"
 #include "def.h"
+#include "common_types.h"
+
 /*--- variables globales ---*/
 int symbol = 0;
 int row = 1;
 int state = 0;
-int old_addr;
-extern int addr;
-extern int byte;
+uint8 old_addr = 0;
+extern uint8 addr;
+extern uint8 bytes;
 /*--- funciones externas ---*/
 //extern void D8Led_Symbol(int value);
 /*--- declaracion de funciones ---*/
@@ -16,8 +17,8 @@ void Eint4567_ISR(void) __attribute__ ((interrupt ("IRQ")));
 void Eint4567_init(void);
 extern void leds_switch ();
 extern void D8Led_symbol(int value);
-extern void at24c04_bytewrite( uint16 addr, uint8 data );
-extern void at24c04_byteread( uint16 addr, uint8 *data );
+//extern void at24c04_bytewrite( uint16 addr, uint8 data );
+//extern void at24c04_byteread( uint16 addr, uint8 *data );
 
 
 
@@ -33,6 +34,7 @@ int esta_pulsado(void)
 
 void Eint4567_init(void)
 {
+	state = 0;
 /* Configuracion del controlador de interrupciones */
 	// Borra EXTINTPND escribiendo 1s en el propio registro
 	rEXTINTPND = 0xf;
@@ -43,7 +45,7 @@ void Eint4567_init(void)
 	// Habilita int. vectorizadas y la linea IRQ (FIQ no) mediante INTCON
 	rINTCON = 0x1;
 	// Enmascara todas las lineas excepto Eint4567 y el bit global (INTMSK)
-	rINTMSK = ~(BIT_EINT4567 | BIT_GLOBAL);
+	rINTMSK = ~(BIT_EINT1 | BIT_EINT4567 | BIT_GLOBAL);
 	// Establecer la rutina de servicio para Eint4567
 	pISR_EINT4567 = (unsigned)Eint4567_ISR;
 /* Configuracion del puerto G */
@@ -65,7 +67,7 @@ void Eint4567_ISR(void)
 	if ((rPDATG & (0x1<<6)) == 0) {
 	    state = (state + 1) % 6;
 	    if (state == 5) {
-		at24c04_bytewrite( addr, byte );
+		at24c04_bytewrite( addr, bytes );
 		old_addr = addr;
 	    }
 	}
