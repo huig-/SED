@@ -103,107 +103,103 @@
  1128 007c BE304BE1 		strh	r3, [fp, #-14]	@ movhi
  1129 0080 090000EA 		b	.L4
  1130              	.L5:
- 1131              	.LBB2:
-  30:../main.c     ****     	golden_at24c04_byteread( i, &buffer[i] );
- 1132              		.loc 1 30 0 discriminator 2
- 1133 0084 BE205BE1 		ldrh	r2, [fp, #-14]
- 1134 0088 BE305BE1 		ldrh	r3, [fp, #-14]
- 1135 008c 211E4BE2 		sub	r1, fp, #528
- 1136 0090 033081E0 		add	r3, r1, r3
- 1137 0094 0200A0E1 		mov	r0, r2
- 1138 0098 0310A0E1 		mov	r1, r3
- 1139 009c FEFFFFEB 		bl	golden_at24c04_byteread
- 1140              	.LBE2:
+  30:../main.c     ****     	at24c04_byteread( i, &buffer[i] );
+ 1131              		.loc 1 30 0 discriminator 2
+ 1132 0084 BE305BE1 		ldrh	r3, [fp, #-14]
+ 1133 0088 212E4BE2 		sub	r2, fp, #528
+ 1134 008c 033082E0 		add	r3, r2, r3
+ 1135 0090 BE205BE1 		ldrh	r2, [fp, #-14]
+ 1136 0094 0200A0E1 		mov	r0, r2
+ 1137 0098 0310A0E1 		mov	r1, r3
+ 1138 009c FEFFFFEB 		bl	at24c04_byteread
   29:../main.c     ****     for( i=0; i<AT24C04_DEPTH; i++ ){
- 1141              		.loc 1 29 0 discriminator 2
- 1142 00a0 BE305BE1 		ldrh	r3, [fp, #-14]	@ movhi
- 1143 00a4 013083E2 		add	r3, r3, #1
- 1144 00a8 BE304BE1 		strh	r3, [fp, #-14]	@ movhi
- 1145              	.L4:
+ 1139              		.loc 1 29 0 discriminator 2
+ 1140 00a0 BE305BE1 		ldrh	r3, [fp, #-14]	@ movhi
+ 1141 00a4 013083E2 		add	r3, r3, #1
+ 1142 00a8 BE304BE1 		strh	r3, [fp, #-14]	@ movhi
+ 1143              	.L4:
   29:../main.c     ****     for( i=0; i<AT24C04_DEPTH; i++ ){
- 1146              		.loc 1 29 0 is_stmt 0 discriminator 1
- 1147 00ac BE205BE1 		ldrh	r2, [fp, #-14]
- 1148 00b0 94309FE5 		ldr	r3, .L9+4
- 1149 00b4 030052E1 		cmp	r2, r3
- 1150 00b8 F1FFFF9A 		bls	.L5
+ 1144              		.loc 1 29 0 is_stmt 0 discriminator 1
+ 1145 00ac BE205BE1 		ldrh	r2, [fp, #-14]
+ 1146 00b0 94309FE5 		ldr	r3, .L9+4
+ 1147 00b4 030052E1 		cmp	r2, r3
+ 1148 00b8 F1FFFF9A 		bls	.L5
   31:../main.c     ****     }
   32:../main.c     **** 
   33:../main.c     ****     DelayMs(100);
- 1151              		.loc 1 33 0 is_stmt 1
- 1152 00bc 6400A0E3 		mov	r0, #100
- 1153 00c0 FEFFFFEB 		bl	DelayMs
+ 1149              		.loc 1 33 0 is_stmt 1
+ 1150 00bc 6400A0E3 		mov	r0, #100
+ 1151 00c0 FEFFFFEB 		bl	DelayMs
   34:../main.c     **** 
   35:../main.c     ****     for( i=0; i<AT24C04_DEPTH; i++ ){
- 1154              		.loc 1 35 0
- 1155 00c4 0030A0E3 		mov	r3, #0
- 1156 00c8 BE304BE1 		strh	r3, [fp, #-14]	@ movhi
- 1157 00cc 180000EA 		b	.L6
- 1158              	.L7:
- 1159              	.LBB3:
-  36:../main.c     ****     	golden_at24c04_byteread( i, &buffer[i] );
- 1160              		.loc 1 36 0 discriminator 2
- 1161 00d0 BE205BE1 		ldrh	r2, [fp, #-14]
- 1162 00d4 BE305BE1 		ldrh	r3, [fp, #-14]
- 1163 00d8 211E4BE2 		sub	r1, fp, #528
- 1164 00dc 033081E0 		add	r3, r1, r3
- 1165 00e0 0200A0E1 		mov	r0, r2
- 1166 00e4 0310A0E1 		mov	r1, r3
- 1167 00e8 FEFFFFEB 		bl	golden_at24c04_byteread
+ 1152              		.loc 1 35 0
+ 1153 00c4 0030A0E3 		mov	r3, #0
+ 1154 00c8 BE304BE1 		strh	r3, [fp, #-14]	@ movhi
+ 1155 00cc 180000EA 		b	.L6
+ 1156              	.L7:
+  36:../main.c     ****     	at24c04_byteread( i, &buffer[i] );
+ 1157              		.loc 1 36 0 discriminator 2
+ 1158 00d0 BE305BE1 		ldrh	r3, [fp, #-14]
+ 1159 00d4 212E4BE2 		sub	r2, fp, #528
+ 1160 00d8 033082E0 		add	r3, r2, r3
+ 1161 00dc BE205BE1 		ldrh	r2, [fp, #-14]
+ 1162 00e0 0200A0E1 		mov	r0, r2
+ 1163 00e4 0310A0E1 		mov	r1, r3
+ 1164 00e8 FEFFFFEB 		bl	at24c04_byteread
   37:../main.c     ****       val = buffer[i] & 0xF;
- 1168              		.loc 1 37 0 discriminator 2
- 1169 00ec BE205BE1 		ldrh	r2, [fp, #-14]
- 1170 00f0 58309FE5 		ldr	r3, .L9+8
- 1171 00f4 0C104BE2 		sub	r1, fp, #12
- 1172 00f8 022081E0 		add	r2, r1, r2
- 1173 00fc 033082E0 		add	r3, r2, r3
- 1174 0100 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
- 1175 0104 0F2003E2 		and	r2, r3, #15
- 1176 0108 38309FE5 		ldr	r3, .L9
- 1177 010c 002083E5 		str	r2, [r3, #0]
+ 1165              		.loc 1 37 0 discriminator 2
+ 1166 00ec BE205BE1 		ldrh	r2, [fp, #-14]
+ 1167 00f0 58309FE5 		ldr	r3, .L9+8
+ 1168 00f4 0C104BE2 		sub	r1, fp, #12
+ 1169 00f8 022081E0 		add	r2, r1, r2
+ 1170 00fc 033082E0 		add	r3, r2, r3
+ 1171 0100 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1172 0104 0F2003E2 		and	r2, r3, #15
+ 1173 0108 38309FE5 		ldr	r3, .L9
+ 1174 010c 002083E5 		str	r2, [r3, #0]
   38:../main.c     ****       D8Led_symbol(val);
- 1178              		.loc 1 38 0 discriminator 2
- 1179 0110 30309FE5 		ldr	r3, .L9
- 1180 0114 003093E5 		ldr	r3, [r3, #0]
- 1181 0118 0300A0E1 		mov	r0, r3
- 1182 011c FEFFFFEB 		bl	D8Led_symbol
+ 1175              		.loc 1 38 0 discriminator 2
+ 1176 0110 30309FE5 		ldr	r3, .L9
+ 1177 0114 003093E5 		ldr	r3, [r3, #0]
+ 1178 0118 0300A0E1 		mov	r0, r3
+ 1179 011c FEFFFFEB 		bl	D8Led_symbol
   39:../main.c     ****       DelayMs(100);
- 1183              		.loc 1 39 0 discriminator 2
- 1184 0120 6400A0E3 		mov	r0, #100
- 1185 0124 FEFFFFEB 		bl	DelayMs
- 1186              	.LBE3:
+ 1180              		.loc 1 39 0 discriminator 2
+ 1181 0120 6400A0E3 		mov	r0, #100
+ 1182 0124 FEFFFFEB 		bl	DelayMs
   35:../main.c     ****     for( i=0; i<AT24C04_DEPTH; i++ ){
- 1187              		.loc 1 35 0 discriminator 2
- 1188 0128 BE305BE1 		ldrh	r3, [fp, #-14]	@ movhi
- 1189 012c 013083E2 		add	r3, r3, #1
- 1190 0130 BE304BE1 		strh	r3, [fp, #-14]	@ movhi
- 1191              	.L6:
+ 1183              		.loc 1 35 0 discriminator 2
+ 1184 0128 BE305BE1 		ldrh	r3, [fp, #-14]	@ movhi
+ 1185 012c 013083E2 		add	r3, r3, #1
+ 1186 0130 BE304BE1 		strh	r3, [fp, #-14]	@ movhi
+ 1187              	.L6:
   35:../main.c     ****     for( i=0; i<AT24C04_DEPTH; i++ ){
- 1192              		.loc 1 35 0 is_stmt 0 discriminator 1
- 1193 0134 BE205BE1 		ldrh	r2, [fp, #-14]
- 1194 0138 0C309FE5 		ldr	r3, .L9+4
- 1195 013c 030052E1 		cmp	r2, r3
- 1196 0140 E2FFFF9A 		bls	.L7
- 1197              	.L8:
+ 1188              		.loc 1 35 0 is_stmt 0 discriminator 1
+ 1189 0134 BE205BE1 		ldrh	r2, [fp, #-14]
+ 1190 0138 0C309FE5 		ldr	r3, .L9+4
+ 1191 013c 030052E1 		cmp	r2, r3
+ 1192 0140 E2FFFF9A 		bls	.L7
+ 1193              	.L8:
   40:../main.c     ****     }
   41:../main.c     **** 
   42:../main.c     ****     while( 1 );
- 1198              		.loc 1 42 0 is_stmt 1 discriminator 1
- 1199 0144 FEFFFFEA 		b	.L8
- 1200              	.L10:
- 1201              		.align	2
- 1202              	.L9:
- 1203 0148 00000000 		.word	val
- 1204 014c FF010000 		.word	511
- 1205 0150 FCFDFFFF 		.word	-516
- 1206              		.cfi_endproc
- 1207              	.LFE0:
- 1209              	.Letext0:
+ 1194              		.loc 1 42 0 is_stmt 1 discriminator 1
+ 1195 0144 FEFFFFEA 		b	.L8
+ 1196              	.L10:
+ 1197              		.align	2
+ 1198              	.L9:
+ 1199 0148 00000000 		.word	val
+ 1200 014c FF010000 		.word	511
+ 1201 0150 FCFDFFFF 		.word	-516
+ 1202              		.cfi_endproc
+ 1203              	.LFE0:
+ 1205              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
                             *COM*:00000004 val
-C:\Users\USUARI~1\AppData\Local\Temp\cct0cULg.s:1069   .text:00000000 $a
-C:\Users\USUARI~1\AppData\Local\Temp\cct0cULg.s:1072   .text:00000000 Main
-C:\Users\USUARI~1\AppData\Local\Temp\cct0cULg.s:1203   .text:00000148 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccnvn3SH.s:1069   .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccnvn3SH.s:1072   .text:00000000 Main
+C:\Users\USUARI~1\AppData\Local\Temp\ccnvn3SH.s:1199   .text:00000148 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
@@ -211,5 +207,5 @@ sys_init
 iic_init
 D8Led_symbol
 at24c04_bytewrite
-golden_at24c04_byteread
+at24c04_byteread
 DelayMs

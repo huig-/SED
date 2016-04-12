@@ -6,7 +6,9 @@
 C_SRCS += \
 ../8led.c \
 ../at24C04.c \
+../button.c \
 ../iic.c \
+../keyboard.c \
 ../main.c 
 
 ASM_SRCS += \
@@ -15,14 +17,18 @@ ASM_SRCS += \
 OBJS += \
 ./8led.o \
 ./at24C04.o \
+./button.o \
 ./iic.o \
 ./init.o \
+./keyboard.o \
 ./main.o 
 
 C_DEPS += \
 ./8led.d \
 ./at24C04.d \
+./button.d \
 ./iic.d \
+./keyboard.d \
 ./main.d 
 
 ASM_DEPS += \
@@ -33,14 +39,14 @@ ASM_DEPS += \
 %.o: ../%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: ARM Sourcery Windows GCC C Compiler'
-	arm-none-eabi-gcc -I"C:\hlocal\EclipseARMwspace\prac3\commonEclipse" -O0 -Wall -Wa,-adhlns="$@.lst" -c -fmessage-length=0 -mapcs-frame -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "$@" "$<"
+	arm-none-eabi-gcc -I"C:\hlocal\EclipseARMwspace\pr3.1\commonEclipse" -O0 -Wall -Wa,-adhlns="$@.lst" -c -fmessage-length=0 -mapcs-frame -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
 %.o: ../%.asm
 	@echo 'Building file: $<'
 	@echo 'Invoking: ARM Sourcery Windows GCC Assembler'
-	arm-none-eabi-gcc -x assembler-with-cpp -I"C:\hlocal\EclipseARMwspace\prac3\commonEclipse" -Wall -Wa,-adhlns="$@.lst" -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "$@" "$<"
+	arm-none-eabi-gcc -x assembler-with-cpp -I"C:\hlocal\EclipseARMwspace\pr3.1\commonEclipse" -Wall -Wa,-adhlns="$@.lst" -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
