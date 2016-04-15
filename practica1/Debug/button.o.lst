@@ -1,0 +1,174 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 18, 4
+  11              		.file	"button.c"
+  21              	.Ltext0:
+  22              		.file 1 "../button.c"
+ 1952              		.align	2
+ 1955              	symbol:
+ 1956 0000 00000000 		.space	4
+ 1957              		.text
+ 1958              		.align	2
+ 1959              		.global	button_init
+ 1961              	button_init:
+ 1962              	.LFB0:
+   1:../button.c   **** /*--- ficheros de cabecera ---*/
+   2:../button.c   **** #include "44blib.h"
+   3:../button.c   **** #include "44b.h"
+   4:../button.c   **** #include "def.h"
+   5:../button.c   **** /*--- variables globales ---*/
+   6:../button.c   **** int symbol = 0;
+   7:../button.c   **** /*--- funciones externas ---*/
+   8:../button.c   **** //extern void D8Led_Symbol(int value);
+   9:../button.c   **** /*--- declaracion de funciones ---*/
+  10:../button.c   **** void Eint4567_ISR(void) __attribute__ ((interrupt ("IRQ")));
+  11:../button.c   **** void Eint4567_init(void);
+  12:../button.c   **** extern void leds_switch ();
+  13:../button.c   **** extern void D8Led_symbol(int value);
+  14:../button.c   **** 
+  15:../button.c   **** /*--- codigo de funciones ---*/
+  16:../button.c   **** 
+  17:../button.c   **** void button_init(void)
+  18:../button.c   **** {
+ 1963              		.loc 1 18 0
+ 1964              		.cfi_startproc
+ 1965              		@ Function supports interworking.
+ 1966              		@ args = 0, pretend = 0, frame = 0
+ 1967              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1968 0000 0DC0A0E1 		mov	ip, sp
+ 1969              	.LCFI0:
+ 1970              		.cfi_def_cfa_register 12
+ 1971 0004 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 1972 0008 04B04CE2 		sub	fp, ip, #4
+ 1973              		.cfi_offset 14, -8
+ 1974              		.cfi_offset 13, -12
+ 1975              		.cfi_offset 11, -16
+ 1976              	.LCFI1:
+ 1977              		.cfi_def_cfa 11, 4
+  19:../button.c   **** 	//rPCONG = rPCONG & ~(0x1<<12);
+  20:../button.c   **** 	//rPCONG = rPCONG & ~(0x1<<13);
+  21:../button.c   **** 	//rPCONG = rPCONG & ~(0x1<<14);
+  22:../button.c   **** 	//rPCONG = rPCONG & ~(0x1<<15);
+  23:../button.c   **** 	rPCONG = 0x0;
+ 1978              		.loc 1 23 0
+ 1979 000c 1C309FE5 		ldr	r3, .L2
+ 1980 0010 0020A0E3 		mov	r2, #0
+ 1981 0014 002083E5 		str	r2, [r3, #0]
+  24:../button.c   **** 	rPUPG = 0x0;
+ 1982              		.loc 1 24 0
+ 1983 0018 14309FE5 		ldr	r3, .L2+4
+ 1984 001c 0020A0E3 		mov	r2, #0
+ 1985 0020 002083E5 		str	r2, [r3, #0]
+  25:../button.c   **** }
+ 1986              		.loc 1 25 0
+ 1987 0024 0CD04BE2 		sub	sp, fp, #12
+ 1988 0028 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 1989 002c 1EFF2FE1 		bx	lr
+ 1990              	.L3:
+ 1991              		.align	2
+ 1992              	.L2:
+ 1993 0030 4000D201 		.word	30539840
+ 1994 0034 4800D201 		.word	30539848
+ 1995              		.cfi_endproc
+ 1996              	.LFE0:
+ 1998              		.align	2
+ 1999              		.global	Eint4567_init
+ 2001              	Eint4567_init:
+ 2002              	.LFB1:
+  26:../button.c   **** void Eint4567_init(void)
+  27:../button.c   **** {
+ 2003              		.loc 1 27 0
+ 2004              		.cfi_startproc
+ 2005              		@ Function supports interworking.
+ 2006              		@ args = 0, pretend = 0, frame = 0
+ 2007              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2008 0038 0DC0A0E1 		mov	ip, sp
+ 2009              	.LCFI2:
+ 2010              		.cfi_def_cfa_register 12
+ 2011 003c 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 2012 0040 04B04CE2 		sub	fp, ip, #4
+ 2013              		.cfi_offset 14, -8
+ 2014              		.cfi_offset 13, -12
+ 2015              		.cfi_offset 11, -16
+ 2016              	.LCFI3:
+ 2017              		.cfi_def_cfa 11, 4
+  28:../button.c   **** /* Configuracion del controlador de interrupciones */
+  29:../button.c   **** 	// Borra EXTINTPND escribiendo 1s en el propio registro
+  30:../button.c   **** 	// Borra INTPND escribiendo 1s en I_ISPC
+  31:../button.c   **** 	// Configura las lineas como de tipo IRQ mediante INTMOD
+  32:../button.c   **** 	// Habilita int. vectorizadas y la linea IRQ (FIQ no) mediante INTCON
+  33:../button.c   **** 	// Enmascara todas las lineas excepto Eint4567 y el bit global (INTMSK)
+  34:../button.c   **** 	// Establecer la rutina de servicio para Eint4567
+  35:../button.c   **** /* Configuracion del puerto G */
+  36:../button.c   **** 	// Establece la funcion de los pines (EINT7-EINT0)
+  37:../button.c   **** 	//Habilita las resistencias de pull-up
+  38:../button.c   **** 	// Configura las lineas de int. como de flanco de bajada mediante EXTINT
+  39:../button.c   **** /* Por precaucion, se vuelven a borrar los bits de INTPND y EXTINTPND */
+  40:../button.c   **** }
+ 2018              		.loc 1 40 0
+ 2019 0044 0CD04BE2 		sub	sp, fp, #12
+ 2020 0048 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 2021 004c 1EFF2FE1 		bx	lr
+ 2022              		.cfi_endproc
+ 2023              	.LFE1:
+ 2025              		.align	2
+ 2026              		.global	Eint4567_ISR
+ 2028              	Eint4567_ISR:
+ 2029              	.LFB2:
+  41:../button.c   **** 
+  42:../button.c   **** /*COMENTAR PARA LA PARTE DEL 8-SEGMENTOS
+  43:../button.c   **** DESCOMENTAR PARA LA PRIMERA PARTE CON INTERRUPCIONES
+  44:../button.c   **** */
+  45:../button.c   **** void Eint4567_ISR(void)
+  46:../button.c   **** {
+ 2030              		.loc 1 46 0
+ 2031              		.cfi_startproc
+ 2032              		@ Interrupt Service Routine.
+ 2033              		@ args = 0, pretend = 0, frame = 0
+ 2034              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2035 0050 04C02DE5 		str	ip, [sp, #-4]!
+ 2036 0054 0DC0A0E1 		mov	ip, sp
+ 2037              	.LCFI4:
+ 2038              		.cfi_def_cfa_register 12
+ 2039 0058 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 2040 005c 04B04CE2 		sub	fp, ip, #4
+ 2041              		.cfi_offset 14, -8
+ 2042              		.cfi_offset 13, -12
+ 2043              		.cfi_offset 11, -16
+ 2044              	.LCFI5:
+ 2045              		.cfi_def_cfa 11, 4
+  47:../button.c   **** 	//Conmutamos LEDs
+  48:../button.c   **** 	//Delay para eliminar rebotes
+  49:../button.c   **** 	
+  50:../button.c   **** 	/*Atendemos interrupciones*/
+  51:../button.c   **** 	//Borramos EXTINTPND ambas líneas EINT7 y EINT6
+  52:../button.c   **** 	//Borramos INTPND usando ISPC
+  53:../button.c   **** }
+ 2046              		.loc 1 53 0
+ 2047 0060 0CD04BE2 		sub	sp, fp, #12
+ 2048 0064 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 2049 0068 04C09DE4 		ldmfd	sp!, {ip}
+ 2050 006c 04F05EE2 		subs	pc, lr, #4
+ 2051              		.cfi_endproc
+ 2052              	.LFE2:
+ 2054              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 button.c
+C:\Users\USUARI~1\AppData\Local\Temp\ccAoPbRg.s:1955   .bss:00000000 symbol
+C:\Users\USUARI~1\AppData\Local\Temp\ccAoPbRg.s:1952   .bss:00000000 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccAoPbRg.s:1958   .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccAoPbRg.s:1961   .text:00000000 button_init
+C:\Users\USUARI~1\AppData\Local\Temp\ccAoPbRg.s:1993   .text:00000030 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccAoPbRg.s:1998   .text:00000038 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccAoPbRg.s:2001   .text:00000038 Eint4567_init
+C:\Users\USUARI~1\AppData\Local\Temp\ccAoPbRg.s:2028   .text:00000050 Eint4567_ISR
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS
