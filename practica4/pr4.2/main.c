@@ -15,8 +15,6 @@ extern void D8Led_symbol(int value);
 extern void leds_off();
 extern void led1_on();
 extern void leds_switch();
-extern void increaseFreq();
-extern void decreaseFreq();
 
 /*--- variables globales ---*/
 char str_send[10] = "\nSED-P4 >\0";
@@ -36,20 +34,19 @@ int Main(void){
 	//*** Uart_Config(); // configuración de interrupciones y buffers
 	Uart_Printf(str_send); // mostrar cabecera
 
-	 // D8Led_symbol(8);//8
+	// D8Led_symbol(8);//8
 	leds_off();
-	    Eint4567_init();
-	   // keyboard_init();
-	    while( 1 ){
+	Eint4567_init();
+
 
 	/*while(1){
-		*pt_str = Uart_Getch(); // leer caracter
+	 *pt_str = Uart_Getch(); // leer caracter
 
-		
+
 		 Uart_SendByte(*pt_str); // enviar caracter
 		if (*pt_str == CR_char){ // retorno de carro?
 			if (pt_str != str) { // si cadena no vacia, mostrar
-				*(++pt_str) = '\0'; // terminar cadena antes
+	 *(++pt_str) = '\0'; // terminar cadena antes
 				Uart_Printf("\n");
 				Uart_Printf(str);
 			}
@@ -60,27 +57,36 @@ int Main(void){
 			Uart_Printf(str_error); // avisar del desbordamiento
 			pt_str = str;
 		}
-		*/
-		while(1){
-			*pt_str = Uart_Getch1(); // leer caracter
+	 */
+	while(1){
+		*pt_str = Uart_Getch1(); // leer caracter
 
 
-			 Uart_SendByte1(*pt_str); // enviar caracter
-			if (*pt_str == CR_char){ // retorno de carro?
-				if (pt_str != str) { // si cadena no vacia, mostrar
-					*(++pt_str) = '\0'; // terminar cadena antes
-					Uart_Printf1("\n");
-					Uart_Printf1(str);
-				}
+		Uart_SendByte1(*pt_str); // enviar caracter
+		if (*pt_str == CR_char){ // retorno de carro?
+			if (pt_str != str) { // si cadena no vacia, mostrar
+				if(led1>0)
+					led1_on();
+				else
+					led1_off();
+
+				led1 = led1 * (-1);
+				if(led2>0)
+					led2_on();
+				else
+					led2_off();
+
+				led2 = led2 * (-1);
+			}
+			else{
 				Uart_Printf1(str_send); // preparar siguiente
 				pt_str = str;
 			}
-			else if (++pt_str == str + 255){ // desbordamiento?
-				Uart_Printf1(str_error); // avisar del desbordamiento
-				pt_str = str;
-			}
-
+		}
+		else if (++pt_str == str + 255){ // desbordamiento?
+			Uart_Printf1(str_error); // avisar del desbordamiento
+			pt_str = str;
 		}
 
-	    }
+	}
 }

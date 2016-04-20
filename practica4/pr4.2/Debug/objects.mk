@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lg -lgcc -lnosys
+LIBS := -lgcc -lc -lnosys
 
