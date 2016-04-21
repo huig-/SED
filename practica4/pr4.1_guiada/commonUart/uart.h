@@ -24,11 +24,6 @@ char Uart_Getch(void);
 void Uart_SendByte(int data);
 void Uart_SendString(char *pt);
 void Uart_Printf(char *fmt,...);
-void Uart_TxEmpty1(void);
-char Uart_Getch1(void);
-void Uart_SendByte1(int data);
-void Uart_SendString1(char *pt);
-void Uart_Printf1(char *fmt,...);
 
 #ifdef __cplusplus
 }

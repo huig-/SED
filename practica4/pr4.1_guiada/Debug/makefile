@@ -28,47 +28,47 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_FLASH += \
-pr4.1.hex \
+practica4.hex \
 
 SECONDARY_LIST += \
-pr4.1.lst \
+practica4.lst \
 
 SECONDARY_SIZE += \
-pr4.1.siz \
+practica4.siz \
 
 
 # All Target
-all: pr4.1.elf secondary-outputs
+all: practica4.elf secondary-outputs
 
 # Tool invocations
-pr4.1.elf: $(OBJS) $(USER_OBJS)
+practica4.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Sourcery Windows GCC C Linker'
-	arm-none-eabi-gcc -T"C:\hlocal\EclipseARMwspace\pr4.1\commonUart\ram_ice.ld" -nostartfiles -L"$eclipse homeg/../sourcery-g++-lite-arm-2011.03/arm-none-eabi/lib" -L"$eclipse homeg/../sourcery-g++-lite-arm-2011.03/lib/gcc/arm-none-eabi/4.5.2." -Wl,-Map,pr4.1.map -mcpu=arm7tdmi -g3 -gdwarf-2 -o "pr4.1.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -nostartfiles -L"/../sourcery-g++-lite-arm-2011.03/armnone-eabi/lib" -L"/../sourcery-g++-lite-arm-2011.03/lib/gcc/arm-noneeabi/4.5.2." -Wl,-Map,practica4.map -mcpu=arm7tdmi -g3 -gdwarf-2 -o "practica4.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-pr4.1.hex: pr4.1.elf
+practica4.hex: practica4.elf
 	@echo 'Invoking: ARM Sourcery Windows GNU Create Flash Image'
-	arm-none-eabi-objcopy -O binary pr4.1.elf  "pr4.1.hex"
+	arm-none-eabi-objcopy -O binary practica4.elf  "practica4.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-pr4.1.lst: pr4.1.elf
+practica4.lst: practica4.elf
 	@echo 'Invoking: ARM Sourcery Windows GNU Create Listing'
-	arm-none-eabi-objdump -h -S pr4.1.elf > "pr4.1.lst"
+	arm-none-eabi-objdump -h -S practica4.elf > "practica4.lst"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-pr4.1.siz: pr4.1.elf
+practica4.siz: practica4.elf
 	@echo 'Invoking: ARM Sourcery Windows GNU Print Size'
-	arm-none-eabi-size  --format=berkeley pr4.1.elf
+	arm-none-eabi-size  --format=berkeley practica4.elf
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(SECONDARY_SIZE)$(OBJS)$(C_DEPS)$(ASM_DEPS)$(SECONDARY_FLASH)$(EXECUTABLES)$(SECONDARY_LIST)$(S_UPPER_DEPS) pr4.1.elf
+	-$(RM) $(SECONDARY_SIZE)$(OBJS)$(C_DEPS)$(ASM_DEPS)$(SECONDARY_FLASH)$(EXECUTABLES)$(SECONDARY_LIST)$(S_UPPER_DEPS) practica4.elf
 	-@echo ' '
 
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_LIST) $(SECONDARY_SIZE)
