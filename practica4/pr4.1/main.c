@@ -29,7 +29,7 @@ int Main(void){
 	Eint4567_init();
 	Uart_Init(115200); // inicializacion de la Uart
 	Uart_Config(); // configuración de interrupciones y buffers
-	Uart_Printf1(str_send); // mostrar cabecera
+	//Uart_Printf1(str_send); // mostrar cabecera
 
 	while(1){
 		*pt_str = Uart_Getch1(); // leer caracter
