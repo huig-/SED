@@ -21,6 +21,7 @@ int Main(void){
 	Uart_Config(); // configuración de interrupciones y buffers
 	Uart_Printf(str_send); // mostrar cabecera
 
+
 	while(1){
 		*pt_str = Uart_Getch(); // leer caracter
 		Uart_SendByte(*pt_str); // enviar caracter

@@ -46,7 +46,7 @@ void KeyboardInt(void)
 	/* Si la tecla se ha identificado, visualizarla en el 8SEG*/
 	if(key > -1)
 	{
-		// D8Led_symbol(key);
+		D8Led_symbol(key);
 	}
 	/* Esperar a se libere la tecla: consultar bit 1 del registro de datos del puerto G */
 	while ((rPDATG & (0x1<<1)) == 0);

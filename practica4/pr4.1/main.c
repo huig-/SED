@@ -23,33 +23,36 @@ int led2 = 1;
 int Main(void){
 
 	char *pt_str = str;
-	D8Led_symbol(1);
+	D8Led_symbol(4);
+	leds_off();
+
 	int count = 0;
 	sys_init(); // inicializacion de la placa, interrupciones, puertos
 	Eint4567_init();
 	Uart_Init(115200); // inicializacion de la Uart
 	Uart_Config(); // configuración de interrupciones y buffers
-	//Uart_Printf1(str_send); // mostrar cabecera
+	Uart_Printf1(str_send); // mostrar cabecera
 
 	while(1){
 		*pt_str = Uart_Getch1(); // leer caracter
-
+		//Uart_SendByte(*pt_str); // enviar caracter no
 		if(pt_str[0] == 'L'){
 			led1_on();
+			D8Led_symbol(6);
 			led2_off();
 		} else if (pt_str[0] == 'R'){
 			led2_on();
+			D8Led_symbol(7);
 			led1_off();
 		}
+
 		if (*pt_str == CR_char){ // retorno de carro?
 			if (pt_str != str) { // si cadena no vacia, mostrar
 				*(++pt_str) = '\0'; // terminar cadena antes
 				Uart_Printf1("\n");
 				Uart_Printf1(str);
 
-				DelayMs(1000);
 
-				DelayMs(1000);
 			}
 			else{
 				Uart_Printf1(str_send); // preparar siguiente
