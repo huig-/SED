@@ -93,7 +93,15 @@ void Port_Init(void)
 	//   NC		NC		NC		NC		IISCLK	IISDI	IISDO	IISLRCK
 	//   00		00		00		00		11		11		11		11
 	rPDATC = 0xff00;
-	rPCONC = 0x0ff0ffff;	
+	//rPCONC = 0x0ff0ffff;	
+	rPCONC = rPCONC | (0x01 << 30)
+			| (0x11 << 26)
+			| (0x11 << 24)
+			| (0x11 << 20)
+			| (0x00 << 28)
+			| (0x11 << 22)
+			| (0x00 << 18)
+			| (0x00 << 16);
 	rPUPC  = 0x30ff;	//PULL UP RESISTOR should be enabled to I/O
 
 	// PORT D GROUP

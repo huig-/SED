@@ -12,39 +12,9 @@
   21              	.Ltext0:
   22              		.file 1 "../main.c"
  1889              		.align	2
- 1892              	str_send:
- 1893 0000 0A534544 		.ascii	"\012SED-P4 >\000"
- 1893      2D503420 
- 1893      3E00
- 1894              		.global	str_error
- 1895 000a 0000     		.align	2
- 1898              	str_error:
- 1899 000c 0A536520 		.ascii	"\012Se ha producido un desbordamiento!\012\000\000"
- 1899      68612070 
- 1899      726F6475 
- 1899      6369646F 
- 1899      20756E20 
- 1900 0032 00000000 		.space	12
- 1900      00000000 
- 1900      00000000 
- 1901              		.comm	str,256,4
- 1902              		.global	led1
- 1903 003e 0000     		.align	2
- 1906              	led1:
- 1907 0040 01000000 		.word	1
- 1908              		.global	led2
- 1909              		.align	2
- 1912              	led2:
- 1913 0044 01000000 		.word	1
- 1914              		.section	.rodata
- 1915              		.align	2
- 1916              	.LC0:
- 1917 0000 0A00     		.ascii	"\012\000"
- 1918 0002 0000     		.text
- 1919              		.align	2
- 1920              		.global	Main
- 1922              	Main:
- 1923              	.LFB0:
+ 1890              		.global	Main
+ 1892              	Main:
+ 1893              	.LFB0:
    1:../main.c     **** /*--- ficheros de cabecera ---*/
    2:../main.c     **** #include "44blib.h"
    3:../main.c     **** #include "44b.h"
@@ -57,254 +27,137 @@
   10:../main.c     **** extern void led1_off();
   11:../main.c     **** extern void led2_on();
   12:../main.c     **** extern void led2_off();
-  13:../main.c     **** extern void leds_switch();
-  14:../main.c     **** extern void Eint4567_init();
-  15:../main.c     **** extern void D8Led_symbol(int value);
+  13:../main.c     **** extern void Eint4567_init();
+  14:../main.c     **** extern void D8Led_symbol(int value);
+  15:../main.c     **** extern void keyboard_init();
   16:../main.c     **** /*--- variables globales ---*/
-  17:../main.c     **** char str_send[10] = "\nSED-P4 >\0";
-  18:../main.c     **** char str_error[50] = "\nSe ha producido un desbordamiento!\n\0";
-  19:../main.c     **** char str[256];
-  20:../main.c     **** int led1 = 1;
-  21:../main.c     **** int led2 = 1;
-  22:../main.c     **** /*--- codigo de la funcion ---*/
-  23:../main.c     **** int Main(void){
- 1924              		.loc 1 23 0
- 1925              		.cfi_startproc
- 1926              		@ Function supports interworking.
- 1927              		@ args = 0, pretend = 0, frame = 8
- 1928              		@ frame_needed = 1, uses_anonymous_args = 0
- 1929 0000 0DC0A0E1 		mov	ip, sp
- 1930              	.LCFI0:
- 1931              		.cfi_def_cfa_register 12
- 1932 0004 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
- 1933 0008 04B04CE2 		sub	fp, ip, #4
- 1934              		.cfi_offset 14, -8
- 1935              		.cfi_offset 13, -12
- 1936              		.cfi_offset 11, -16
- 1937              	.LCFI1:
- 1938              		.cfi_def_cfa 11, 4
- 1939 000c 08D04DE2 		sub	sp, sp, #8
-  24:../main.c     **** 
-  25:../main.c     **** 	char *pt_str = str;
- 1940              		.loc 1 25 0
- 1941 0010 30319FE5 		ldr	r3, .L10
- 1942 0014 10300BE5 		str	r3, [fp, #-16]
-  26:../main.c     **** 	D8Led_symbol(4);
- 1943              		.loc 1 26 0
- 1944 0018 0400A0E3 		mov	r0, #4
- 1945 001c FEFFFFEB 		bl	D8Led_symbol
-  27:../main.c     **** 	leds_off();
- 1946              		.loc 1 27 0
- 1947 0020 FEFFFFEB 		bl	leds_off
-  28:../main.c     **** 
-  29:../main.c     **** 	int count = 0;
- 1948              		.loc 1 29 0
- 1949 0024 0030A0E3 		mov	r3, #0
- 1950 0028 14300BE5 		str	r3, [fp, #-20]
-  30:../main.c     **** 	sys_init(); // inicializacion de la placa, interrupciones, puertos
- 1951              		.loc 1 30 0
- 1952 002c FEFFFFEB 		bl	sys_init
-  31:../main.c     **** 	Eint4567_init();
- 1953              		.loc 1 31 0
- 1954 0030 FEFFFFEB 		bl	Eint4567_init
-  32:../main.c     **** 	Uart_Init(115200); // inicializacion de la Uart
- 1955              		.loc 1 32 0
- 1956 0034 10019FE5 		ldr	r0, .L10+4
- 1957 0038 FEFFFFEB 		bl	Uart_Init
-  33:../main.c     **** 	Uart_Config(); // configuración de interrupciones y buffers
- 1958              		.loc 1 33 0
- 1959 003c FEFFFFEB 		bl	Uart_Config
-  34:../main.c     **** 	Uart_Printf1(str_send); // mostrar cabecera
- 1960              		.loc 1 34 0
- 1961 0040 08019FE5 		ldr	r0, .L10+8
- 1962 0044 FEFFFFEB 		bl	Uart_Printf1
- 1963 0048 000000EA 		b	.L8
- 1964              	.L9:
-  35:../main.c     **** 
-  36:../main.c     **** 	while(1){
-  37:../main.c     **** 		*pt_str = Uart_Getch1(); // leer caracter
-  38:../main.c     **** 		//Uart_SendByte(*pt_str); // enviar caracter no
-  39:../main.c     **** 		if(pt_str[0] == 'L'){
-  40:../main.c     **** 			led1_on();
-  41:../main.c     **** 			D8Led_symbol(6);
-  42:../main.c     **** 			led2_off();
-  43:../main.c     **** 		} else if (pt_str[0] == 'R'){
-  44:../main.c     **** 			led2_on();
-  45:../main.c     **** 			D8Led_symbol(7);
-  46:../main.c     **** 			led1_off();
-  47:../main.c     **** 		}
-  48:../main.c     **** 		if (*pt_str == CR_char){ // retorno de carro?
-  49:../main.c     **** 			if (pt_str != str) { // si cadena no vacia, mostrar
-  50:../main.c     **** 				*(++pt_str) = '\0'; // terminar cadena antes
-  51:../main.c     **** 				Uart_Printf1("\n");
-  52:../main.c     **** 				Uart_Printf1(str);
-  53:../main.c     **** 
-  54:../main.c     **** 
-  55:../main.c     **** 			}
-  56:../main.c     **** 			else{
-  57:../main.c     **** 				Uart_Printf1(str_send); // preparar siguiente
-  58:../main.c     **** 				pt_str = str;
-  59:../main.c     **** 
-  60:../main.c     **** 				///
-  61:../main.c     **** 			}
-  62:../main.c     **** 			Uart_Printf1(str_send); // preparar siguiente
-  63:../main.c     **** 			pt_str = str;
-  64:../main.c     **** 		}
-  65:../main.c     **** 		else if (++pt_str == str + 255){ // desbordamiento?
-  66:../main.c     **** 			Uart_Printf1(str_error); // avisar del desbordamiento
-  67:../main.c     **** 			pt_str = str;
-  68:../main.c     **** 		}
-  69:../main.c     **** 	}
- 1965              		.loc 1 69 0
- 1966 004c 0000A0E1 		mov	r0, r0	@ nop
- 1967              	.L8:
-  37:../main.c     **** 		*pt_str = Uart_Getch1(); // leer caracter
- 1968              		.loc 1 37 0
- 1969 0050 FEFFFFEB 		bl	Uart_Getch1
- 1970 0054 0030A0E1 		mov	r3, r0
- 1971 0058 0320A0E1 		mov	r2, r3
- 1972 005c 10301BE5 		ldr	r3, [fp, #-16]
- 1973 0060 0020C3E5 		strb	r2, [r3, #0]
-  39:../main.c     **** 		if(pt_str[0] == 'L'){
- 1974              		.loc 1 39 0
- 1975 0064 10301BE5 		ldr	r3, [fp, #-16]
- 1976 0068 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
- 1977 006c 4C0053E3 		cmp	r3, #76
- 1978 0070 0400001A 		bne	.L2
-  40:../main.c     **** 			led1_on();
- 1979              		.loc 1 40 0
- 1980 0074 FEFFFFEB 		bl	led1_on
-  41:../main.c     **** 			D8Led_symbol(6);
- 1981              		.loc 1 41 0
- 1982 0078 0600A0E3 		mov	r0, #6
- 1983 007c FEFFFFEB 		bl	D8Led_symbol
-  42:../main.c     **** 			led2_off();
- 1984              		.loc 1 42 0
- 1985 0080 FEFFFFEB 		bl	led2_off
- 1986 0084 070000EA 		b	.L3
- 1987              	.L2:
-  43:../main.c     **** 		} else if (pt_str[0] == 'R'){
- 1988              		.loc 1 43 0
- 1989 0088 10301BE5 		ldr	r3, [fp, #-16]
- 1990 008c 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
- 1991 0090 520053E3 		cmp	r3, #82
- 1992 0094 0300001A 		bne	.L3
-  44:../main.c     **** 			led2_on();
- 1993              		.loc 1 44 0
- 1994 0098 FEFFFFEB 		bl	led2_on
-  45:../main.c     **** 			D8Led_symbol(7);
- 1995              		.loc 1 45 0
- 1996 009c 0700A0E3 		mov	r0, #7
- 1997 00a0 FEFFFFEB 		bl	D8Led_symbol
-  46:../main.c     **** 			led1_off();
- 1998              		.loc 1 46 0
- 1999 00a4 FEFFFFEB 		bl	led1_off
- 2000              	.L3:
-  48:../main.c     **** 		if (*pt_str == CR_char){ // retorno de carro?
- 2001              		.loc 1 48 0
- 2002 00a8 10301BE5 		ldr	r3, [fp, #-16]
- 2003 00ac 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
- 2004 00b0 0D0053E3 		cmp	r3, #13
- 2005 00b4 1700001A 		bne	.L4
-  49:../main.c     **** 			if (pt_str != str) { // si cadena no vacia, mostrar
- 2006              		.loc 1 49 0
- 2007 00b8 10201BE5 		ldr	r2, [fp, #-16]
- 2008 00bc 84309FE5 		ldr	r3, .L10
- 2009 00c0 030052E1 		cmp	r2, r3
- 2010 00c4 0A00000A 		beq	.L5
-  50:../main.c     **** 				*(++pt_str) = '\0'; // terminar cadena antes
- 2011              		.loc 1 50 0
- 2012 00c8 10301BE5 		ldr	r3, [fp, #-16]
- 2013 00cc 013083E2 		add	r3, r3, #1
- 2014 00d0 10300BE5 		str	r3, [fp, #-16]
- 2015 00d4 10301BE5 		ldr	r3, [fp, #-16]
- 2016 00d8 0020A0E3 		mov	r2, #0
- 2017 00dc 0020C3E5 		strb	r2, [r3, #0]
-  51:../main.c     **** 				Uart_Printf1("\n");
- 2018              		.loc 1 51 0
- 2019 00e0 6C009FE5 		ldr	r0, .L10+12
- 2020 00e4 FEFFFFEB 		bl	Uart_Printf1
-  52:../main.c     **** 				Uart_Printf1(str);
- 2021              		.loc 1 52 0
- 2022 00e8 58009FE5 		ldr	r0, .L10
- 2023 00ec FEFFFFEB 		bl	Uart_Printf1
- 2024 00f0 030000EA 		b	.L6
- 2025              	.L5:
-  57:../main.c     **** 				Uart_Printf1(str_send); // preparar siguiente
- 2026              		.loc 1 57 0
- 2027 00f4 54009FE5 		ldr	r0, .L10+8
- 2028 00f8 FEFFFFEB 		bl	Uart_Printf1
-  58:../main.c     **** 				pt_str = str;
- 2029              		.loc 1 58 0
- 2030 00fc 44309FE5 		ldr	r3, .L10
- 2031 0100 10300BE5 		str	r3, [fp, #-16]
- 2032              	.L6:
-  62:../main.c     **** 			Uart_Printf1(str_send); // preparar siguiente
- 2033              		.loc 1 62 0
- 2034 0104 44009FE5 		ldr	r0, .L10+8
- 2035 0108 FEFFFFEB 		bl	Uart_Printf1
-  63:../main.c     **** 			pt_str = str;
- 2036              		.loc 1 63 0
- 2037 010c 34309FE5 		ldr	r3, .L10
- 2038 0110 10300BE5 		str	r3, [fp, #-16]
- 2039              		.loc 1 69 0
- 2040 0114 CDFFFFEA 		b	.L8
- 2041              	.L4:
-  65:../main.c     **** 		else if (++pt_str == str + 255){ // desbordamiento?
- 2042              		.loc 1 65 0
- 2043 0118 10301BE5 		ldr	r3, [fp, #-16]
- 2044 011c 013083E2 		add	r3, r3, #1
- 2045 0120 10300BE5 		str	r3, [fp, #-16]
- 2046 0124 10201BE5 		ldr	r2, [fp, #-16]
- 2047 0128 28309FE5 		ldr	r3, .L10+16
- 2048 012c 030052E1 		cmp	r2, r3
- 2049 0130 C5FFFF1A 		bne	.L9
-  66:../main.c     **** 			Uart_Printf1(str_error); // avisar del desbordamiento
- 2050              		.loc 1 66 0
- 2051 0134 20009FE5 		ldr	r0, .L10+20
- 2052 0138 FEFFFFEB 		bl	Uart_Printf1
-  67:../main.c     **** 			pt_str = str;
- 2053              		.loc 1 67 0
- 2054 013c 04309FE5 		ldr	r3, .L10
- 2055 0140 10300BE5 		str	r3, [fp, #-16]
- 2056              		.loc 1 69 0
- 2057 0144 C1FFFFEA 		b	.L8
- 2058              	.L11:
- 2059              		.align	2
- 2060              	.L10:
- 2061 0148 00000000 		.word	str
- 2062 014c 00C20100 		.word	115200
- 2063 0150 00000000 		.word	str_send
- 2064 0154 00000000 		.word	.LC0
- 2065 0158 FF000000 		.word	str+255
- 2066 015c 00000000 		.word	str_error
- 2067              		.cfi_endproc
- 2068              	.LFE0:
- 2070              	.Letext0:
+  17:../main.c     **** char str[256];
+  18:../main.c     **** 
+  19:../main.c     **** /*--- codigo de la funcion ---*/
+  20:../main.c     **** int Main(void){
+ 1894              		.loc 1 20 0
+ 1895              		.cfi_startproc
+ 1896              		@ Function supports interworking.
+ 1897              		@ args = 0, pretend = 0, frame = 8
+ 1898              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1899 0000 0DC0A0E1 		mov	ip, sp
+ 1900              	.LCFI0:
+ 1901              		.cfi_def_cfa_register 12
+ 1902 0004 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 1903 0008 04B04CE2 		sub	fp, ip, #4
+ 1904              		.cfi_offset 14, -8
+ 1905              		.cfi_offset 13, -12
+ 1906              		.cfi_offset 11, -16
+ 1907              	.LCFI1:
+ 1908              		.cfi_def_cfa 11, 4
+ 1909 000c 08D04DE2 		sub	sp, sp, #8
+  21:../main.c     **** 
+  22:../main.c     **** 	char *pt_str = str;
+ 1910              		.loc 1 22 0
+ 1911 0010 80309FE5 		ldr	r3, .L6
+ 1912 0014 10300BE5 		str	r3, [fp, #-16]
+  23:../main.c     **** 	leds_off();
+ 1913              		.loc 1 23 0
+ 1914 0018 FEFFFFEB 		bl	leds_off
+  24:../main.c     **** 	sys_init(); // inicializacion de la placa, interrupciones, puertos
+ 1915              		.loc 1 24 0
+ 1916 001c FEFFFFEB 		bl	sys_init
+  25:../main.c     **** 	Eint4567_init();
+ 1917              		.loc 1 25 0
+ 1918 0020 FEFFFFEB 		bl	Eint4567_init
+  26:../main.c     **** 	keyboard_init();
+ 1919              		.loc 1 26 0
+ 1920 0024 FEFFFFEB 		bl	keyboard_init
+  27:../main.c     **** 	Uart_Init(115200); // inicializacion de la Uart
+ 1921              		.loc 1 27 0
+ 1922 0028 6C009FE5 		ldr	r0, .L6+4
+ 1923 002c FEFFFFEB 		bl	Uart_Init
+  28:../main.c     **** 	Uart_Config(); // configuración de interrupciones y buffers
+ 1924              		.loc 1 28 0
+ 1925 0030 FEFFFFEB 		bl	Uart_Config
+ 1926              	.L5:
+  29:../main.c     **** 
+  30:../main.c     **** 	while(1){
+  31:../main.c     **** 		*pt_str = Uart_Getch1(); // leer caracter
+ 1927              		.loc 1 31 0
+ 1928 0034 FEFFFFEB 		bl	Uart_Getch1
+ 1929 0038 0030A0E1 		mov	r3, r0
+ 1930 003c 0320A0E1 		mov	r2, r3
+ 1931 0040 10301BE5 		ldr	r3, [fp, #-16]
+ 1932 0044 0020C3E5 		strb	r2, [r3, #0]
+  32:../main.c     **** 		if(pt_str[0] == 'I'){
+ 1933              		.loc 1 32 0
+ 1934 0048 10301BE5 		ldr	r3, [fp, #-16]
+ 1935 004c 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1936 0050 490053E3 		cmp	r3, #73
+ 1937 0054 0200001A 		bne	.L2
+  33:../main.c     **** 			led1_on();
+ 1938              		.loc 1 33 0
+ 1939 0058 FEFFFFEB 		bl	led1_on
+  34:../main.c     **** 			led2_off();
+ 1940              		.loc 1 34 0
+ 1941 005c FEFFFFEB 		bl	led2_off
+  35:../main.c     **** 		} else if (pt_str[0] == 'D'){
+  36:../main.c     **** 			led2_on();
+  37:../main.c     **** 			led1_off();
+  38:../main.c     **** 		}
+  39:../main.c     **** 		else  {
+  40:../main.c     **** 			D8Led_symbol(pt_str[0]-'0');
+  41:../main.c     **** 		}
+  42:../main.c     **** 	}
+ 1942              		.loc 1 42 0
+ 1943 0060 F3FFFFEA 		b	.L5
+ 1944              	.L2:
+  35:../main.c     **** 		} else if (pt_str[0] == 'D'){
+ 1945              		.loc 1 35 0
+ 1946 0064 10301BE5 		ldr	r3, [fp, #-16]
+ 1947 0068 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1948 006c 440053E3 		cmp	r3, #68
+ 1949 0070 0200001A 		bne	.L4
+  36:../main.c     **** 			led2_on();
+ 1950              		.loc 1 36 0
+ 1951 0074 FEFFFFEB 		bl	led2_on
+  37:../main.c     **** 			led1_off();
+ 1952              		.loc 1 37 0
+ 1953 0078 FEFFFFEB 		bl	led1_off
+ 1954              		.loc 1 42 0
+ 1955 007c ECFFFFEA 		b	.L5
+ 1956              	.L4:
+  40:../main.c     **** 			D8Led_symbol(pt_str[0]-'0');
+ 1957              		.loc 1 40 0
+ 1958 0080 10301BE5 		ldr	r3, [fp, #-16]
+ 1959 0084 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1960 0088 303043E2 		sub	r3, r3, #48
+ 1961 008c 0300A0E1 		mov	r0, r3
+ 1962 0090 FEFFFFEB 		bl	D8Led_symbol
+ 1963              		.loc 1 42 0
+ 1964 0094 E6FFFFEA 		b	.L5
+ 1965              	.L7:
+ 1966              		.align	2
+ 1967              	.L6:
+ 1968 0098 00000000 		.word	str
+ 1969 009c 00C20100 		.word	115200
+ 1970              		.cfi_endproc
+ 1971              	.LFE0:
+ 1973              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\USUARI~1\AppData\Local\Temp\cchScSvC.s:1892   .data:00000000 str_send
-C:\Users\USUARI~1\AppData\Local\Temp\cchScSvC.s:1889   .data:00000000 $d
-C:\Users\USUARI~1\AppData\Local\Temp\cchScSvC.s:1898   .data:0000000c str_error
                             *COM*:00000100 str
-C:\Users\USUARI~1\AppData\Local\Temp\cchScSvC.s:1906   .data:00000040 led1
-C:\Users\USUARI~1\AppData\Local\Temp\cchScSvC.s:1912   .data:00000044 led2
-C:\Users\USUARI~1\AppData\Local\Temp\cchScSvC.s:1915   .rodata:00000000 $d
-C:\Users\USUARI~1\AppData\Local\Temp\cchScSvC.s:1919   .text:00000000 $a
-C:\Users\USUARI~1\AppData\Local\Temp\cchScSvC.s:1922   .text:00000000 Main
-C:\Users\USUARI~1\AppData\Local\Temp\cchScSvC.s:2061   .text:00000148 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccS6lBib.s:1889   .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccS6lBib.s:1892   .text:00000000 Main
+C:\Users\USUARI~1\AppData\Local\Temp\ccS6lBib.s:1968   .text:00000098 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
-D8Led_symbol
 leds_off
 sys_init
 Eint4567_init
+keyboard_init
 Uart_Init
 Uart_Config
-Uart_Printf1
 Uart_Getch1
 led1_on
 led2_off
 led2_on
 led1_off
+D8Led_symbol

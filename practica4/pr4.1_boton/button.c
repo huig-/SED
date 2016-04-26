@@ -3,12 +3,19 @@
 #include "def.h"
 #include "uart.h"
 /*--- variables globales ---*/
+int button;
 /*--- funciones externas ---*/
 //extern void D8Led_Symbol(int value);
 /*--- declaracion de funciones ---*/
 void Eint4567_ISR(void) __attribute__ ((interrupt ("IRQ")));
 void Eint4567_init(void);
 extern void leds_switch ();
+extern void D8Led_symbol(int value);
+//extern void at24c04_bytewrite( uint16 addr, uint8 data );
+//extern void at24c04_byteread( uint16 addr, uint8 *data );
+
+
+
 /*--- codigo de funciones ---*/
 
 int esta_pulsado(void)
@@ -31,12 +38,12 @@ void Eint4567_init(void)
 	// Habilita int. vectorizadas y la linea IRQ (FIQ no) mediante INTCON
 	rINTCON = 0x1;
 	// Enmascara todas las lineas excepto Eint4567 y el bit global (INTMSK)
-	rINTMSK &= ~(BIT_EINT4567 | BIT_GLOBAL);
+	rINTMSK = ~(BIT_EINT4567 | BIT_GLOBAL);
 	// Establecer la rutina de servicio para Eint4567
 	pISR_EINT4567 = (unsigned)Eint4567_ISR;
 /* Configuracion del puerto G */
 	// Establece la funcion de los pines (EINT7-EINT0)
-	rPCONG = rPCONG | 0xf000;
+	rPCONG = 0xf000;
 
 	//Habilita las resistencias de pull-up
 	rPUPG = 0x0;
@@ -51,9 +58,11 @@ void Eint4567_ISR(void)
 {
 	//Detectamos que boton se ha pulsado
 	if ((rPDATG & (0x1<<6)) == 0) {
+	    button = 0;
 	    Uart_SendByte1('L'); // enviar caracter
 	}
 	else {
+	    button = 1;
 	    Uart_SendByte1('R'); // enviar caracter
 	}
 	while (esta_pulsado());

@@ -33,7 +33,7 @@ void keyboard_init()
 		// Habilita int. vectorizadas y la linea IRQ (FIQ no) mediante INTCON
 	rINTCON = 0x1;
 	/* Habilitar linea EINT1 */
-	rINTMSK &= ~(BIT_EINT1 | BIT_GLOBAL);
+	rINTMSK = ~(BIT_EINT1 | BIT_GLOBAL);
 	/* Por precaucion, se vuelven a borrar los bits de INTPND correspondientes*/
 	rI_ISPC = 0x3ffffff;
 }
@@ -46,7 +46,7 @@ void KeyboardInt(void)
 	/* Si la tecla se ha identificado, visualizarla en el 8SEG*/
 	if(key > -1)
 	{
-		 Uart_SendByte1(key+'0'); // enviar caracter
+		D8Led_symbol(key);
 	}
 	/* Esperar a se libere la tecla: consultar bit 1 del registro de datos del puerto G */
 	while ((rPDATG & (0x1<<1)) == 0);
